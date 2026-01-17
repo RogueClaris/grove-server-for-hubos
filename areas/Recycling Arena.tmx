@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.8" tiledversion="1.8.6" orientation="isometric" renderorder="right-down" width="40" height="40" tilewidth="64" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="57">
+ <properties>
+  <property name="Background" value="undernet"/>
+  <property name="Forced Base HP" type="int" value="100"/>
+  <property name="Full Heal" type="bool" value="true"/>
+  <property name="Honor HPMem" type="bool" value="true"/>
+  <property name="Name" value="Recycle Bin"/>
+  <property name="Song" value="/server/assets/songs/chaos.mid"/>
+ </properties>
+ <tileset firstgid="1" source="../assets/tiles/panel base.tsx"/>
+ <tileset firstgid="4" source="../assets/tiles/Napalm Warp.tsx"/>
+ <tileset firstgid="8" source="../assets/tiles/warp.tsx"/>
+ <tileset firstgid="14" source="../assets/tiles/DungeonServerWarpPads.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="40" height="40">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,2,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,2,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,2,3,3,3,3,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,2,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,2,3,3,3,3,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,2,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,3,2,2,2,2,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,3,2,0,2,2,2,2,2,0,0,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,3,2,2,2,2,2,2,2,1,1,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,3,2,2,2,0,2,0,2,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,3,2,0,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,3,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,3,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="2" name="Object Layer 1">
+  <object id="1" name="Copyman" type="Script Node: Spawn Bot" x="464" y="592">
+   <properties>
+    <property name="Asset" value="bots/normal-navi-bn4_brown"/>
+    <property name="Direction" value="Down Right"/>
+    <property name="Event Name" value="Copyman Plot"/>
+    <property name="On Load" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="3" name="To ACDC Square" type="Custom Warp" gid="24" x="832" y="576" width="57" height="33">
+   <properties>
+    <property name="Direction" value="Up Left"/>
+    <property name="On Warp" type="object" value="16"/>
+    <property name="Walk Distance" type="float" value="1"/>
+   </properties>
+  </object>
+  <object id="16" type="Script Node: Transfer To Area" x="896" y="640">
+   <properties>
+    <property name="Area" value="ACDC Square"/>
+    <property name="Target" type="int" value="105"/>
+    <property name="Warp" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="17" x="848.5" y="593.5">
+   <properties>
+    <property name="Direction" value="Up Left"/>
+    <property name="Walk Distance" type="float" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="27" name="Fireman Data" type="Script Node: Spawn Bot" x="721" y="401">
+   <properties>
+    <property name="Asset" value="bots/fireman-bn45"/>
+    <property name="Direction" value="Up Left"/>
+    <property name="On Interact" type="object" value="28"/>
+    <property name="Solid" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="28" type="Script Node: Encounter" x="800" y="64">
+   <properties>
+    <property name="Encounter" value="/server/mods/Spikey"/>
+    <property name="On Win" type="object" value="30"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="29" type="Script Node: Message" x="736" y="64">
+   <properties>
+    <property name="Mug" value="Player"/>
+    <property name="Text" value="Received 200 Zenny!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="30" type="Script Node: Give Money" x="768" y="64">
+   <properties>
+    <property name="Amount" value="200"/>
+    <property name="Next" type="object" value="29"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="34" name="WindMan Data" type="Script Node: Spawn Bot" x="591.5" y="400.5">
+   <properties>
+    <property name="Asset" value="bots/windman"/>
+    <property name="Direction" value="Down Right"/>
+    <property name="On Interact" type="object" value="46"/>
+    <property name="Solid" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="35" type="Script Node: Encounter" x="576" y="128">
+   <properties>
+    <property name="Encounter" value="/server/mods/Spikey"/>
+    <property name="On Win" type="object" value="37"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="36" type="Script Node: Message" x="640" y="128">
+   <properties>
+    <property name="Mug" value="Player"/>
+    <property name="Text" value="Received 200 Zenny!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="37" type="Script Node: Give Money" x="608" y="128">
+   <properties>
+    <property name="Amount" value="200"/>
+    <property name="Next" type="object" value="36"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="38" name="Roll Data" type="Script Node: Spawn Bot" x="591" y="337">
+   <properties>
+    <property name="Asset" value="bots/roll"/>
+    <property name="Direction" value="Down Right"/>
+    <property name="On Interact" type="object" value="39"/>
+    <property name="Solid" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="39" type="Script Node: Encounter" x="544" y="96">
+   <properties>
+    <property name="Encounter" value="/server/mods/Spikey"/>
+    <property name="On Win" type="object" value="41"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="40" type="Script Node: Message" x="608" y="96">
+   <properties>
+    <property name="Mug" value="Player"/>
+    <property name="Text" value="Received 200 Zenny!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="41" type="Script Node: Give Money" x="576" y="96">
+   <properties>
+    <property name="Amount" value="200"/>
+    <property name="Next" type="object" value="40"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="45" name="SearchMan Data" type="Script Node: Spawn Bot" x="591" y="273">
+   <properties>
+    <property name="Asset" value="bots/searchman"/>
+    <property name="Direction" value="Down Right"/>
+    <property name="On Interact" type="object" value="35"/>
+    <property name="Solid" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="46" name="SearchMan Data" type="Script Node: Encounter" x="512" y="64">
+   <properties>
+    <property name="Encounter" value="/server/mods/Spikey"/>
+    <property name="On Win" type="object" value="48"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="47" name="SearchMan Data" type="Script Node: Message" x="576" y="64">
+   <properties>
+    <property name="Mug" value="Player"/>
+    <property name="Text" value="Received 200 Zenny!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="48" name="SearchMan Data" type="Script Node: Give Money" x="544" y="64">
+   <properties>
+    <property name="Amount" value="200"/>
+    <property name="Next" type="object" value="47"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="49" name="GutsMan Data" type="Script Node: Spawn Bot" x="722" y="338">
+   <properties>
+    <property name="Asset" value="bots/gutsman"/>
+    <property name="Direction" value="Up Left"/>
+    <property name="On Interact" type="object" value="50"/>
+    <property name="Solid" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="50" type="Script Node: Encounter" x="768" y="96">
+   <properties>
+    <property name="Encounter" value="/server/mods/Spikey"/>
+    <property name="On Win" type="object" value="52"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="51" type="Script Node: Message" x="704" y="96">
+   <properties>
+    <property name="Mug" value="Player"/>
+    <property name="Text" value="Received 200 Zenny!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="52" type="Script Node: Give Money" x="736" y="96">
+   <properties>
+    <property name="Amount" value="200"/>
+    <property name="Next" type="object" value="51"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="53" name="ThunderMan Data" type="Script Node: Spawn Bot" x="721" y="275">
+   <properties>
+    <property name="Asset" value="bots/thunderman"/>
+    <property name="Direction" value="Up Left"/>
+    <property name="On Interact" type="object" value="54"/>
+    <property name="Solid" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="54" type="Script Node: Encounter" x="736" y="128">
+   <properties>
+    <property name="Encounter" value="/server/mods/Spikey"/>
+    <property name="On Win" type="object" value="56"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="55" type="Script Node: Message" x="672" y="128">
+   <properties>
+    <property name="Mug" value="Player"/>
+    <property name="Text" value="Received 200 Zenny!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="56" type="Script Node: Give Money" x="704" y="128">
+   <properties>
+    <property name="Amount" value="200"/>
+    <property name="Next" type="object" value="55"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+</map>

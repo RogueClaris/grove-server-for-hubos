@@ -1,0 +1,796 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.8" tiledversion="1.8.6" orientation="isometric" renderorder="right-down" compressionlevel="0" width="19" height="15" tilewidth="64" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="160">
+ <properties>
+  <property name="Background Animation" value="/server/assets/bg.animation"/>
+  <property name="Background Texture" value="/server/assets/bg.png"/>
+  <property name="Background Vel X" type="float" value="0.5"/>
+  <property name="Background Vel Y" type="float" value="0.25"/>
+  <property name="Name" value="New Comp"/>
+  <property name="Song" value=""/>
+ </properties>
+ <tileset firstgid="1" source="../assets/tiles/floor.tsx"/>
+ <tileset firstgid="3" source="../assets/tiles/spawn_warp.tsx"/>
+ <tileset firstgid="8" source="../assets/tiles/bbs.tsx"/>
+ <tileset firstgid="9" source="../assets/tiles/SquareWarpsA.tsx"/>
+ <tileset firstgid="49" source="../assets/tiles/Netopia_Tileset_directional_paths.tsx"/>
+ <layer id="1" name="Floor" width="19" height="15">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,2,2,1,2,2,0,0,0,0,0,0,0,
+0,0,0,0,2,2,2,2,73,73,79,2,2,2,2,0,0,0,0,
+0,0,0,2,2,1,1,1,82,2,79,1,1,1,2,2,0,0,0,
+0,2,2,2,1,2,2,1,82,76,76,1,2,2,1,2,2,2,0,
+2,2,1,1,2,2,2,2,2,2,2,2,2,2,2,1,1,2,2,
+0,2,2,2,1,2,2,1,2,2,2,1,2,2,1,2,2,2,0,
+0,0,0,2,2,1,1,1,2,1,2,1,1,1,2,2,0,0,0,
+0,0,0,0,2,2,2,2,2,1,2,2,2,2,2,0,0,0,0,
+0,0,0,0,0,0,0,0,2,1,2,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="5" name="Object Layer">
+  <object id="2" type="Home Warp" gid="4" x="282" y="218" width="92" height="51"/>
+  <object id="3" name="Cutscene Prog" type="Script Node: Spawn Bot" x="240" y="208">
+   <properties>
+    <property name="Asset" value="bots/prog"/>
+    <property name="Next" type="object" value="15"/>
+    <property name="On Interact" type="object" value="16"/>
+    <property name="On Load" type="bool" value="true"/>
+    <property name="Solid" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="4" type="Script Node: Question" x="-48" y="360">
+   <properties>
+    <property name="Mug" value="bots/prog_mug"/>
+    <property name="Next 1" type="object" value="71"/>
+    <property name="Next 2" type="object" value="7"/>
+    <property name="Text" value="WANT TO BATTLE A RANDOM PLAYER?"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="5" type="Script Node: Camera" x="-48" y="144">
+   <properties>
+    <property name="Duration" type="float" value="0.5"/>
+    <property name="Motion" value="Slide"/>
+    <property name="Next" type="object" value="98"/>
+    <property name="Target" type="object" value="50"/>
+    <property name="Unlocks" type="bool" value="false"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="7" type="Script Node: Party Area" x="-48" y="336">
+   <properties>
+    <property name="Next" type="object" value="97"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="9" x="240" y="304">
+   <properties>
+    <property name="Path Next" type="object" value="11"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="10" type="Script Node: Set Path" x="56" y="328">
+   <properties>
+    <property name="Actor" value="Player"/>
+    <property name="Next" type="object" value="49"/>
+    <property name="Path Start" type="object" value="9"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="11" x="176" y="304">
+   <properties>
+    <property name="Path Next" type="object" value="47"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="12" x="240" y="176">
+   <properties>
+    <property name="Path Next" type="object" value="45"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="14" x="208" y="272">
+   <properties>
+    <property name="Path Next" type="object" value="0"/>
+    <property name="Wait" type="float" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="15" type="Script Node: Set Path" x="208" y="208">
+   <properties>
+    <property name="Loop" type="bool" value="true"/>
+    <property name="Path Next" type="object" value="14"/>
+    <property name="Path Start" type="object" value="15"/>
+    <property name="Wait" type="float" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="16" type="Script Node: Face" x="-48" y="408">
+   <properties>
+    <property name="Next" type="object" value="91"/>
+    <property name="Target" value="Player"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="17" type="Script Node: Require Party Size" x="-48" y="288">
+   <properties>
+    <property name="Min" type="int" value="2"/>
+    <property name="Next" type="object" value="93"/>
+    <property name="Next 2" type="object" value="95"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="18" type="Script Node: Set Path" x="64" y="224">
+   <properties>
+    <property name="Next" type="object" value="0"/>
+    <property name="Path Start" type="object" value="59"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="19" name="Instance Prog" type="Script Node: Spawn Bot" x="304" y="352">
+   <properties>
+    <property name="Asset" value="bots/prog"/>
+    <property name="Next" type="object" value="21"/>
+    <property name="On Interact" type="object" value="76"/>
+    <property name="On Load" type="bool" value="true"/>
+    <property name="Solid" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="20" x="272" y="368">
+   <properties>
+    <property name="Path Next" type="object" value="72"/>
+    <property name="Wait" type="float" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="21" type="Script Node: Set Path" x="336" y="336">
+   <properties>
+    <property name="Loop" type="bool" value="true"/>
+    <property name="Path Next" type="object" value="20"/>
+    <property name="Path Start" type="object" value="21"/>
+    <property name="Wait" type="float" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="22" name="Encounter" type="Script Node: Spawn Bot" x="464" y="272">
+   <properties>
+    <property name="Asset" value="bots/mettaur"/>
+    <property name="Next" type="object" value="110"/>
+    <property name="On Load" type="bool" value="true"/>
+    <property name="Solid" type="bool" value="false"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="23" x="464" y="304">
+   <properties>
+    <property name="Path Next" type="object" value="73"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="24" type="Script Node: Set Path" x="464" y="240">
+   <properties>
+    <property name="Interrupt Radius" type="float" value="0"/>
+    <property name="Loop" type="bool" value="true"/>
+    <property name="Path Next" type="object" value="23"/>
+    <property name="Path Start" type="object" value="24"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="27" name="Player Interaction" type="Script Entry: Player Interaction" x="216" y="512">
+   <properties>
+    <property name="Next" type="object" value="28"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="28" type="Script Node: Disband Party" x="240" y="512">
+   <properties>
+    <property name="Next" type="object" value="0"/>
+    <property name="Next 1" type="object" value="32"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="31" type="Script Node: Reunite Party" x="312" y="512">
+   <properties>
+    <property name="Next" type="object" value="36"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="32" type="Script Node: Question" x="264" y="512">
+   <properties>
+    <property name="Mug" value="Player"/>
+    <property name="Next 2" type="object" value="42"/>
+    <property name="Text" value="Request a battle?"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="36" type="Script Node: Disband Party" x="336" y="512">
+   <properties>
+    <property name="Next" type="object" value="0"/>
+    <property name="Next 2" type="object" value="37"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="37" type="Script Node: Question" x="360" y="512">
+   <properties>
+    <property name="Mug" value="Player"/>
+    <property name="Next 2" type="object" value="39"/>
+    <property name="Text" value="Accept battle request?"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="38" type="Script Node: Encounter" x="408" y="512">
+   <properties>
+    <property name="Next" type="object" value="0"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="39" type="Script Node: Reunite Party" x="384" y="512">
+   <properties>
+    <property name="Next" type="object" value="38"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="42" type="Script Node: Emote" x="288" y="512">
+   <properties>
+    <property name="Emote" value="PVP SWORDS"/>
+    <property name="Next" type="object" value="31"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="43" type="Script Node: Set Path" x="56" y="120">
+   <properties>
+    <property name="Actor" value="Player"/>
+    <property name="Path Start" type="object" value="12"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="44" type="Script Node: Disband Party" x="-48" y="192">
+   <properties>
+    <property name="Next 1" type="object" value="10"/>
+    <property name="Next 2" type="object" value="43"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="45" x="176" y="176">
+   <properties>
+    <property name="Path Next" type="object" value="46"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="46" x="176" y="208">
+   <properties>
+    <property name="Path Next" type="object" value="0"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="47" x="176" y="272">
+   <properties>
+    <property name="Path Next" type="object" value="0"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="49" type="Script Node: Reunite Party" x="-48" y="168">
+   <properties>
+    <property name="Next" type="object" value="5"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="50" x="176" y="240">
+   <point/>
+  </object>
+  <object id="51" type="Script Node: Camera" x="-24" y="32">
+   <properties>
+    <property name="Next" type="object" value="15"/>
+    <property name="Unlocks" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="52" type="Script Node: Encounter" x="-88" y="40">
+   <properties>
+    <property name="Forget Results" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="53" type="Script Node: Auto Message" x="-48" y="96">
+   <properties>
+    <property name="Close Delay" type="float" value="1"/>
+    <property name="Mug" value="bots/prog_mug"/>
+    <property name="Next" type="object" value="54"/>
+    <property name="Text" value="HAVE FUN!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="54" type="Script Node: Thread" x="-48" y="72">
+   <properties>
+    <property name="Next 1" type="object" value="52"/>
+    <property name="Next 2" type="object" value="55"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="55" type="Script Node: Delay" x="-22.2098" y="59.5247">
+   <properties>
+    <property name="Duration" type="float" value="3"/>
+    <property name="Next" type="object" value="51"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="59" x="208" y="240">
+   <properties>
+    <property name="Path Next" type="object" value="62"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="60" type="Script Node: Thread" x="-48" y="216">
+   <properties>
+    <property name="Next" type="object" value="44"/>
+    <property name="Next 2" type="object" value="61"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="61" type="Script Node: Resume Path" x="64" y="248">
+   <properties>
+    <property name="Next" type="object" value="18"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="62" x="200" y="240">
+   <point/>
+  </object>
+  <object id="63" type="Script Node: Transfer to Instance" x="440" y="432">
+   <properties>
+    <property name="Next" type="object" value="78"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="64" name="Help Button" type="Script Entry: Help" x="216" y="464">
+   <properties>
+    <property name="Next" type="object" value="65"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="65" type="Script Node: Message" x="240" y="464">
+   <properties>
+    <property name="Mug" value="Player"/>
+    <property name="Next" type="object" value="66"/>
+    <property name="Text" value="This is your own personal server!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="71" type="Script Node: Resume Path" x="-87.5" y="343.5">
+   <properties>
+    <property name="Next" type="object" value="0"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="72" x="304" y="304">
+   <properties>
+    <property name="Path Next" type="object" value="0"/>
+    <property name="Wait" type="float" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="73" x="400" y="304">
+   <properties>
+    <property name="Path Next" type="object" value="74"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="74" x="400" y="240">
+   <properties>
+    <property name="Path Next" type="object" value="24"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="75" type="Script Node: Question" x="416" y="432">
+   <properties>
+    <property name="Mug" value="bots/prog_mug"/>
+    <property name="Next 1" type="object" value="78"/>
+    <property name="Next 2" type="object" value="63"/>
+    <property name="Text" value="CREATE A PRIVATE INSTANCE OF THIS AREA?"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="76" type="Script Node: Face" x="368" y="432">
+   <properties>
+    <property name="Next" type="object" value="77"/>
+    <property name="Target" value="Player"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="77" type="Script Node: Pause Path" x="392" y="432">
+   <properties>
+    <property name="Next" type="object" value="75"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="78" type="Script Node: Resume Path" x="416" y="464">
+   <properties>
+    <property name="Next" type="object" value="0"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="81" name="BBS" type="Board" gid="2147483656" x="168.5" y="123.5" width="40" height="53">
+   <properties>
+    <property name="On Interact" type="object" value="84"/>
+   </properties>
+  </object>
+  <object id="84" type="Script Node: BBS" x="160" y="64">
+   <properties>
+    <property name="Color" type="color" value="#ffd06981"/>
+    <property name="Name" value="Example BBS"/>
+    <property name="Next" type="object" value="0"/>
+    <property name="Post 1" type="object" value="86"/>
+    <property name="Post 2" type="object" value="85"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="85" x="192" y="48">
+   <properties>
+    <property name="Author" value="Anon"/>
+    <property name="On Interact" type="object" value="89"/>
+    <property name="Title" value="Mind Blown"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="86" x="160" y="32">
+   <properties>
+    <property name="Author" value="Anon"/>
+    <property name="On Interact" type="object" value="90"/>
+    <property name="Text" value="This BBS was made with the BBS script node."/>
+    <property name="Title" value="Welcome"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="87" type="Script Node: Message" x="192" y="-24">
+   <properties>
+    <property name="Next" type="object" value="0"/>
+    <property name="Text" value="BBS post nodes aren't limited to text, pretty cool right?"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="88" type="Script Node: Message" x="192" y="0">
+   <properties>
+    <property name="Next" type="object" value="87"/>
+    <property name="Text" value=""/>
+   </properties>
+   <point/>
+  </object>
+  <object id="89" type="Script Node: Play Sound" x="192" y="24">
+   <properties>
+    <property name="Next" type="object" value="88"/>
+    <property name="Sound" value="sfx/explode.ogg"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="90" type="Script Node: Message" x="160" y="8">
+   <properties>
+    <property name="Next" type="object" value="0"/>
+    <property name="Text" value="It only supports static posts, but you can create your own scripts and script nodes for something more dynamic!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="91" type="Script Node: Pause Path" x="-48" y="384">
+   <properties>
+    <property name="Next" type="object" value="4"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="93" type="Script Node: Message" x="-88" y="272">
+   <properties>
+    <property name="Mug" value="bots/prog_mug"/>
+    <property name="Next" type="object" value="71"/>
+    <property name="Text" value="NO AVAILABLE PLAYERS"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="95" type="Script Node: Shuffle Party" x="-48" y="264">
+   <properties>
+    <property name="Next" type="object" value="96"/>
+    <property name="Start" type="int" value="2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="96" type="Script Node: Split Party" x="-48" y="240">
+   <properties>
+    <property name="Next" type="object" value="60"/>
+    <property name="Next 2" type="object" value="0"/>
+    <property name="Start" type="int" value="3"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="97" type="Script Node: Exclude Busy" x="-48" y="312">
+   <properties>
+    <property name="Next" type="object" value="17"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="98" type="Script Node: Delay" x="-48" y="120">
+   <properties>
+    <property name="Duration" type="float" value="1"/>
+    <property name="Next" type="object" value="53"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="99" name="Shop" type="Script Node: Shop" x="408" y="88">
+   <properties>
+    <property name="Item 1" type="object" value="101"/>
+    <property name="Item 2" type="object" value="102"/>
+    <property name="Item 3" type="object" value="103"/>
+    <property name="Leave Text" value="THANKS FOR VISITING!"/>
+    <property name="Mug" value="bots/prog_mug"/>
+    <property name="Next" type="object" value="0"/>
+    <property name="Purchase Question" value="READY TO PURCHASE?"/>
+    <property name="Text" value="SEE ANYTHING YOU LIKE?"/>
+    <property name="Welcome Text" value="WELCOME!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="101" x="384" y="24">
+   <properties>
+    <property name="Item" value="MiniEnrg"/>
+    <property name="On Interact" type="object" value="130"/>
+    <property name="Price" type="int" value="100"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="102" x="424" y="64">
+   <properties>
+    <property name="Item" value="FullEnrg"/>
+    <property name="On Interact" type="object" value="131"/>
+    <property name="Price" type="int" value="1000"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="103" x="464" y="104">
+   <properties>
+    <property name="Item" value="SneakRun"/>
+    <property name="On Interact" type="object" value="132"/>
+    <property name="Price" type="int" value="500"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="104" type="Script Node: Message" x="528" y="104">
+   <properties>
+    <property name="Mug" value="bots/prog_mug"/>
+    <property name="Text" value="NOT ENOUGH MONEY!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="110" type="Script Node: Set Collider" x="496" y="272">
+   <properties>
+    <property name="Next" type="object" value="24"/>
+    <property name="On Enter" type="object" value="120"/>
+    <property name="Radius" type="float" value="0.5"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="112" type="Script Node: Exclude Busy" x="560" y="360">
+   <properties>
+    <property name="Next" type="object" value="146"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="113" type="Script Node: Pause Path" x="560" y="408">
+   <properties>
+    <property name="Next" type="object" value="149"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="120" type="Script Node: Paused Path" x="560" y="336">
+   <properties>
+    <property name="Next" type="object" value="112"/>
+    <property name="Next 2" type="object" value="0"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="121" type="Script Node: Encounter" x="560" y="456">
+   <properties>
+    <property name="Encounter" value="/server/mods/custom_encounter"/>
+    <property name="Next" type="object" value="150"/>
+    <property name="On Lose" type="object" value="0"/>
+    <property name="On Win" type="object" value="128"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="123" type="Script Node: Resume Path" x="560" y="504">
+   <point/>
+  </object>
+  <object id="124" name="Shop Prog" type="Script Node: Spawn Bot" x="432" y="144">
+   <properties>
+    <property name="Asset" value="bots/prog"/>
+    <property name="Direction" value="Down Left"/>
+    <property name="On Interact" type="object" value="99"/>
+    <property name="On Load" type="bool" value="true"/>
+    <property name="Solid" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="127" type="Script Node: Message" x="600" y="480">
+   <properties>
+    <property name="Mug" value="Player"/>
+    <property name="Text" value="Received 200 Zenny!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="128" type="Script Node: Give Money" x="600" y="456">
+   <properties>
+    <property name="Amount" value="200"/>
+    <property name="Next" type="object" value="127"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="130" type="Script Node: Take Money" x="400" y="8">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Next" type="object" value="104"/>
+    <property name="Next 2" type="object" value="137"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="131" type="Script Node: Take Money" x="440" y="48">
+   <properties>
+    <property name="Amount" type="int" value="1000"/>
+    <property name="Next" type="object" value="104"/>
+    <property name="Next 2" type="object" value="138"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="132" type="Script Node: Take Money" x="480" y="88">
+   <properties>
+    <property name="Amount" type="int" value="500"/>
+    <property name="Next" type="object" value="104"/>
+    <property name="Next 2" type="object" value="139"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="137" type="Script Node: Give Item" x="432" y="-24">
+   <properties>
+    <property name="Item" value="MiniEnrg"/>
+    <property name="Next" type="object" value="142"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="138" type="Script Node: Give Item" x="472" y="16">
+   <properties>
+    <property name="Item" value="FullEnrg"/>
+    <property name="Next" type="object" value="143"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="139" type="Script Node: Give Item" x="512" y="56">
+   <properties>
+    <property name="Item" value="SneakRun"/>
+    <property name="Next" type="object" value="144"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="140" name="SneakRun" type="Script Entry: Item Use" x="216" y="560">
+   <properties>
+    <property name="Item" value="SneakRun"/>
+    <property name="Next" type="object" value="148"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="141" type="Script Node: Set Variable" x="264" y="560">
+   <properties>
+    <property name="Next" type="object" value="145"/>
+    <property name="Value" value="3"/>
+    <property name="Variable" value="Self: SneakRun"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="142" type="Script Node: Message" x="448" y="-40">
+   <properties>
+    <property name="Mug" value="Player"/>
+    <property name="Text" value="I bought MiniEnrg!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="143" type="Script Node: Message" x="488" y="0">
+   <properties>
+    <property name="Mug" value="Player"/>
+    <property name="Text" value="I bought FullEnrg!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="144" type="Script Node: Message" x="528" y="40">
+   <properties>
+    <property name="Mug" value="Player"/>
+    <property name="Text" value="I bought SneakRun!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="145" type="Script Node: Message" x="288" y="560">
+   <properties>
+    <property name="Text" value="You used SneakRun"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="146" type="Script Node: Require Variable Value" x="560" y="384">
+   <properties>
+    <property name="Max" type="float" value="0"/>
+    <property name="Next" type="object" value="147"/>
+    <property name="Next 2" type="object" value="113"/>
+    <property name="Target" value="Player"/>
+    <property name="Variable" value="Self: SneakRun"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="147" type="Script Node: Decrement Variable" x="600" y="384">
+   <properties>
+    <property name="Next" type="object" value="0"/>
+    <property name="Target" value="Player"/>
+    <property name="Variable" value="Self: SneakRun"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="148" type="Script Node: Take Item" x="240" y="560">
+   <properties>
+    <property name="Item" value="SneakRun"/>
+    <property name="Next 2" type="object" value="141"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="149" type="Script Node: Lock Input" x="560" y="432">
+   <properties>
+    <property name="Next" type="object" value="121"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="150" type="Script Node: Unlock Input" x="560" y="480">
+   <properties>
+    <property name="Next" type="object" value="123"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="151" type="Script Entry: Collision" x="262.5" y="-26.5" width="78.9729" height="63.469">
+   <properties>
+    <property name="On Enter" type="object" value="153"/>
+   </properties>
+  </object>
+  <object id="152" type="Script Node: Teleport" x="304" y="176">
+   <point/>
+  </object>
+  <object id="153" type="Script Node: Area Transition" x="248" y="-56">
+   <properties>
+    <property name="Direction" value="Up Right"/>
+    <property name="Next" type="object" value="152"/>
+    <property name="Walk Distance" type="float" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="154" name="Shop Map Marker" type="Shop" x="408" y="120">
+   <point/>
+  </object>
+  <object id="156" name="Bot Spawn" x="365" y="175">
+   <point/>
+  </object>
+  <object id="157" name="To/From BN2 Hub" type="Custom Warp" gid="29" x="475" y="187" width="64" height="39">
+   <properties>
+    <property name="On Warp" type="object" value="158"/>
+   </properties>
+  </object>
+  <object id="158" type="Script Node: Transfer To Area" x="531" y="179">
+   <properties>
+    <property name="Area" value="BN2 Hub"/>
+    <property name="Target" type="int" value="35"/>
+    <property name="Warp" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="159" x="493.5" y="205.5">
+   <properties>
+    <property name="Direction" value="Down Right"/>
+    <property name="Walk Distance" type="float" value="1"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+</map>

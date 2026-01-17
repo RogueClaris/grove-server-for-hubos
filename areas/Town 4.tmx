@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.8" tiledversion="1.8.4" orientation="isometric" renderorder="right-down" width="23" height="28" tilewidth="64" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="59">
+ <properties>
+  <property name="Background" value="custom"/>
+  <property name="Background Animation" value="/server/assets/NebuLibsAssets/backgrounds/townbg/townbg.animation"/>
+  <property name="Background Texture" value="/server/assets/NebuLibsAssets/backgrounds/townbg/townbg.png"/>
+  <property name="Background Vel X" type="float" value="0"/>
+  <property name="Background Vel Y" type="float" value="0"/>
+  <property name="Forced Base HP" type="int" value="100"/>
+  <property name="Honor HPMem" type="bool" value="true"/>
+  <property name="Mystery Data Maximum" type="int" value="3"/>
+  <property name="Mystery Data Minimum" type="int" value="3"/>
+  <property name="Name" value="Town 4"/>
+  <property name="Song" value="/server/assets/songs/BN2 Internet.ogg"/>
+ </properties>
+ <tileset firstgid="1" source="../assets/tiles/DarkLiberationArrow.tsx"/>
+ <tileset firstgid="3" source="../assets/tiles/Invisible Tile.tsx"/>
+ <tileset firstgid="4" source="../assets/tiles/DarkLiberationTileset.tsx"/>
+ <tileset firstgid="49" source="../assets/tiles/LiberationArrow.tsx"/>
+ <tileset firstgid="51" source="../assets/tiles/LiberationTileset.tsx"/>
+ <tileset firstgid="96" source="../assets/tiles/vendor_desk.tsx"/>
+ <tileset firstgid="100" source="../assets/tiles/GreenMysteryData.tsx"/>
+ <tileset firstgid="108" source="../assets/tiles/BlueMysteryData.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="23" height="28">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,68,73,73,73,73,73,73,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,67,72,72,72,72,72,72,0,0,0,0,0,0,0,0,
+0,0,68,73,73,0,0,0,67,72,72,72,72,72,72,0,0,0,0,0,0,0,0,
+0,0,72,72,72,2147483714,60,2147483719,72,72,72,72,72,72,72,0,0,0,0,0,0,0,0,
+0,0,67,72,72,0,0,0,67,72,72,72,72,72,72,0,0,0,0,0,0,0,0,
+0,0,0,66,0,0,0,0,67,72,72,72,72,72,72,0,0,0,0,0,0,0,0,
+0,0,0,59,0,0,0,0,67,72,72,72,72,72,72,0,0,0,0,0,0,0,0,
+0,0,0,71,0,0,0,0,0,0,0,72,0,0,0,0,0,0,0,0,0,0,0,
+68,73,73,72,73,73,73,0,68,73,73,72,73,73,73,0,68,73,73,72,73,73,73,
+67,72,72,72,72,72,72,0,67,72,72,72,72,72,72,0,67,72,72,72,72,72,72,
+67,72,72,72,72,72,72,0,67,72,72,72,72,72,72,0,67,72,72,72,72,72,72,
+67,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,
+67,72,72,72,72,72,72,0,67,72,72,72,72,72,72,0,67,72,72,72,72,72,72,
+67,72,72,72,72,72,72,0,67,72,72,72,72,72,72,0,67,72,72,72,72,72,72,
+67,72,72,72,72,72,72,0,67,72,72,72,72,72,72,0,67,72,72,72,72,72,72,
+0,0,0,0,0,0,0,0,0,0,72,72,72,0,0,0,0,0,0,3,0,0,0,
+0,0,0,0,0,0,0,0,0,0,72,72,72,0,0,0,0,0,0,3,0,0,0,
+0,0,0,0,0,0,0,0,0,68,72,72,72,73,0,0,0,0,0,3,0,0,0,
+0,0,0,68,72,73,0,0,68,72,72,72,72,72,73,73,0,0,0,0,0,0,0,
+0,0,0,72,72,72,2147483714,2147483719,67,72,72,72,72,72,72,72,73,73,0,0,0,0,0,
+0,0,0,67,72,72,0,0,67,72,72,72,72,72,72,72,72,72,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,67,72,72,72,72,72,72,72,72,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,67,72,72,0,0,66,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,59,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="2" name="Object Layer 1">
+  <object id="1" name="Shademan" type="Script Node: Spawn Bot" x="112" y="112">
+   <properties>
+    <property name="Asset" value="bots/shademan-exe5"/>
+    <property name="Dialogue Type" value="first"/>
+    <property name="Direction" value="Down Right"/>
+    <property name="Mug Animation Name" value="shademan-exe5"/>
+    <property name="Next 1" type="object" value="21"/>
+    <property name="Text 1" value="What? Was disgracing me once not enough?"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="2" name="Said No" type="Script Node: Message" x="48" y="48">
+   <properties>
+    <property name="Dialogue Type" value="first"/>
+    <property name="Text 1" value="Thought so. Come back when you're ready, little snack!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="3" name="Said Yes" type="Script Node: Message" x="176" y="200">
+   <properties>
+    <property name="Dialogue Type" value="first"/>
+    <property name="Next 1" type="object" value="4"/>
+    <property name="Text 1" value="Arrogant crumb! Don't underestimate the Darkloids!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="4" name="Trigger Refight" type="Script Node: Message" x="216" y="208">
+   <properties>
+    <property name="Dialogue Type" value="none"/>
+    <property name="Event Name" value="Refight Liberation"/>
+    <property name="Liberation Map" value="TownLiberation"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="20" name="To Town 3" type="Radius Warp" x="528" y="784">
+   <properties>
+    <property name="Activation Radius" type="float" value="0.5"/>
+    <property name="Arrival Animation" value="arrow_down_left_in"/>
+    <property name="Leave Animation" value="arrow_down_left_out"/>
+    <property name="Target Area" value="Town 3"/>
+    <property name="Target Object" value="26"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="21" name="Shademan Question" type="Script Node: Message" x="48" y="176">
+   <properties>
+    <property name="Dialogue Type" value="question"/>
+    <property name="Next 1" type="object" value="3"/>
+    <property name="Next 2" type="object" value="2"/>
+    <property name="Text 1" value="Heh...fine, then. Shall we party?"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="22" gid="2147483744" x="134" y="595" width="35" height="45">
+   <properties>
+    <property name="On Interact" type="object" value="27"/>
+   </properties>
+  </object>
+  <object id="23" gid="2147483745" x="132.5" y="628.5" width="35" height="45">
+   <properties>
+    <property name="On Interact" type="object" value="27"/>
+   </properties>
+  </object>
+  <object id="24" gid="2147483745" x="132.5" y="644.5" width="35" height="45">
+   <properties>
+    <property name="On Interact" type="object" value="27"/>
+   </properties>
+  </object>
+  <object id="25" gid="2147483745" x="132.5" y="660.5" width="35" height="45">
+   <properties>
+    <property name="On Interact" type="object" value="27"/>
+   </properties>
+  </object>
+  <object id="26" gid="2147483746" x="128" y="675" width="35" height="45">
+   <properties>
+    <property name="On Interact" type="object" value="27"/>
+   </properties>
+  </object>
+  <object id="27" name="Aspiring Merchant Prog" type="Script Node: Spawn Bot" x="120.5" y="618.5">
+   <properties>
+    <property name="Asset" value="bots/red-prog"/>
+    <property name="Dialogue Type" value="first"/>
+    <property name="Direction" value="Down Right"/>
+    <property name="Dont Face Player" type="bool" value="true"/>
+    <property name="Next 1" type="object" value="28"/>
+    <property name="Text 1" value="HELLO! I'M A MERCHANT PROG!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="28" name="Merchant Question" type="Script Node: Message" x="112" y="624">
+   <properties>
+    <property name="Dialogue Type" value="question"/>
+    <property name="Next 1" type="object" value="31"/>
+    <property name="Next 2" type="object" value="30"/>
+    <property name="Text 1" value="WOULD YOU LIKE TO SEE MY WARES?"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="29" name="Said Yes Merchant Shop Open" type="Script Node: Message" x="112" y="688">
+   <properties>
+    <property name="Dialogue Type" value="shop"/>
+    <property name="Item 1" type="object" value="32"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="30" name="Said No Merchant" type="Script Node: Message" x="112" y="592">
+   <properties>
+    <property name="Dialogue Type" value="first"/>
+    <property name="Text 1" value="WELL, I UNDERSTAND, I SUPPOSE. SEE YOU LATER!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="31" name="Said Yes Merchant" type="Script Node: Message" x="112" y="656">
+   <properties>
+    <property name="Dialogue Type" value="first"/>
+    <property name="Next 1" type="object" value="29"/>
+    <property name="Text 1" value="EXCELLENT! HERE IS WHAT I HAVE!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="32" name="CyberFrappe" type="Item" x="112" y="720">
+   <properties>
+    <property name="Amount" type="int" value="1"/>
+    <property name="Description" value="A delicious treat for cyber beings."/>
+    <property name="Name" value="CyberFrappe"/>
+    <property name="Price" type="int" value="100"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="33" name="Greg" type="Script Node: Spawn Bot" x="272" y="144">
+   <properties>
+    <property name="Asset" value="bots/official-navi-exe6_orange"/>
+    <property name="Dialogue Type" value="first"/>
+    <property name="Direction" value="Up Left"/>
+    <property name="Dont Face Player" type="bool" value="true"/>
+    <property name="Text 1" value="I know you liberated this area, but...is it really okay for him to just hang around here?"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="35" type="Mystery Datum" gid="100" x="304" y="688" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Once" type="bool" value="false"/>
+    <property name="Type" value="money"/>
+   </properties>
+  </object>
+  <object id="36" type="Mystery Datum" gid="108" x="624" y="560" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="1"/>
+    <property name="Description" value="An HPMemory. MaxHP+20 for this server!"/>
+    <property name="Item 1" type="object" value="37"/>
+    <property name="Name" value="HPMem"/>
+    <property name="Once" type="bool" value="true"/>
+    <property name="Type" value="item"/>
+   </properties>
+  </object>
+  <object id="37" name="HPMem" type="Item" x="656" y="568">
+   <properties>
+    <property name="Amount" type="int" value="1"/>
+    <property name="Description" value="An HPMemory. MaxHP+20 for this server!"/>
+    <property name="Name" value="HPMem"/>
+    <property name="Type" value="item"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="38" type="Mystery Datum" gid="100" x="560" y="688" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Once" type="bool" value="false"/>
+    <property name="Type" value="money"/>
+   </properties>
+  </object>
+  <object id="39" type="Mystery Datum" gid="100" x="496" y="592" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Once" type="bool" value="false"/>
+    <property name="Type" value="money"/>
+   </properties>
+  </object>
+  <object id="40" type="Mystery Datum" gid="100" x="304" y="560" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Once" type="bool" value="false"/>
+    <property name="Type" value="money"/>
+   </properties>
+  </object>
+  <object id="41" type="Mystery Datum" gid="100" x="272" y="464" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Once" type="bool" value="false"/>
+    <property name="Type" value="money"/>
+   </properties>
+  </object>
+  <object id="42" type="Mystery Datum" gid="100" x="272" y="272" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Once" type="bool" value="false"/>
+    <property name="Type" value="money"/>
+   </properties>
+  </object>
+  <object id="43" type="Mystery Datum" gid="100" x="464" y="464" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Once" type="bool" value="false"/>
+    <property name="Type" value="money"/>
+   </properties>
+  </object>
+  <object id="44" type="Mystery Datum" gid="100" x="464" y="272" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Once" type="bool" value="false"/>
+    <property name="Type" value="money"/>
+   </properties>
+  </object>
+  <object id="45" type="Mystery Datum" gid="100" x="528" y="272" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Once" type="bool" value="false"/>
+    <property name="Type" value="money"/>
+   </properties>
+  </object>
+  <object id="46" type="Mystery Datum" gid="100" x="720" y="272" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Once" type="bool" value="false"/>
+    <property name="Type" value="money"/>
+   </properties>
+  </object>
+  <object id="47" type="Mystery Datum" gid="100" x="720" y="464" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Once" type="bool" value="false"/>
+    <property name="Type" value="money"/>
+   </properties>
+  </object>
+  <object id="48" type="Mystery Datum" gid="100" x="464" y="208" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Once" type="bool" value="false"/>
+    <property name="Type" value="money"/>
+   </properties>
+  </object>
+  <object id="49" type="Mystery Datum" gid="100" x="464" y="16" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Once" type="bool" value="false"/>
+    <property name="Type" value="money"/>
+   </properties>
+  </object>
+  <object id="50" type="Mystery Datum" gid="100" x="272" y="16" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Once" type="bool" value="false"/>
+    <property name="Type" value="money"/>
+   </properties>
+  </object>
+  <object id="51" type="Mystery Datum" gid="100" x="272" y="208" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Once" type="bool" value="false"/>
+    <property name="Type" value="money"/>
+   </properties>
+  </object>
+  <object id="52" type="Mystery Datum" gid="100" x="16" y="464" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Once" type="bool" value="false"/>
+    <property name="Type" value="money"/>
+   </properties>
+  </object>
+  <object id="53" type="Mystery Datum" gid="100" x="208" y="464" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Once" type="bool" value="false"/>
+    <property name="Type" value="money"/>
+   </properties>
+  </object>
+  <object id="54" type="Mystery Datum" gid="100" x="208" y="272" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Once" type="bool" value="false"/>
+    <property name="Type" value="money"/>
+   </properties>
+  </object>
+  <object id="55" type="Mystery Datum" gid="100" x="16" y="272" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Once" type="bool" value="false"/>
+    <property name="Type" value="money"/>
+   </properties>
+  </object>
+  <object id="56" type="Mystery Datum" gid="100" x="528" y="464" width="14" height="43">
+   <properties>
+    <property name="Amount" type="int" value="100"/>
+    <property name="Once" type="bool" value="false"/>
+    <property name="Type" value="money"/>
+   </properties>
+  </object>
+  <object id="57" name="Alis" type="Script Node: Spawn Bot" x="264" y="656">
+   <properties>
+    <property name="Asset" value="bots/female-navi-exe6_pink"/>
+    <property name="Dialogue Type" value="first"/>
+    <property name="Direction" value="Down Right"/>
+    <property name="Dont Face Player" type="bool" value="false"/>
+    <property name="Text 1" value="This merchant sells coffee too..."/>
+   </properties>
+   <point/>
+  </object>
+  <object id="58" name="Cal" type="Script Node: Spawn Bot" x="592" y="472">
+   <properties>
+    <property name="Asset" value="bots/prog-farmer"/>
+    <property name="Dialogue Type" value="first"/>
+    <property name="Direction" value="Down Left"/>
+    <property name="Dont Face Player" type="bool" value="false"/>
+    <property name="Text 1" value="Now how in tarnation do you get that there pretty little byte of data?"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+</map>

@@ -1,0 +1,4 @@
+imagePath="C:/Users/Owner/Desktop/ONB Dev/OpenNetBattle-Singleplayer/BattleNetwork/resources/scenes/ameroppa/bg.png"
+
+animation state="BG"
+frame duration="0.05" x="0" y="0" w="128" h="136" originx="64" originy="68"

@@ -1,0 +1,5 @@
+imagePath="background.png"
+
+animation state="BG"
+frame duration="0.1" x="0" y="0" w="96" h="96" originx="48" originy="48"
+frame duration="0.1" x="0" y="0" w="96" h="96" originx="48" originy="48" flipx="1"

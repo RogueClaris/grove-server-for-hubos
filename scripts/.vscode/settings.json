@@ -1,0 +1,10 @@
+{
+    "Lua.diagnostics.globals": [
+        "Net",
+        "Async"
+    ],
+    "Lua.diagnostics.disable": [
+        "lowercase-global",
+        "undefined-doc-name"
+    ]
+}
