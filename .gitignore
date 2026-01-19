@@ -1,0 +1,13 @@
+# editors
+.vscode
+
+# hub os
+crash.txt
+hub_os_server
+hub_os_server.exe
+
+# data
+/data_storage
+
+# downloads
+assets/downloaded_mods
