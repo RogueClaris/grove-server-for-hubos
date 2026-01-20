@@ -1,30 +1,17 @@
 [package]
-category = "encounter" # must match
-id = "dev.GladeWoodsgrove.NebuLibs.FirstLiberation" # must be unique
-past_ids = [] # optional, list of strings
+category = "encounter"
+id = "dev.GladeWoodsgrove.NebuLibs.FirstLiberation"
 name = "ACDC 4 Liberation"
 description = 'Package for ACDC 4 Liberation fights'
-long_description = "" # optional
-preview_texture_path = "preview.png"
 
-## recording specific
-recording_path = "recording.dat"
-recording_overrides = []
-
-# this section is optional
-[defines]
-
-# this section is optional
 [dependencies]
-augments = [] # optional, list of package ids
-encounters = [] 
-cards = [] # optional, list of package ids, must also depend on defining package
+encounters = [
+    "BattleNetwork3.Basher",
+    "BattleNetwork3.Enemy.Spikey",
+    "BattleNetwork3.Canodumb"
+]
 characters = [
     "BattleNetwork3.Character.Spikey",
-    "EXE3.Basher.Enemy",
+    "BattleNetwork3.Basher.Enemy",
     "BattleNetwork3.Canodumb.Enemy",
-    
-] # optional, list of package ids
-libraries = [] # optional, list of package ids
-statuses = [] # optional, list of package ids
-tile_states = [] # optional, list of package ids
+]
