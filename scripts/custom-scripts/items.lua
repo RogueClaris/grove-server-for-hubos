@@ -7,6 +7,7 @@ items.item_table = {
     RailPass = { "RailPass", "Lets you use the CybrRail.", false },
     FireID = { "FireID", "Proof of encountering FireMan.", false },
     GutsProof = { "GutsProof", "Proof of GutsMan's defeat.", false },
+    MaintID = { "MaintID", "Proof you're a Hospital Tech", false },
 
     -- KEY ITEMS: P-CODES
     DexCode = { "DexCode", "A PCode to Dex's HP.", false },
