@@ -6,8 +6,13 @@ crash.txt
 hub_os_server
 hub_os_server.exe
 
+# base server examples
+/scripts/examples
+
 # data
 /data_storage
 
 # downloads
 assets/downloaded_mods
+
+_*
