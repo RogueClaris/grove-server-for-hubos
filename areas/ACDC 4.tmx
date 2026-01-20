@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.6" orientation="isometric" renderorder="right-down" width="29" height="22" tilewidth="64" tileheight="32" infinite="0" nextlayerid="19" nextobjectid="89">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="29" height="22" tilewidth="64" tileheight="32" infinite="0" nextlayerid="19" nextobjectid="90">
  <properties>
   <property name="Background" value="custom"/>
   <property name="Background Animation" value="/server/assets/NebuLibsAssets/backgrounds/ACDC/ACDC.animation"/>
@@ -63,29 +63,26 @@
     <property name="Next 1" type="object" value="10"/>
     <property name="Next 2" type="object" value="9"/>
     <property name="On Load" type="bool" value="true"/>
+    <property name="Solid" type="bool" value="true"/>
     <property name="Text 1" value="A GREAT BATTLE TOOK PLACE HERE. DO YOU HAVE WHAT IT TAKES TO RELIVE IT?"/>
    </properties>
    <point/>
   </object>
   <object id="9" name="Said No" type="Script Node: Message" x="688" y="624">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Text 1" value="UNDERSTANDABLE. NOT EVERY FIGHT IS MEANT TO BE FOUGHT AGAIN."/>
    </properties>
    <point/>
   </object>
   <object id="10" name="Said Yes" type="Script Node: Message" x="720" y="624">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="11"/>
     <property name="Text 1" value="VERY WELL. I WILL RECREATE WHAT YOU HAVE SEEN, THAT YOU MIGHT LIVE IT AGAIN."/>
    </properties>
    <point/>
   </object>
-  <object id="11" name="Trigger Refight" type="Script Node: Message" x="720" y="656">
+  <object id="11" name="Trigger Refight" type="Script Node: Refight Liberation" x="720" y="656">
    <properties>
-    <property name="Dialogue Type" value="none"/>
-    <property name="Event Name" value="Refight Liberation"/>
     <property name="Liberation Map" value="ACDC4Liberation"/>
    </properties>
    <point/>
@@ -103,43 +100,34 @@
   <object id="18" name="Bass" type="Script Node: Spawn Bot" x="464" y="432">
    <properties>
     <property name="Asset" value="bots/bass"/>
-    <property name="Dialogue Type" value="question"/>
     <property name="Direction" value="Up Right"/>
-    <property name="Next 1" type="object" value="19"/>
-    <property name="Next 2" type="object" value="20"/>
-    <property name="Text 1" value="Tell me. Was it you who freed this area?"/>
+    <property name="On Interact" type="object" value="89"/>
+    <property name="Solid" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
   <object id="19" name="Said Yes" type="Script Node: Message" x="368" y="464">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Text 1" value="I see...I will keep a close eye on you."/>
    </properties>
    <point/>
   </object>
   <object id="20" name="Said No" type="Script Node: Message" x="368" y="408">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="21"/>
     <property name="Text 1" value="Even your lies are weak. Try again."/>
    </properties>
    <point/>
   </object>
-  <object id="21" name="Retry" type="Script Node: Message" x="336" y="432">
+  <object id="21" name="Retry" type="Script Node: Question" x="336" y="432">
    <properties>
-    <property name="Dialogue Type" value="question"/>
     <property name="Next 1" type="object" value="19"/>
     <property name="Next 2" type="object" value="20"/>
     <property name="Text 1" value="Tell the truth. You freed this area, correct?"/>
    </properties>
    <point/>
   </object>
-  <object id="39" name="Bass Leaves" type="Script Node: Message" x="384" y="440">
-   <properties>
-    <property name="Dialogue Type" value="none"/>
-    <property name="Event Name" value="Remove Bass ACDC 4"/>
-   </properties>
+  <object id="39" name="Bass Leaves" type="Script Node: Remove Bass ACDC 4" x="384" y="440">
    <point/>
   </object>
   <object id="41" type="Mystery Datum" gid="475" x="240" y="240" width="14" height="43">
@@ -155,6 +143,7 @@
     <property name="Direction" value="Down Right"/>
     <property name="Next 1" type="object" value="43"/>
     <property name="On Load" type="bool" value="true"/>
+    <property name="Solid" type="bool" value="true"/>
     <property name="Text 1">HELLO!
 
 
@@ -164,9 +153,8 @@ WHAT WOULD YOU LIKE?</property>
    </properties>
    <point/>
   </object>
-  <object id="43" name="Ability Quiz 1" type="dialogue" x="720" y="496">
+  <object id="43" name="Ability Quiz 1" type="Script Node: Quiz" x="720" y="496">
    <properties>
-    <property name="Dialogue Type" value="quiz"/>
     <property name="Next 1" type="object" value="44"/>
     <property name="Next 2" type="object" value="46"/>
     <property name="Next 3" type="object" value="56"/>
@@ -176,9 +164,8 @@ WHAT WOULD YOU LIKE?</property>
    </properties>
    <point/>
   </object>
-  <object id="44" name="Long Sword Question" type="Script Node: Message" x="688" y="496">
+  <object id="44" name="Long Sword Question" type="Script Node: Question" x="688" y="496">
    <properties>
-    <property name="Dialogue Type" value="question"/>
     <property name="Next 1" type="object" value="50"/>
     <property name="Next 2" type="object" value="43"/>
     <property name="Text 1">LONG SWORD BATTLES
@@ -192,7 +179,6 @@ DO YOU WANT IT?</property>
   </object>
   <object id="46" name="Wide Sword Question" type="Script Node: Message" x="720" y="464">
    <properties>
-    <property name="Dialogue Type" value="question"/>
     <property name="Next 1" type="object" value="53"/>
     <property name="Next 2" type="object" value="43"/>
     <property name="Text 1">WIDE SWORD BATTLES
@@ -206,39 +192,32 @@ DO YOU WANT IT?</property>
   </object>
   <object id="50" name="Give Long Sword Pre" type="Script Node: Message" x="656" y="496">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="51"/>
     <property name="Text 1" value="ALRIGHT. HERE'S YOUR NEW POWER!"/>
    </properties>
    <point/>
   </object>
-  <object id="51" name="Give Long Sword" type="Script Node: Message" x="624" y="496">
+  <object id="51" name="Give Long Sword" type="Script Node: Grant Liberation Mission Ability" x="624" y="496">
    <properties>
     <property name="Ability Item" value="LongSwrd"/>
-    <property name="Dialogue Type" value="none"/>
-    <property name="Event Name" value="Grant Liberation Mission Ability"/>
    </properties>
    <point/>
   </object>
-  <object id="52" name="Give Wide Sword" type="Script Node: Message" x="720" y="400">
+  <object id="52" name="Give Wide Sword" type="Script Node: Grant Liberation Mission Ability" x="720" y="400">
    <properties>
     <property name="Ability Item" value="WideSwrd"/>
-    <property name="Dialogue Type" value="none"/>
-    <property name="Event Name" value="Grant Liberation Mission Ability"/>
    </properties>
    <point/>
   </object>
   <object id="53" name="Give Wide Sword Pre" type="Script Node: Message" x="720" y="432">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="52"/>
     <property name="Text 1" value="ALRIGHT. HERE'S YOUR NEW POWER!"/>
    </properties>
    <point/>
   </object>
-  <object id="56" name="Ability Quiz 2" type="dialogue" x="688" y="464">
+  <object id="56" name="Ability Quiz 2" type="Script Node: Quiz" x="688" y="464">
    <properties>
-    <property name="Dialogue Type" value="quiz"/>
     <property name="Next 1" type="object" value="57"/>
     <property name="Next 2" type="object" value="71"/>
     <property name="Next 3" type="object" value="43"/>
@@ -248,9 +227,8 @@ DO YOU WANT IT?</property>
    </properties>
    <point/>
   </object>
-  <object id="57" name="Shadow Shoe Question" type="Script Node: Message" x="656" y="464">
+  <object id="57" name="Shadow Shoe Question" type="Script Node: Question" x="656" y="464">
    <properties>
-    <property name="Dialogue Type" value="question"/>
     <property name="Next 1" type="object" value="58"/>
     <property name="Next 2" type="object" value="43"/>
     <property name="Text 1">SHADOW SHOES ALLOW
@@ -266,17 +244,14 @@ DO YOU WANT THEM?</property>
   </object>
   <object id="58" name="Give Shadow Shoe Pre" type="Script Node: Message" x="616" y="432">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="59"/>
     <property name="Text 1" value="ALRIGHT. HERE'S YOUR NEW POWER!"/>
    </properties>
    <point/>
   </object>
-  <object id="59" name="Give Shadow Shoe" type="Script Node: Message" x="592" y="408">
+  <object id="59" name="Give Shadow Shoe" type="Script Node: Grant Liberation Mission Ability" x="592" y="408">
    <properties>
     <property name="Ability Item" value="ShdwShoe"/>
-    <property name="Dialogue Type" value="none"/>
-    <property name="Event Name" value="Grant Liberation Mission Ability"/>
    </properties>
    <point/>
   </object>
@@ -331,24 +306,20 @@ DO YOU WANT THEM?</property>
   </object>
   <object id="71" name="Number Gadget Question" type="Script Node: Message" x="656" y="432">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Text 1" value="NO PROBLEM. SEE YOU LATER!"/>
    </properties>
    <point/>
   </object>
   <object id="72" name="Give Number Gadget Pre" type="Script Node: Message" x="632" y="336">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="73"/>
     <property name="Text 1" value="ALRIGHT. HERE'S YOUR NEW POWER!"/>
    </properties>
    <point/>
   </object>
-  <object id="73" name="Give Number Gadget" type="Script Node: Message" x="616" y="352">
+  <object id="73" name="Give Number Gadget" type="Script Node: Grant Liberation Mission Ability" x="616" y="352">
    <properties>
     <property name="Ability Item" value="NumGadgt"/>
-    <property name="Dialogue Type" value="none"/>
-    <property name="Event Name" value="Grant Liberation Mission Ability"/>
    </properties>
    <point/>
   </object>
@@ -361,9 +332,8 @@ DO YOU WANT THEM?</property>
    </properties>
    <point/>
   </object>
-  <object id="77" name="Number Gadget Question" type="Script Node: Message" x="648" y="320">
+  <object id="77" name="Number Gadget Question" type="Script Node: Question" x="648" y="320">
    <properties>
-    <property name="Dialogue Type" value="question"/>
     <property name="Next 1" type="object" value="72"/>
     <property name="Next 2" type="object" value="0"/>
     <property name="Text 1">NUMBER GADGET
@@ -378,7 +348,6 @@ DO YOU WANT IT?</property>
   </object>
   <object id="78" name="Give Number Gadget Pre" type="Script Node: Message" x="584" y="352">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="73"/>
     <property name="Text 1" value="ALRIGHT. HERE'S YOUR NEW POWER!"/>
    </properties>
@@ -437,6 +406,14 @@ DO YOU WANT IT?</property>
    <properties>
     <property name="Direction" value="Up Left"/>
     <property name="Walk Distance" type="float" value="0.2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="89" name="Bass Question" type="Script Node: Question" x="400" y="432">
+   <properties>
+    <property name="Next 1" type="object" value="20"/>
+    <property name="Next 2" type="object" value="19"/>
+    <property name="Text 1" value="Tell the truth. You freed this area, correct?"/>
    </properties>
    <point/>
   </object>
@@ -577,40 +554,34 @@ DO YOU WANT IT?</property>
   <object id="29" name="Aspiring Merchant Prog" type="Script Node: Spawn Bot" x="24.5" y="426.5">
    <properties>
     <property name="Asset" value="bots/red-prog"/>
-    <property name="Dialogue Type" value="first"/>
     <property name="Direction" value="Down Right"/>
-    <property name="Dont Face Player" type="bool" value="true"/>
     <property name="Next 1" type="object" value="30"/>
     <property name="Text 1" value="HELLO! I'M A MERCHANT PROG!"/>
    </properties>
    <point/>
   </object>
-  <object id="30" name="Merchant Question" type="Script Node: Message" x="7.5" y="433.5">
+  <object id="30" name="Merchant Question" type="Script Node: Question" x="7.5" y="433.5">
    <properties>
-    <property name="Dialogue Type" value="question"/>
-    <property name="Next 1" type="object" value="34"/>
-    <property name="Next 2" type="object" value="32"/>
+    <property name="Next 1" type="object" value="32"/>
+    <property name="Next 2" type="object" value="34"/>
     <property name="Text 1" value="WOULD YOU LIKE TO SEE MY WARES?"/>
    </properties>
    <point/>
   </object>
-  <object id="31" name="Said Yes Merchant Shop Open" type="Script Node: Message" x="-1" y="466">
+  <object id="31" name="Said Yes Merchant Shop Open" type="Script Node: Shop" x="-1" y="466">
    <properties>
-    <property name="Dialogue Type" value="shop"/>
     <property name="Item 1" type="object" value="55"/>
    </properties>
    <point/>
   </object>
   <object id="32" name="Said No Merchant" type="Script Node: Message" x="-1" y="392">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Text 1" value="WELL, I UNDERSTAND, I SUPPOSE. SEE YOU LATER!"/>
    </properties>
    <point/>
   </object>
   <object id="34" name="Said Yes Merchant" type="Script Node: Message" x="-3.5" y="444.5">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="31"/>
     <property name="Text 1" value="EXCELLENT! HERE IS WHAT I HAVE!"/>
    </properties>
@@ -628,9 +599,9 @@ DO YOU WANT IT?</property>
   <object id="80" name="Alis" type="Script Node: Spawn Bot" x="80" y="472">
    <properties>
     <property name="Asset" value="bots/female-navi-exe6_pink"/>
-    <property name="Dialogue Type" value="first"/>
     <property name="Direction" value="Up Right"/>
     <property name="On Load" type="bool" value="true"/>
+    <property name="Solid" type="bool" value="true"/>
     <property name="Text 1" value="I thought I'd see what the fuss is about, but this merchant only sells coffee..."/>
    </properties>
    <point/>

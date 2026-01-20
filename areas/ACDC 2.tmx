@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.6" orientation="isometric" renderorder="right-down" width="28" height="27" tilewidth="64" tileheight="32" infinite="0" nextlayerid="14" nextobjectid="95">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="28" height="27" tilewidth="64" tileheight="32" infinite="0" nextlayerid="14" nextobjectid="98">
  <properties>
   <property name="Background" value="custom"/>
   <property name="Background Animation" value="/server/assets/NebuLibsAssets/backgrounds/ACDC/ACDC.animation"/>
@@ -62,69 +62,55 @@
   <object id="11" name="Glyde Assistant" type="Script Node: Spawn Bot" x="304" y="208">
    <properties>
     <property name="Asset" value="bots/sirprog"/>
-    <property name="Dialogue Type" value="itemcheck"/>
     <property name="Direction" value="Down Right"/>
-    <property name="Next 1" type="object" value="13"/>
-    <property name="Next 2" type="object" value="12"/>
+    <property name="On Interact" type="object" value="95"/>
     <property name="On Load" type="bool" value="true"/>
-    <property name="Required Amount" type="int" value="1"/>
-    <property name="Required Item" value="GlydeReq"/>
-    <property name="Take Item" type="bool" value="true"/>
+    <property name="Solid" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
-  <object id="12" name="No Quest" type="Script Node: Message" x="272" y="144">
+  <object id="12" name="No Quest" type="Script Node: Message" x="304" y="152">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Text 1" value="OH MY...IT SIMPLY MUST BE HERE SOMEWHERE!"/>
    </properties>
    <point/>
   </object>
-  <object id="13" name="Yes Quest" type="Script Node: Message" x="240" y="176">
+  <object id="13" name="Yes Quest" type="Script Node: Message" x="272" y="176">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="14"/>
     <property name="Text 1" value="OH MY...IT SIMPLY MUST BE HERE SOMEWHERE!"/>
    </properties>
    <point/>
   </object>
-  <object id="14" name="Glyde Quest 2" type="Script Node: Message" x="208" y="176">
+  <object id="14" name="Glyde Quest 2" type="Script Node: Message" x="256" y="176">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="15"/>
     <property name="Text 1" value="HM!? PARDON ME, BUT I AM QUITE BUSY, I--"/>
    </properties>
    <point/>
   </object>
-  <object id="15" name="Glyde Quest 2" type="Script Node: Message" x="200" y="192">
+  <object id="15" name="Glyde Quest 2" type="Script Node: Message" x="240" y="176">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="16"/>
     <property name="Text 1" value="WHAT? MASTER GLYDE SENT YOU? WELL IN THAT CASE, ER..."/>
    </properties>
    <point/>
   </object>
-  <object id="16" name="Glyde Quest 3" type="Script Node: Message" x="176" y="192">
+  <object id="16" name="Glyde Quest 3" type="Script Node: Message" x="224" y="176">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="17"/>
     <property name="Text 1" value="PLEASE FORGIVE ME! I FOUND THE DATA AGES AGO, BUT I AM LOST!"/>
    </properties>
    <point/>
   </object>
-  <object id="17" name="Glyde Quest 4" type="Script Node: Message" x="104" y="176">
+  <object id="17" name="Glyde Quest 4" type="Script Node: Message" x="208" y="176">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="18"/>
     <property name="Text 1" value="WOULD YOU KINDLY RETURN IT TO HIM IN MY STEAD?"/>
    </properties>
    <point/>
   </object>
-  <object id="18" name="Glyde Quest 5" type="Script Node: Message" x="80" y="176">
-   <properties>
-    <property name="Dialogue Type" value="none"/>
-    <property name="Event Name" value="Get Yai Data"/>
-   </properties>
+  <object id="18" name="Glyde Quest 5" type="Script Node: Get Yai Data" x="192" y="176">
    <point/>
   </object>
   <object id="20" type="Mystery Datum" gid="288" x="336" y="824" width="14" height="43">
@@ -159,44 +145,47 @@
   <object id="26" name="Virologist" type="Script Node: Spawn Bot" x="656" y="528">
    <properties>
     <property name="Asset" value="bots/official-navi-exe4_orange"/>
-    <property name="Dialogue Type" value="none"/>
     <property name="Direction" value="Down Right"/>
-    <property name="Event Name" value="Virologist Timer Check"/>
-    <property name="Next 1" type="object" value="32"/>
+    <property name="On Interact" type="object" value="97"/>
     <property name="On Load" type="bool" value="true"/>
+    <property name="Solid" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
   <object id="27" name="But You're Busy" type="Script Node: Message" x="736" y="992">
    <properties>
-    <property name="Dialogue Type" value="first"/>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/official-navi-exe4_orange.png"/>
     <property name="Text 1" value="Ah, I understand."/>
    </properties>
    <point/>
   </object>
-  <object id="28" name="Said Not Busy" type="Script Node: Message" x="672" y="928">
+  <object id="28" name="Said Not Busy" type="Question" x="672" y="928">
    <properties>
-    <property name="Dialogue Type" value="question"/>
-    <property name="Next 1" type="object" value="31"/>
-    <property name="Next 2" type="object" value="27"/>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/official-navi-exe4_orange.png"/>
+    <property name="Next 1" type="object" value="27"/>
+    <property name="Next 2" type="object" value="31"/>
     <property name="Text 1">I'm a virologist. If you don't mind, would you battle
 some viruses I have in captivity?</property>
    </properties>
    <point/>
   </object>
-  <object id="31" name="Will Battle" type="Script Node: Message" x="640" y="928">
+  <object id="31" name="Will Battle" type="Script Node: Message" x="648" y="928">
    <properties>
-    <property name="Dialogue Type" value="first"/>
-    <property name="Event Name" value="Virologist Battle"/>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/official-navi-exe4_orange.png"/>
+    <property name="Next" type="object" value="96"/>
     <property name="Text 1" value="Excellent. Please, prepare yourself!"/>
    </properties>
    <point/>
   </object>
-  <object id="32" name="Continue To Event" type="Script Node: Message" x="736" y="928">
+  <object id="32" name="Continue To Event" type="Script Node: Question" x="736" y="928">
    <properties>
-    <property name="Dialogue Type" value="question"/>
-    <property name="Next 1" type="object" value="27"/>
-    <property name="Next 2" type="object" value="28"/>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/official-navi-exe4_orange.png"/>
+    <property name="Next 1" type="object" value="28"/>
+    <property name="Next 2" type="object" value="27"/>
     <property name="Text 1" value="I could use some help. Are you busy?"/>
    </properties>
    <point/>
@@ -249,10 +238,9 @@ some viruses I have in captivity?</property>
   <object id="43" name="Wandering Prog" type="Script Node: Spawn Bot" x="468" y="308">
    <properties>
     <property name="Asset" value="bots/prog"/>
-    <property name="Dialogue Type" value="first"/>
     <property name="Direction" value="Down Left"/>
-    <property name="Dont Face Player" type="bool" value="true"/>
     <property name="Next Waypoint 1" type="object" value="44"/>
+    <property name="Solid" type="bool" value="true"/>
     <property name="Text 1" value="HELLO! JUST SEEING THE SIGHTS."/>
    </properties>
    <point/>
@@ -459,6 +447,29 @@ The Cube opens!</property>
     <property name="Path Next" type="object" value="93"/>
     <property name="Wait Time" type="int" value="15"/>
     <property name="Waypoint Type" value="first"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="95" name="Take GlydeReq" type="Script Node: Take Item" x="304" y="176">
+   <properties>
+    <property name="Item" value="GlydeReq"/>
+    <property name="Next 1" type="object" value="12"/>
+    <property name="Next 2" type="object" value="13"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="96" name="Virologist Battle" type="Script Node: Virologist Battle" x="624" y="928">
+   <properties>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/official-navi-exe4_orange.png"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="97" name="Virologist Timer Check" type="Script Node: Virologist Timer Check" x="732.5" y="869.5">
+   <properties>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/official-navi-exe4_orange.png"/>
+    <property name="Next" type="object" value="32"/>
    </properties>
    <point/>
   </object>

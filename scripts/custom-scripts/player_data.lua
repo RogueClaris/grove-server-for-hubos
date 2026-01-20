@@ -1,3 +1,41 @@
+---@class Checkpoint
+---@field x number
+---@field y number
+---@field z number
+---@field area_id string
+---@field show_checkpoint boolean
+
+---@class PlayerData
+---@field health PlayerHealthData
+---@field event_data table<string, any>
+---@field quest_data table<string, any>?
+---@field money number
+---@field items table<string, number?>
+---@field hidden_things HiddenThingMaps
+---@field login_location Checkpoint?
+---@field whitelist_path string?
+---@field io_whitelist_path string?
+---@field joins number
+
+---@class PlayerHealthData
+---@field navi_current number
+---@field navi_base number number
+---@field server_current number
+---@field server_base number
+
+---@class HiddenThingData
+---@field hidden boolean
+---@field permanent boolean
+---@field hide_type "ACTOR" | "OBJECT"
+---@field id any
+
+---@alias HiddenThingMap table<string, table<any, HiddenThingData>>
+
+---@class HiddenThingMaps
+---@field OBJECTS HiddenThingMap
+---@field ACTORS HiddenThingMap
+---@field PLAYERS HiddenThingMap
+
 local PlayerData = {}
 
 local DataStorage = require("scripts/libs/data_storage")
@@ -14,7 +52,7 @@ local function create_player_data()
     },
     items = {},
     money = 0,
-    event_flags = {},
+    event_data = {},
     hidden_things = { OBJECTS = {}, ACTORS = {}, PLAYERS = {} },
     login_location = nil,
     whitelist_path = nil,
@@ -197,6 +235,7 @@ PlayerData.hide_target_from_player = function(player_id, area_id, target_id, tar
 
   local data = PlayerData.get_player_data(player_id)
 
+  ---@type HiddenThingData
   local hide_data = {
     hidden = true,
     permanent = hide_permanently,
@@ -230,9 +269,9 @@ end
 
 PlayerData.set_event_flag = function(player_id, flag, value)
   local data = PlayerData.get_player_data(player_id)
-  local player_event_flags = data.event_flags
+  local player_event_data = data.event_data
 
-  player_event_flags[flag] = value
+  player_event_data[flag] = value
 
   PlayerData.save_player_data(player_id)
 end
@@ -250,12 +289,12 @@ end
 
 PlayerData.get_event_flag = function(player_id, flag, default)
   local data = PlayerData.get_player_data(player_id)
-  local player_event_flags = data.event_flags
-  if player_event_flags[flag] == nil and default ~= nil then
-    player_event_flags[flag] = default
+  local player_event_data = data.event_data
+  if player_event_data[flag] == nil and default ~= nil then
+    player_event_data[flag] = default
     PlayerData.save_player_data(player_id)
-  elseif player_event_flags[flag] ~= nil then
-    return player_event_flags[flag]
+  elseif player_event_data[flag] ~= nil then
+    return player_event_data[flag]
   end
 
   return default

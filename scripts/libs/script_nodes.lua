@@ -376,7 +376,7 @@ function ScriptNodes:emit_inventory_update(player_id, item_id)
 end
 
 ---Adds a listener for money changes.
----@param callback fun(player_id: Net.ActorId, item_id: string?)
+---@param callback fun(player_id: Net.ActorId)
 function ScriptNodes:on_money_update(callback)
   self._money_callbacks[#self._money_callbacks + 1] = callback
 end
@@ -449,18 +449,56 @@ end
 
 ---@param context table
 ---@param object Net.Object
+---@param err string
+local function prefix_node_context(context, object, err)
+  if context.area_id then
+    err = tostring(err) .. "\ncontext area id: " .. context.area_id
+  end
+
+  if object.id then
+    err = err .. "\nnode object id: " .. object.id
+  end
+
+  return err
+end
+
+---@param context table
+---@param object Net.Object
 function ScriptNodes:execute_node(context, object)
   local node_type = object.type:sub(#self.NODE_TYPE_PREFIX + 1)
   local callback = self._node_types[node_type:lower()]
 
   if not callback then
     if self:is_script_node(object) then
-      error('invalid script node: "' .. object.type .. '"')
+      error(prefix_node_context(context, object, 'invalid script node: "' .. object.type .. '"'))
     else
-      error('"' .. object.type .. '" is not implemented')
+      error(prefix_node_context(context, object, '"' .. object.type .. '" is not implemented'))
     end
   else
-    callback(context, object)
+    local function error_handler(err)
+      err = prefix_node_context(context, object, err)
+      printerr(debug.traceback(err, 2))
+    end
+
+    xpcall(callback, error_handler, context, object)
+  end
+end
+
+---@param node_type string
+---@param context table
+---@param object Net.Object
+function ScriptNodes:execute_node_as(node_type, context, object)
+  local callback = self._node_types[node_type:lower()]
+
+  if not callback then
+    error(prefix_node_context(context, object, '"' .. node_type .. '" is not implemented'))
+  else
+    local function error_handler(err)
+      err = prefix_node_context(context, object, err)
+      printerr(debug.traceback(err, 2))
+    end
+
+    xpcall(callback, error_handler, context, object)
   end
 end
 
@@ -2190,9 +2228,13 @@ function ScriptNodes:implement_inventory_api()
   end)
 end
 
----Implements support for the `Refer Server` and `Refer Package` nodes
+---Implements support for the `Refer Link`, `Refer Server` and `Refer Package` nodes
 ---
 ---Expects `area_id` and `player_id` or `player_ids` to be defined on the context table.
+---
+---Supported custom properties for `Refer Link`:
+--- - `Address` string
+--- - `Next [1]` a link to the next node (optional)
 ---
 ---Supported custom properties for `Refer Server`:
 --- - `Name` string
@@ -2203,6 +2245,16 @@ end
 --- - `Id` string
 --- - `Next [1]` a link to the next node (optional)
 function ScriptNodes:implement_link_api()
+  self:implement_node("refer link", function(context, object)
+    local address = object.custom_properties.Address
+
+    for_each_player_safe(context, function(player_id)
+      Net.refer_link(player_id, address)
+    end)
+
+    self:execute_next_node(context, context.area_id, object)
+  end)
+
   self:implement_node("refer server", function(context, object)
     local name = object.custom_properties.Name
     local address = object.custom_properties.Address
@@ -2322,7 +2374,7 @@ function ScriptNodes:implement_actor_api()
     end
 
     if object.custom_properties.Animation then
-      options.texture_path = self.ASSET_PREFIX .. object.custom_properties.Animation
+      options.animation_path = self.ASSET_PREFIX .. object.custom_properties.Animation
     end
 
     if object.custom_properties.Asset then

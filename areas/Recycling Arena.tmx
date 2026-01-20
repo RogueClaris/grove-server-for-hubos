@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.6" orientation="isometric" renderorder="right-down" width="40" height="40" tilewidth="64" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="57">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="40" height="40" tilewidth="64" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="58">
  <properties>
   <property name="Background" value="undernet"/>
   <property name="Forced Base HP" type="int" value="100"/>
@@ -61,8 +61,9 @@
    <properties>
     <property name="Asset" value="bots/normal-navi-bn4_brown"/>
     <property name="Direction" value="Down Right"/>
-    <property name="Event Name" value="Copyman Plot"/>
+    <property name="On Interact" type="object" value="57"/>
     <property name="On Load" type="bool" value="true"/>
+    <property name="Solid" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
@@ -265,6 +266,13 @@
    <properties>
     <property name="Amount" value="200"/>
     <property name="Next" type="object" value="55"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="57" name="Copyman Plot" type="Script Node: Copyman Plot" x="432" y="592">
+   <properties>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/normal-navi-bn4_brown.png"/>
    </properties>
    <point/>
   </object>

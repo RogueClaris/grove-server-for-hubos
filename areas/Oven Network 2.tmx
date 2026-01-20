@@ -50,7 +50,6 @@
   <object id="40" name="Fireman" x="464" y="528">
    <properties>
     <property name="Asset" value="bots/fireman-bn45"/>
-    <property name="Dialogue Type" value="first"/>
     <property name="Direction" value="Down Right"/>
     <property name="Next 1" type="object" value="61"/>
     <property name="Text 1">Who are you?
@@ -67,7 +66,6 @@
   </object>
   <object id="46" type="Checkpoint" gid="35" x="472" y="472" width="32" height="64">
    <properties>
-    <property name="Dialogue Type" value="None"/>
     <property name="Disappear Cooldown" type="float" value="1"/>
     <property name="Once" type="bool" value="true"/>
     <property name="Take Item" type="bool" value="true"/>
@@ -77,7 +75,6 @@
   </object>
   <object id="47" type="Checkpoint" gid="35" x="440" y="472" width="32" height="64">
    <properties>
-    <property name="Dialogue Type" value="None"/>
     <property name="Disappear Cooldown" type="float" value="1"/>
     <property name="Once" type="bool" value="true"/>
     <property name="Take Item" type="bool" value="true"/>
@@ -87,7 +84,6 @@
   </object>
   <object id="48" type="Checkpoint" gid="35" x="408" y="472" width="32" height="64">
    <properties>
-    <property name="Dialogue Type" value="None"/>
     <property name="Disappear Cooldown" type="float" value="1"/>
     <property name="Once" type="bool" value="true"/>
     <property name="Take Item" type="bool" value="true"/>
@@ -97,7 +93,6 @@
   </object>
   <object id="49" type="Checkpoint" gid="35" x="408" y="504" width="32" height="64">
    <properties>
-    <property name="Dialogue Type" value="None"/>
     <property name="Disappear Cooldown" type="float" value="1"/>
     <property name="Once" type="bool" value="true"/>
     <property name="Take Item" type="bool" value="true"/>
@@ -107,7 +102,6 @@
   </object>
   <object id="50" type="Checkpoint" gid="35" x="408" y="536" width="32" height="64">
    <properties>
-    <property name="Dialogue Type" value="None"/>
     <property name="Disappear Cooldown" type="float" value="1"/>
     <property name="Once" type="bool" value="true"/>
     <property name="Take Item" type="bool" value="true"/>
@@ -117,7 +111,6 @@
   </object>
   <object id="51" type="Checkpoint" gid="35" x="440" y="536" width="32" height="64">
    <properties>
-    <property name="Dialogue Type" value="None"/>
     <property name="Disappear Cooldown" type="float" value="1"/>
     <property name="Once" type="bool" value="true"/>
     <property name="Take Item" type="bool" value="true"/>
@@ -127,7 +120,6 @@
   </object>
   <object id="52" type="Checkpoint" gid="35" x="472" y="536" width="32" height="64">
    <properties>
-    <property name="Dialogue Type" value="None"/>
     <property name="Disappear Cooldown" type="float" value="1"/>
     <property name="Once" type="bool" value="true"/>
     <property name="Take Item" type="bool" value="true"/>
@@ -137,7 +129,6 @@
   </object>
   <object id="54" type="Checkpoint" gid="35" x="792" y="408" width="32" height="64">
    <properties>
-    <property name="Dialogue Type" value="None"/>
     <property name="Disappear Cooldown" type="float" value="1"/>
     <property name="Once" type="bool" value="true"/>
     <property name="Take Item" type="bool" value="true"/>
@@ -147,7 +138,6 @@
   </object>
   <object id="55" type="Checkpoint" gid="35" x="664.5" y="407.5" width="32" height="64">
    <properties>
-    <property name="Dialogue Type" value="None"/>
     <property name="Disappear Cooldown" type="float" value="1"/>
     <property name="Once" type="bool" value="true"/>
     <property name="Take Item" type="bool" value="true"/>
@@ -157,7 +147,6 @@
   </object>
   <object id="56" type="Checkpoint" gid="35" x="664" y="376" width="32" height="64">
    <properties>
-    <property name="Dialogue Type" value="None"/>
     <property name="Disappear Cooldown" type="float" value="1"/>
     <property name="Once" type="bool" value="true"/>
     <property name="Take Item" type="bool" value="true"/>
@@ -167,7 +156,6 @@
   </object>
   <object id="57" type="Checkpoint" gid="35" x="536" y="248" width="32" height="64">
    <properties>
-    <property name="Dialogue Type" value="None"/>
     <property name="Disappear Cooldown" type="float" value="1"/>
     <property name="Once" type="bool" value="true"/>
     <property name="Take Item" type="bool" value="true"/>
@@ -177,7 +165,6 @@
   </object>
   <object id="58" type="Checkpoint" gid="35" x="792" y="120" width="32" height="64">
    <properties>
-    <property name="Dialogue Type" value="None"/>
     <property name="Disappear Cooldown" type="float" value="1"/>
     <property name="Once" type="bool" value="true"/>
     <property name="Take Item" type="bool" value="true"/>
@@ -187,7 +174,6 @@
   </object>
   <object id="59" type="Checkpoint" gid="35" x="664" y="248" width="32" height="64">
    <properties>
-    <property name="Dialogue Type" value="None"/>
     <property name="Disappear Cooldown" type="float" value="1"/>
     <property name="Once" type="bool" value="true"/>
     <property name="Take Item" type="bool" value="true"/>
@@ -197,7 +183,6 @@
   </object>
   <object id="60" type="Checkpoint" gid="35" x="792" y="280" width="32" height="64">
    <properties>
-    <property name="Dialogue Type" value="None"/>
     <property name="Disappear Cooldown" type="float" value="1"/>
     <property name="Once" type="bool" value="true"/>
     <property name="Take Item" type="bool" value="true"/>
@@ -207,7 +192,6 @@
   </object>
   <object id="61" name="First Dialogue" type="Script Node: Message" x="333" y="527">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="62"/>
     <property name="Text 1" value="If some nobody like you can find me, then..."/>
    </properties>
@@ -215,16 +199,13 @@
   </object>
   <object id="62" name="Second Dialogue" type="Script Node: Message" x="271" y="549">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="65"/>
     <property name="Text 1" value="It's nothing. Sorry, but I have to delete you now."/>
    </properties>
    <point/>
   </object>
-  <object id="65" name="Trigger Gutsman Battle" type="Script Node: Message" x="239" y="569">
+  <object id="65" name="Trigger Gutsman Battle" type="Script Node: FiremanRV Battle" x="239" y="569">
    <properties>
-    <property name="Dialogue Type" value="none"/>
-    <property name="Event Name" value="FiremanRV Battle"/>
    </properties>
    <point/>
   </object>

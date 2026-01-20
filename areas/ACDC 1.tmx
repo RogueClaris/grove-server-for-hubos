@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.6" orientation="isometric" renderorder="right-down" width="32" height="31" tilewidth="64" tileheight="32" infinite="0" nextlayerid="14" nextobjectid="177">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="32" height="31" tilewidth="64" tileheight="32" infinite="0" nextlayerid="14" nextobjectid="179">
  <properties>
   <property name="Background" value="custom"/>
   <property name="Background Animation" value="/server/assets/NebuLibsAssets/backgrounds/ACDC/ACDC.animation"/>
@@ -195,7 +195,6 @@ He says it's important to who he is.</property>
   <object id="69" name="HPMemory Fan" type="Script Node: Spawn Bot" x="336" y="560">
    <properties>
     <property name="Asset" value="bots/red-prog"/>
-    <property name="Dialogue Type" value="none"/>
     <property name="Direction" value="Down Right"/>
     <property name="Event Name" value="HP Memory Fan Dialogue"/>
    </properties>
@@ -204,9 +203,8 @@ He says it's important to who he is.</property>
   <object id="75" name="Scrooge McProg" type="Script Node: Spawn Bot" x="200" y="104">
    <properties>
     <property name="Asset" value="bots/sirprog"/>
-    <property name="Dialogue Type" value="first"/>
     <property name="Direction" value="Up Left"/>
-    <property name="Dont Face Player" type="bool" value="false"/>
+    <property name="Solid" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
@@ -265,11 +263,10 @@ He says it's important to who he is.</property>
   <object id="136" name="Roll" type="Script Node: Spawn Bot" x="498.5" y="493.5">
    <properties>
     <property name="Asset" value="bots/roll"/>
-    <property name="Dialogue Type" value="first"/>
     <property name="Direction" value="Down Left"/>
-    <property name="Next 1" type="object" value="142"/>
+    <property name="On Interact" type="object" value="142"/>
     <property name="On Load" type="bool" value="true"/>
-    <property name="Text 1" value="OH! Hi Mega!"/>
+    <property name="Solid" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
@@ -295,42 +292,41 @@ He says it's important to who he is.</property>
    </properties>
    <point/>
   </object>
-  <object id="142" name="Dialogue Test 1" type="Script Node: Message" x="446.5" y="470.5">
+  <object id="142" name="Dialogue Test 1" type="Script Node: Message" x="448" y="480">
    <properties>
-    <property name="Dialogue Type" value="first"/>
-    <property name="Next 1" type="object" value="143"/>
-    <property name="Text 1" value="Did you see Glyde earlier?"/>
+    <property name="Mug" value="mugs/roll_mug"/>
+    <property name="Next 1" type="object" value="177"/>
+    <property name="Text 1" value="OH! Hi Mega!"/>
    </properties>
    <point/>
   </object>
-  <object id="143" name="Dialogue Test 1" type="Script Node: Message" x="445.5" y="505.5">
+  <object id="143" name="Dialogue Test 1" type="Script Node: Message" x="448" y="512">
    <properties>
-    <property name="Dialogue Type" value="first"/>
+    <property name="Mug" value="mugs/roll_mug"/>
     <property name="Next 1" type="object" value="144"/>
     <property name="Text 1" value="He seemed worried about something."/>
    </properties>
    <point/>
   </object>
-  <object id="144" name="Dialogue Test 1" type="Script Node: Message" x="443.5" y="539.5">
+  <object id="144" name="Dialogue Test 1" type="Script Node: Message" x="448" y="528">
    <properties>
-    <property name="Dialogue Type" value="first"/>
+    <property name="Mug" value="mugs/roll_mug"/>
     <property name="Next 1" type="object" value="145"/>
     <property name="Text 1" value="You know how he gets..."/>
    </properties>
    <point/>
   </object>
-  <object id="145" name="Dialogue Test 1" type="Script Node: Message" x="446" y="585">
+  <object id="145" name="Dialogue Test 1" type="Script Node: Message" x="448" y="544">
    <properties>
-    <property name="Dialogue Type" value="first"/>
-    <property name="Mugshot" value="Glyde_EXE4"/>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/Glyde_EXE4.png"/>
     <property name="Next 1" type="object" value="146"/>
     <property name="Text 1" value="Miss Yai will never forgive me!"/>
    </properties>
    <point/>
   </object>
-  <object id="146" name="Dialogue Test 1" type="Script Node: Message" x="487.5" y="567.5">
+  <object id="146" name="Dialogue Test 1" type="Script Node: Message" x="448" y="560">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Mugshot" value="roll"/>
     <property name="Text 1" value="That sort of expression. Think you could help him out?"/>
    </properties>
@@ -399,6 +395,14 @@ He says it's important to who he is.</property>
    <properties>
     <property name="Direction" value="Up Right"/>
     <property name="Walk Distance" type="float" value="0.7"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="177" name="Dialogue Test 1" type="Script Node: Message" x="448" y="496">
+   <properties>
+    <property name="Mug" value="mugs/roll_mug"/>
+    <property name="Next 1" type="object" value="143"/>
+    <property name="Text 1" value="Did you see Glyde earlier?"/>
    </properties>
    <point/>
   </object>
@@ -598,20 +602,15 @@ You feel vaguely threatened by the size of it...</property>
   <object id="90" name="Glyde" x="200" y="336">
    <properties>
     <property name="Asset" value="bots/Glyde_EXE4"/>
-    <property name="Dialogue Type" value="itemcheck"/>
     <property name="Direction" value="Down Right"/>
-    <property name="Next 1" type="object" value="91"/>
-    <property name="Next 2" type="object" value="93"/>
+    <property name="On Interact" type="object" value="178"/>
     <property name="On Load" type="bool" value="true"/>
-    <property name="Required Amount" type="int" value="1"/>
-    <property name="Required Item" value="YaiData"/>
-    <property name="Take Item" type="bool" value="true"/>
+    <property name="Solid" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
   <object id="91" name="Return YaiData" type="Script Node: Message" x="208" y="304">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="92"/>
     <property name="Text 1">Ah, you have it! Thank you!
 
@@ -621,31 +620,27 @@ I'll take that, if you don't mind.</property>
   </object>
   <object id="92" name="Reward Player." type="Script Node: Message" x="240" y="304">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="97"/>
     <property name="Text 1" value="As thanks, you're welcome to visit Lady Yai's Homepage anytime."/>
    </properties>
    <point/>
   </object>
-  <object id="93" name="Check Request Sheet" type="Script Node: Message" x="208" y="392">
+  <object id="93" name="Check Request Sheet" type="Script Node: Has Item" x="208" y="400">
    <properties>
-    <property name="Dialogue Type" value="itemcheck"/>
     <property name="Next 1" type="object" value="94"/>
     <property name="Next 2" type="object" value="95"/>
     <property name="Required Item" value="GlydeReq"/>
    </properties>
    <point/>
   </object>
-  <object id="94" name="Has Request Sheet" type="Script Node: Message" x="240" y="392">
+  <object id="94" name="Has Request Sheet" type="Script Node: Message" x="240" y="400">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Text 1" value="Please, find that Prog!"/>
    </properties>
    <point/>
   </object>
-  <object id="95" name="Give Request Sheet 1" type="Script Node: Message" x="208" y="416">
+  <object id="95" name="Give Request Sheet 1" type="Script Node: Message" x="208" y="432">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="99"/>
     <property name="Text 1">Ah, wait, please!
 
@@ -656,38 +651,30 @@ I'm having a bit of a problem here.</property>
   </object>
   <object id="97" name="Reward Player 2." type="Script Node: Message" x="240" y="272">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="98"/>
     <property name="Text 1" value="Please, take this YaiCode."/>
    </properties>
    <point/>
   </object>
-  <object id="98" name="Finally Reward" type="Script Node: Message" x="208" y="272">
-   <properties>
-    <property name="Dialogue Type" value="none"/>
-    <property name="Event Name" value="Get Yai Code"/>
-   </properties>
+  <object id="98" name="Finally Reward" type="Script Node: Get Yai Code" x="208" y="272">
    <point/>
   </object>
-  <object id="99" name="Give Request Sheet 2" type="Script Node: Message" x="208" y="440">
+  <object id="99" name="Give Request Sheet 2" type="Script Node: Message" x="208" y="464">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="100"/>
     <property name="Text 1" value="I've misplaced something most important!"/>
    </properties>
    <point/>
   </object>
-  <object id="100" name="Give Request Sheet 3" type="Script Node: Message" x="208" y="464">
+  <object id="100" name="Give Request Sheet 3" type="Script Node: Message" x="208" y="496">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="102"/>
     <property name="Text 1" value="I sent a Prog to retrieve it, but it's been a while..."/>
    </properties>
    <point/>
   </object>
-  <object id="102" name="Final" type="Script Node: Message" x="216" y="496">
+  <object id="102" name="Final" type="Script Node: Message" x="208" y="528">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="103"/>
     <property name="Text 1">Please, find that Prog!
 
@@ -695,11 +682,7 @@ I'll be in so much trouble if Lady Yai finds out!</property>
    </properties>
    <point/>
   </object>
-  <object id="103" name="Trigger Glyde Quest" type="Script Node: Message" x="216" y="528">
-   <properties>
-    <property name="Dialogue Type" value="none"/>
-    <property name="Event Name" value="GlydeProgQuest"/>
-   </properties>
+  <object id="103" name="Trigger Glyde Quest" type="Script Node: GlydeProgQuest" x="208" y="560">
    <point/>
   </object>
   <object id="172" type="Script Node: Teleport" x="416" y="288">
@@ -728,6 +711,14 @@ I'll be in so much trouble if Lady Yai finds out!</property>
     <property name="Area" value="YaiHP"/>
     <property name="Target" type="int" value="2"/>
     <property name="Warp" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="178" name="Take YaiData" type="Script Node: Take Item" x="224" y="336">
+   <properties>
+    <property name="Item" value="YaiData"/>
+    <property name="Next 1" type="object" value="93"/>
+    <property name="Next 2" type="object" value="91"/>
    </properties>
    <point/>
   </object>

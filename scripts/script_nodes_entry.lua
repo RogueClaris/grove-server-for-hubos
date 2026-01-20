@@ -8,6 +8,20 @@ local scripts = ScriptNodes:new()
 local items = require("scripts/custom-scripts/items")
 items.setup()
 
+local custom_nodes = {
+  require("scripts/custom-nodes/misc_nodes"),
+  require("scripts/custom-nodes/rail_nodes"),
+  require("scripts/custom-nodes/liberation_nodes"),
+  require("scripts/custom-nodes/gutsman_nodes"),
+  require("scripts/custom-nodes/virologist_nodes"),
+  require("scripts/custom-nodes/yai_homework_nodes"),
+  nil -- necessary since require returns multiple values
+}
+
+for _, init in ipairs(custom_nodes) do
+  init(scripts)
+end
+
 -- Custom whitelist behavior
 -- local whitelist_manager = require("scripts/custom-scripts/whitelist_manager")
 
