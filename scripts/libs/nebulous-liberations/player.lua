@@ -1,20 +1,5 @@
 local player_data = require('scripts/custom-scripts/player_data')
 
--- private functions
-
--- local function create_textbox_promise(self)
---   if self.disconnected then
---     return Async.create_function(function()
---       resolve()
---     end)
---   end
-
---   return Async.create_function(function()
---     table.insert(self.textbox_promise_resolvers, resolve)
---   end)
--- end
-
--- public
 local Player = {}
 
 function Player:new(player_id)
@@ -153,13 +138,16 @@ function Player:boot_to_lobby(isVictory, mapName)
   local area_id = Net.get_player_area(self.id)
   local respawn_area = Net.get_area_custom_property(area_id, "Respawn Area")
   local spawn = nil
+
   if respawn_area ~= nil then
     spawn = Net.get_object_by_name(respawn_area, "Liberation Respawn")
   else
     respawn_area = "default"
     spawn = Net.get_spawn_position("default")
   end
+
   Net.transfer_player(self.id, respawn_area, true, spawn.x, spawn.y, spawn.z)
+
   if isVictory then
     local gate_to_remove = nil
     for index, value in ipairs(Net.list_objects(respawn_area)) do

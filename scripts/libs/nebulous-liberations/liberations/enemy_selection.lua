@@ -1,4 +1,4 @@
-local Selection = require("scripts/ezlibs-custom/nebulous-liberations/liberations/selection")
+local Selection = require("scripts/libs/nebulous-liberations/liberations/selection")
 
 local EnemySelection = {}
 
@@ -49,7 +49,7 @@ function EnemySelection:detect_player_sessions()
     local player = player_session.player
 
     if player_session.health ~= 0 and self.selection:is_within(player.x, player.y, player.z) then
-      sessions[#sessions+1] = player_session
+      sessions[#sessions + 1] = player_session
     end
   end
 

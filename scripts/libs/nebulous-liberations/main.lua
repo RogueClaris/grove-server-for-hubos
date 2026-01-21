@@ -1,11 +1,8 @@
--- random may be called in required scripts, need to set the seed
-math.randomseed(os.time())
-
 local LibPlugin = {}
 
-local Player = require("scripts/ezlibs-custom/nebulous-liberations/player")
-local Instance = require("scripts/ezlibs-custom/nebulous-liberations/liberations/instance")
-local Parties = require("scripts/ezlibs-custom/nebulous-liberations/utils/parties")
+local Player = require("scripts/libs/nebulous-liberations/player")
+local Instance = require("scripts/libs/nebulous-liberations/liberations/instance")
+local Parties = require("scripts/libs/nebulous-liberations/utils/parties")
 
 local waiting_area_map = {}
 
@@ -99,12 +96,14 @@ local function remove_instance(area_id)
   local instance = instances[area_id]
   local respawn_area = respawn_table[Net.get_area_name(area_id)]
   local spawn = nil
+
   if respawn_area ~= nil then
     spawn = Net.get_object_by_name(respawn_area, "Liberation Respawn")
   else
     respawn_area = "default"
     spawn = Net.get_spawn_position("default")
   end
+
   for _, player in ipairs(instance:get_players()) do
     Net.transfer_player(player.id, respawn_area, true, spawn.x, spawn.y, spawn.z)
 
@@ -133,6 +132,7 @@ Net:on("tick", function(event)
   for i, area_id in ipairs(dead_instances) do
     remove_instance(area_id)
   end
+
   for id, player in pairs(players) do
     player.moved = false
   end

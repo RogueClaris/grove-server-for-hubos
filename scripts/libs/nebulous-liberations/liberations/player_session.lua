@@ -1,11 +1,11 @@
 local player_data = require('scripts/custom-scripts/player_data')
 
-local Ability = require("scripts/ezlibs-custom/nebulous-liberations/liberations/ability")
-local PlayerSelection = require("scripts/ezlibs-custom/nebulous-liberations/liberations/player_selection")
-local Loot = require("scripts/ezlibs-custom/nebulous-liberations/liberations/loot")
-local EnemyHelpers = require("scripts/ezlibs-custom/nebulous-liberations/liberations/enemy_helpers")
-local ParalyzeEffect = require("scripts/ezlibs-custom/nebulous-liberations/utils/paralyze_effect")
-local RecoverEffect = require("scripts/ezlibs-custom/nebulous-liberations/utils/recover_effect")
+local Ability = require("scripts/libs/nebulous-liberations/liberations/ability")
+local PlayerSelection = require("scripts/libs/nebulous-liberations/liberations/player_selection")
+local Loot = require("scripts/libs/nebulous-liberations/liberations/loot")
+local EnemyHelpers = require("scripts/libs/nebulous-liberations/liberations/enemy_helpers")
+local ParalyzeEffect = require("scripts/libs/nebulous-liberations/utils/paralyze_effect")
+local RecoverEffect = require("scripts/libs/nebulous-liberations/utils/recover_effect")
 local Emotes = require("scripts/libs/emotes")
 
 local PlayerSession = {}

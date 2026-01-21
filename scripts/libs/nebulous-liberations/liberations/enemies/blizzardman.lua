@@ -1,6 +1,6 @@
-local EnemySelection = require("scripts/ezlibs-custom/nebulous-liberations/liberations/enemy_selection")
-local EnemyHelpers = require("scripts/ezlibs-custom/nebulous-liberations/liberations/enemy_helpers")
-local Preloader = require("scripts/ezlibs-custom/nebulous-liberations/liberations/preloader")
+local EnemySelection = require("scripts/libs/nebulous-liberations/liberations/enemy_selection")
+local EnemyHelpers = require("scripts/libs/nebulous-liberations/liberations/enemy_helpers")
+local Preloader = require("scripts/libs/nebulous-liberations/liberations/preloader")
 
 Preloader.add_asset("/server/assets/NebuLibsAssets/bots/snowball.png")
 Preloader.add_asset("/server/assets/NebuLibsAssets/bots/snowball.animation")

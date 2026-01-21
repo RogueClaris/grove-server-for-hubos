@@ -1,6 +1,6 @@
-local EnemyHelpers = require("scripts/ezlibs-custom/nebulous-liberations/liberations/enemy_helpers")
-local EnemySelection = require("scripts/ezlibs-custom/nebulous-liberations/liberations/enemy_selection")
-local Preloader = require("scripts/ezlibs-custom/nebulous-liberations/liberations/preloader")
+local EnemyHelpers = require("scripts/libs/nebulous-liberations/liberations/enemy_helpers")
+local EnemySelection = require("scripts/libs/nebulous-liberations/liberations/enemy_selection")
+local Preloader = require("scripts/libs/nebulous-liberations/liberations/preloader")
 local Direction = require("scripts/libs/direction")
 
 Preloader.add_asset("/server/assets/NebuLibsAssets/bots/beast breath.png")

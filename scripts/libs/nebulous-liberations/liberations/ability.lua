@@ -1,4 +1,4 @@
-local PanelEncounters = require("scripts/ezlibs-custom/nebulous-liberations/liberations/panel_encounters")
+local PanelEncounters = require("scripts/libs/nebulous-liberations/liberations/panel_encounters")
 local player_data = require('scripts/custom-scripts/player_data')
 
 local function static_shape_generator(offset_x, offset_y, shape)

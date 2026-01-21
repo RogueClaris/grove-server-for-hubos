@@ -1,19 +1,11 @@
 local player_data = require('scripts/custom-scripts/player_data')
 
-local Direction = require("scripts/libs/direction")
-
-local PlayerSession = require("scripts/custom-scripts/nebulous-liberations/liberations/player_session")
-
-local Enemy = require("scripts/custom-scripts/nebulous-liberations/liberations/enemy")
-
-local EnemyHelpers = require("scripts/custom-scripts/nebulous-liberations/liberations/enemy_helpers")
-
-local PanelEncounters = require("scripts/custom-scripts/nebulous-liberations/liberations/panel_encounters")
-
-local Loot = require("scripts/custom-scripts/nebulous-liberations/liberations/loot")
-
-local Preloader = require("scripts/custom-scripts/nebulous-liberations/liberations/preloader")
-
+local PlayerSession = require("scripts/libs/nebulous-liberations/liberations/player_session")
+local Enemy = require("scripts/libs/nebulous-liberations/liberations/enemy")
+local EnemyHelpers = require("scripts/libs/nebulous-liberations/liberations/enemy_helpers")
+local PanelEncounters = require("scripts/libs/nebulous-liberations/liberations/panel_encounters")
+local Loot = require("scripts/libs/nebulous-liberations/liberations/loot")
+local Preloader = require("scripts/libs/nebulous-liberations/liberations/preloader")
 local Emotes = require("scripts/libs/emotes")
 
 local compression = require('scripts/custom-scripts/compression')

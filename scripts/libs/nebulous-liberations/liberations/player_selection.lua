@@ -1,4 +1,4 @@
-local Selection = require("scripts/ezlibs-custom/nebulous-liberations/liberations/selection")
+local Selection = require("scripts/libs/nebulous-liberations/liberations/selection")
 local Direction = require("scripts/libs/direction")
 
 local function includes(table, value)
@@ -78,7 +78,7 @@ function PlayerSelection:select_panel(panel_object)
   local player_pos = Net.get_player_position(self.player_id)
   local direction = resolve_selection_direction(player_pos, panel_object)
   self.selection:move(player_pos, direction)
-  self.selection:set_shape({{1}})
+  self.selection:set_shape({ { 1 } })
   self.selection:remove_indicators()
   self.selection:indicate()
 end
@@ -94,7 +94,7 @@ function PlayerSelection:get_panels()
   local panels = {}
 
   for _, object in pairs(self.selection.objects) do
-    panels[#panels+1] = self.instance:get_panel_at(object.x, object.y, object.z)
+    panels[#panels + 1] = self.instance:get_panel_at(object.x, object.y, object.z)
   end
 
   return panels

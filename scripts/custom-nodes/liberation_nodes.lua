@@ -1,4 +1,4 @@
--- local LibPlugin = require('scripts/custom-scripts/nebulous-liberations/main')
+local LibPlugin = require('scripts/libs/nebulous-liberations/main')
 local player_data = require('scripts/custom-scripts/player_data')
 
 ---@param scripts ScriptNodes
@@ -11,7 +11,7 @@ return function(scripts)
     scripts:execute_next_node(context, context.area_id, node_object)
   end)
 
-  -- scripts:implement_node("Refight Liberation", function(context, node_object)
-  --   LibPlugin.start_game_for_player(context.player_id, node_object.custom_properties["Liberation Map"])
-  -- end)
+  scripts:implement_node("Refight Liberation", function(context, node_object)
+    LibPlugin.start_game_for_player(context.player_id, node_object.custom_properties["Liberation Map"])
+  end)
 end
