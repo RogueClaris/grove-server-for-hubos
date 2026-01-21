@@ -87,42 +87,45 @@ function ezshortcuts.remove_checkpoint(player_id)
     player_data.save_player_data(player_id)
 end
 
-Net:on("player_connect", function(event)
+Net:on("player_request", function(event)
     local player_id = event.player_id
-    if not Net.is_player_busy(player_id) then
-        -- hide_other_checkpoint_bots(player_id)
 
-        local entry = ezshortcuts._check_points[player_id]
+    if Net.is_player_busy(player_id) then
+        return
+    end
 
-        if entry == nil then
-            local player_memory = player_data.get_player_data(player_id)
-            local saved_checkpoint = player_memory.login_location
-            if saved_checkpoint ~= nil then
-                printd("Caching checkpoint for player " .. player_id)
-                ezshortcuts._check_points[player_id] = {
-                    x = saved_checkpoint.x,
-                    y = saved_checkpoint.y,
-                    z = saved_checkpoint.z,
-                    area_id = saved_checkpoint.area_id,
-                    show_checkpoint = saved_checkpoint.show_checkpoint
-                }
+    -- hide_other_checkpoint_bots(player_id)
 
-                entry = ezshortcuts._check_points[player_id]
-            end
+    local entry = ezshortcuts._check_points[player_id]
+
+    if entry == nil then
+        local player_memory = player_data.get_player_data(player_id)
+        local saved_checkpoint = player_memory.login_location
+        if saved_checkpoint ~= nil then
+            printd("Caching checkpoint for player " .. player_id)
+            ezshortcuts._check_points[player_id] = {
+                x = saved_checkpoint.x,
+                y = saved_checkpoint.y,
+                z = saved_checkpoint.z,
+                area_id = saved_checkpoint.area_id,
+                show_checkpoint = saved_checkpoint.show_checkpoint
+            }
+
+            entry = ezshortcuts._check_points[player_id]
         end
+    end
 
-        if entry ~= nil then
-            printd("Restoring player " ..
-                player_id .. " at checkpoint (" .. entry.x .. "," .. entry.y .. "," .. entry.z ..
-                ") in area " .. entry.area_id .. ".")
+    if entry ~= nil then
+        printd("Restoring player " ..
+            player_id .. " at checkpoint (" .. entry.x .. "," .. entry.y .. "," .. entry.z ..
+            ") in area " .. entry.area_id .. ".")
 
-            Net.transfer_player(player_id, entry.area_id, true, entry.x, entry.y, entry.z, "Down")
+        Net.transfer_player(player_id, entry.area_id, true, entry.x, entry.y, entry.z, "Down")
 
-            -- show checkpoint marker if user wants one
-            -- if entry.show_checkpoint then
-            --     show_checkpoint_for_player_only(player_id, entry)
-            -- end
-        end
+        -- show checkpoint marker if user wants one
+        -- if entry.show_checkpoint then
+        --     show_checkpoint_for_player_only(player_id, entry)
+        -- end
     end
 end)
 
