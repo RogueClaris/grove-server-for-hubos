@@ -1,7 +1,11 @@
 local Selection = require("scripts/libs/nebulous-liberations/liberations/selection")
 
+---@class Liberation.EnemySelection
+---@field instance Liberation.MissionInstance
+---@field package selection Liberation._Selection
 local EnemySelection = {}
 
+---@return Liberation.EnemySelection
 function EnemySelection:new(instance)
   local enemy_selection = {
     instance = instance,
@@ -37,23 +41,26 @@ function EnemySelection:set_shape(shape, shape_offset_x, shape_offset_y)
   self.selection:set_shape(shape, shape_offset_x, shape_offset_y)
 end
 
+---@param position Net.Position
+---@param direction string
 function EnemySelection:move(position, direction)
   self.selection:move(position, direction)
 end
 
--- returns player sessions that collide
-function EnemySelection:detect_player_sessions()
-  local sessions = {}
+-- returns players that collide
+---@return Liberation.Player[]
+function EnemySelection:detect_players()
+  local players = {}
 
-  for _, player_session in pairs(self.instance.player_sessions) do
-    local player = player_session.player
+  for _, player in ipairs(self.instance.players) do
+    local x, y, z = player:position_multi()
 
-    if player_session.health ~= 0 and self.selection:is_within(player.x, player.y, player.z) then
-      sessions[#sessions + 1] = player_session
+    if player.health ~= 0 and self.selection:is_within(x, y, z) then
+      players[#players + 1] = player
     end
   end
 
-  return sessions
+  return players
 end
 
 function EnemySelection:indicate()

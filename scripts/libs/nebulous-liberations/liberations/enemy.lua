@@ -1,6 +1,6 @@
 -- enemy implementations are in the enemies folder
 
----@class Liberation.Enemy
+---@class Liberation.Enemy: Net.Position
 ---@field id Net.ActorId
 ---@field battle_name string
 ---@field name string? reserved, will automatically be set on creation
@@ -83,7 +83,8 @@ function Enemy.destroy(instance, enemy)
       Net.slide_player_camera(player.id, enemy.x + .5, enemy.y + .5, enemy.z, slide_time)
       Net.move_player_camera(player.id, enemy.x + .5, enemy.y + .5, enemy.z, hold_time)
 
-      Net.slide_player_camera(player.id, player.x, player.y, player.z, slide_time)
+      local player_x, player_y, player_z = player:position_multi()
+      Net.slide_player_camera(player.id, player_x, player_y, player_z, slide_time)
       Net.unlock_player_camera(player.id)
     end
 
@@ -94,8 +95,8 @@ function Enemy.destroy(instance, enemy)
     local texture_path = enemy.mug and enemy.mug.texture_path
     local animation_path = enemy.mug and enemy.mug.animation_path
     if message ~= nil then
-      for _, player_session in ipairs(instance.player_sessions) do
-        player_session.player:message(message, texture_path, animation_path)
+      for _, player in ipairs(instance.players) do
+        player:message(message, texture_path, animation_path)
       end
     end
 
@@ -116,8 +117,8 @@ function Enemy.destroy(instance, enemy)
     Async.await(Async.sleep(slide_time + unlock_padding))
 
     -- unlock players who were not locked
-    for _, player_session in ipairs(instance.player_sessions) do
-      Net.unlock_player_input(player_session.player.id)
+    for _, player in ipairs(instance.players) do
+      Net.unlock_player_input(player.id)
     end
 
     success = true

@@ -171,31 +171,34 @@ function EnemyHelpers.chebyshev_tile_distance(enemy, x, y, z)
 end
 
 -- uses chebyshev_tile_distance
-function EnemyHelpers.find_closest_player_session(instance, enemy, max_distance)
-  local closest_session = nil;
+---@param instance Liberation.MissionInstance
+---@param enemy Liberation.Enemy
+---@param max_distance? number
+function EnemyHelpers.find_closest_player(instance, enemy, max_distance)
+  local closest_player = nil
   local closest_distance = math.huge
 
-  for _, player_session in pairs(instance.player_sessions) do
-    local player = player_session.player
+  for _, player in ipairs(instance.players) do
+    local player_x, player_y, player_z = player:position_multi()
 
-    if player_session.health == 0 or player.z ~= enemy.z then
+    if player.health == 0 or player_z ~= enemy.z then
       goto continue
     end
 
-    local distance = EnemyHelpers.chebyshev_tile_distance(enemy, player.x, player.y, player.z)
+    local distance = EnemyHelpers.chebyshev_tile_distance(enemy, player_x, player_y, player_z)
 
-    if (distance < closest_distance) then
+    if distance < closest_distance then
       -- It might be closer, but only update the session if it's within the acceptable distance
       closest_distance = distance
       if max_distance == nil or distance <= max_distance then
-        closest_session = player_session
+        closest_player = player
       end
     end
 
     ::continue::
   end
 
-  return closest_session
+  return closest_player
 end
 
 function EnemyHelpers.sync_health(enemy, results)

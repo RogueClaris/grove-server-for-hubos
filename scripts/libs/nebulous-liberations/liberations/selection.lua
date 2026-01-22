@@ -23,7 +23,7 @@ end
 ---@field private shape_offset_x number
 ---@field private shape_offset_y number
 ---@field private direction string?
----@field private objects Net.Object[]
+---@field objects Net.Object[]
 ---@field private filter? fun(x: number, y: number, z: number): boolean
 local Selection = {}
 
@@ -73,6 +73,8 @@ function Selection:set_shape(shape, shape_offset_x, shape_offset_y)
   self.shape_offset_y = shape_offset_y or 0
 end
 
+---@param position Net.Position
+---@param direction string
 function Selection:move(position, direction)
   self.position.x = math.floor(position.x)
   self.position.y = math.floor(position.y)

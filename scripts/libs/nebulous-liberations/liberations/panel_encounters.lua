@@ -22,11 +22,14 @@ local function has_dark_panel(instance, x, y, z)
   return includes(panel_type_table, panel.type)
 end
 
+---@param instance Liberation.MissionInstance
+---@param player Liberation.Player
 function PanelEncounters.resolve_terrain(instance, player)
-  local x_left = has_dark_panel(instance, player.x - 1, player.y, player.z)
-  local x_right = has_dark_panel(instance, player.x + 1, player.y, player.z)
-  local y_left = has_dark_panel(instance, player.x, player.y - 1, player.z)
-  local y_right = has_dark_panel(instance, player.x, player.y + 1, player.z)
+  local x, y, z = player:position_multi()
+  local x_left = has_dark_panel(instance, x - 1, y, z)
+  local x_right = has_dark_panel(instance, x + 1, y, z)
+  local y_left = has_dark_panel(instance, x, y - 1, z)
+  local y_right = has_dark_panel(instance, x, y + 1, z)
 
   if (x_left and x_right) or (y_left and y_right) then
     return "surrounded"
@@ -37,7 +40,7 @@ function PanelEncounters.resolve_terrain(instance, player)
   end
 
   for _, offset in ipairs(corner_offsets) do
-    if has_dark_panel(instance, player.x + offset[1], player.y + offset[2], player.z) then
+    if has_dark_panel(instance, x + offset[1], y + offset[2], z) then
       return "even"
     end
   end

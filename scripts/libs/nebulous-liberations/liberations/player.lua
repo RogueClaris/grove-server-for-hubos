@@ -8,9 +8,9 @@ local ParalysisEffect = require("scripts/libs/nebulous-liberations/utils/paralys
 local RecoverEffect = require("scripts/libs/nebulous-liberations/utils/recover_effect")
 local Emotes = require("scripts/libs/emotes")
 
----@class Liberation.PlayerSession
+---@class Liberation.Player
 ---@field instance Liberation.MissionInstance
----@field player number
+---@field id Net.ActorId
 ---@field health number
 ---@field max_health number
 ---@field shadowsteps number
@@ -22,13 +22,15 @@ local Emotes = require("scripts/libs/emotes")
 ---@field ability Liberation.Ability?
 ---@field disconnected boolean
 ---@field is_trapped boolean
-local PlayerSession = {}
+local Player = {}
 
----@return Liberation.PlayerSession
-function PlayerSession:new(instance, player)
-  local player_session = {
+---@param instance Liberation.MissionInstance
+---@param player_id Net.ActorId
+---@return Liberation.Player
+function Player:new(instance, player_id)
+  local player = {
     instance = instance,
-    player = player,
+    id = player_id,
     health = 100,
     max_health = 100,
     shadowsteps = {},
@@ -36,27 +38,26 @@ function PlayerSession:new(instance, player)
     paralysis_counter = 0,
     invincible = false,
     completed_turn = false,
-    selection = PlayerSelection:new(instance, player.id),
-    ability = Ability.resolve_for_player(player),
+    selection = PlayerSelection:new(instance, player_id),
+    ability = Ability.resolve_for_player(player_id),
     disconnected = false,
     is_trapped = false,
     get_monies = false
   }
 
-  setmetatable(player_session, self)
+  setmetatable(player, self)
   self.__index = self
-  return player_session
+  return player
 end
 
-function PlayerSession:emote_state()
-  if self.player:is_battling() then
-    Net.set_player_emote(self.player.id, Emotes.PVP)
+function Player:emote_state()
+  if Net.is_player_battling(self.id) then
   elseif self.invincible then
-    Net.set_player_emote(self.player.id, Emotes.GG)
+    Net.set_player_emote(self.id, Emotes.GG)
   elseif self.completed_turn then
-    Net.set_player_emote(self.player.id, Emotes.ZZZ)
+    Net.set_player_emote(self.id, Emotes.ZZZ)
   else
-    Net.set_player_emote(self.player.id, Emotes.BLANK)
+    Net.set_player_emote(self.id, Emotes.BLANK)
   end
 end
 
@@ -73,57 +74,113 @@ local order_points_mug_animations = {
   "/server/assets/NebuLibsAssets/mugs/order pts 8.animation",
 }
 
-function PlayerSession:message_with_points(message)
-  local mug_animation = order_points_mug_animations[self.instance.order_points + 1]
-  return self.player:message(message, order_points_mug_texture, mug_animation)
+function Player:position()
+  return Net.get_player_position(self.id)
 end
 
-function PlayerSession:question_with_points(question)
-  local mug_animation = order_points_mug_animations[self.instance.order_points + 1]
-  return self.player:question(question, order_points_mug_texture, mug_animation)
+function Player:position_multi()
+  return Net.get_player_position_multi(self.id)
 end
 
-function PlayerSession:quiz_with_points(a, b, c)
-  local mug_animation = order_points_mug_animations[self.instance.order_points + 1]
-  return self.player:quiz(a, b, c, order_points_mug_texture, mug_animation)
+---@param message string
+---@param texture_path? string
+---@param animation_path? string
+function Player:message(message, texture_path, animation_path)
+  return Async.message_player(self.id, message, texture_path, animation_path)
 end
 
-function PlayerSession:get_ability_permission()
-  local question_promise = self.player:question_with_mug(self.ability.question)
+---@param message string
+---@param close_delay number
+---@param texture_path? string
+---@param animation_path? string
+function Player:message_auto(message, close_delay, texture_path, animation_path)
+  return Async.message_player_auto(self.id, message, close_delay, texture_path, animation_path)
+end
+
+---@param message string
+function Player:message_with_mug(message)
+  local mug = Net.get_player_mugshot(self.id)
+  return self:message(message, mug.texture_path, mug.animation_path)
+end
+
+---@param question string
+---@param texture_path? string
+---@param animation_path? string
+function Player:question(question, texture_path, animation_path)
+  return Async.question_player(self.id, question, texture_path, animation_path)
+end
+
+---@param question string
+function Player:question_with_mug(question)
+  local mug = Net.get_player_mugshot(self.id)
+  return self:question(question, mug.texture_path, mug.animation_path)
+end
+
+---@param a string
+---@param b? string
+---@param c? string
+---@param texture_path? string
+---@param animation_path? string
+function Player:quiz(a, b, c, texture_path, animation_path)
+  return Async.quiz_player(self.id, a, b, c, texture_path, animation_path)
+end
+
+---@param message string
+function Player:message_with_points(message)
+  local mug_animation = order_points_mug_animations[self.instance.order_points + 1]
+  return self:message(message, order_points_mug_texture, mug_animation)
+end
+
+---@param question string
+function Player:question_with_points(question)
+  local mug_animation = order_points_mug_animations[self.instance.order_points + 1]
+  return self:question(question, order_points_mug_texture, mug_animation)
+end
+
+---@param a string
+---@param b? string
+---@param c? string
+function Player:quiz_with_points(a, b, c)
+  local mug_animation = order_points_mug_animations[self.instance.order_points + 1]
+  return self:quiz(a, b, c, order_points_mug_texture, mug_animation)
+end
+
+function Player:get_ability_permission()
+  local question_promise = self:question_with_mug(self.ability.question)
 
   question_promise.and_then(function(response)
     if response == 0 then
       -- No
       self.selection:clear()
-      Net.unlock_player_input(self.player.id)
+      Net.unlock_player_input(self.id)
       return
     end
 
     -- Yes
     if self.instance.order_points < self.ability.cost then
       -- not enough order points
-      self.player:message("Not enough Order Pts!")
+      self:message("Not enough Order Pts!")
       return
     end
 
     self.instance.order_points = self.instance.order_points - self.ability.cost
-    self.ability.activate(self.instance, self, nil, self.ability.remove_traps, self.ability.destroy_items)
+    self.ability.activate(self.instance, self)
   end)
 end
 
-function PlayerSession:get_pass_turn_permission()
+function Player:get_pass_turn_permission()
   local question = "End without doing anything?"
 
   if self.health < self.max_health then
     question = "Recover HP?"
   end
 
-  local question_promise = self.player:question_with_mug(question)
+  local question_promise = self:question_with_mug(question)
 
   question_promise.and_then(function(response)
     if response == 0 then
       -- No
-      Net.unlock_player_input(self.player.id)
+      Net.unlock_player_input(self.id)
     elseif response == 1 then
       -- Yes
       self:pass_turn()
@@ -131,9 +188,9 @@ function PlayerSession:get_pass_turn_permission()
   end)
 end
 
-function PlayerSession:initiate_encounter(encounter_path, data)
+function Player:initiate_encounter(encounter_path, data)
   return Async.create_scope(function()
-    local results = Async.await(Async.initiate_encounter(self.player.id, encounter_path, data))
+    local results = Async.await(Async.initiate_encounter(self.id, encounter_path, data))
 
     if results == nil then
       return
@@ -147,9 +204,9 @@ function PlayerSession:initiate_encounter(encounter_path, data)
 
     self.health = results.health
 
-    Net.set_player_health(self.player.id, self.health)
+    Net.set_player_health(self.id, self.health)
 
-    Net.set_player_emotion(self.player.id, results.emotion)
+    Net.set_player_emotion(self.id, results.emotion)
 
     if self.health == 0 then
       self:paralyze()
@@ -165,32 +222,32 @@ function PlayerSession:initiate_encounter(encounter_path, data)
   end)
 end
 
-function PlayerSession:heal(amount)
+function Player:heal(amount)
   return Async.create_promise(function(resolve)
     local previous_health = self.health
 
     self.health = math.min(math.ceil(self.health + amount), self.max_health)
 
-    Net.set_player_health(self.player.id, self.health)
+    Net.set_player_health(self.id, self.health)
 
     if previous_health < self.health then
-      RecoverEffect:new(self.player.id):remove()
+      RecoverEffect:new(self.id):remove()
     end
 
     return resolve(Async.sleep(0.5))
   end)
 end
 
-function PlayerSession:hurt(amount)
+function Player:hurt(amount)
   if self.invincible or self.health == 0 or amount <= 0 then
     return
   end
 
-  Net.play_sound_for_player(self.player.id, "/server/assets/NebuLibsAssets/sound effects/hurt.ogg")
+  Net.play_sound_for_player(self.id, "/server/assets/NebuLibsAssets/sound effects/hurt.ogg")
 
   self.health = math.max(math.ceil(self.health - amount), 0)
 
-  Net.set_player_health(self.player.id, self.health)
+  Net.set_player_health(self.id, self.health)
 
   if self.health == 0 then
     Async.sleep(1).and_then(function()
@@ -199,20 +256,20 @@ function PlayerSession:hurt(amount)
   end
 end
 
-function PlayerSession:paralyze()
+function Player:paralyze()
   self.paralysis_counter = 2
-  self.paralysis_effect = ParalysisEffect:new(self.player.id)
+  self.paralysis_effect = ParalysisEffect:new(self.id)
   self.is_trapped = true
 end
 
-function PlayerSession:pass_turn()
+function Player:pass_turn()
   -- heal up to 50% of health
   Async.await(self:heal(self.max_health / 2)).and_then(function()
     self:complete_turn()
   end)
 end
 
-function PlayerSession:complete_turn()
+function Player:complete_turn()
   if self.disconnected then
     return
   end
@@ -223,13 +280,13 @@ function PlayerSession:complete_turn()
   self:emote_state()
 
   if self.instance.ready_count < #self.instance.players then
-    Net.unlock_player_camera(self.player.id)
+    Net.unlock_player_camera(self.id)
   end
 
   self.instance.ready_count = self.instance.ready_count + 1
 end
 
-function PlayerSession:give_turn()
+function Player:give_turn()
   self.invincible = false
 
   if self.paralysis_counter > 0 then
@@ -254,10 +311,10 @@ function PlayerSession:give_turn()
   end
 
   self.completed_turn = false
-  Net.unlock_player_input(self.player.id)
+  Net.unlock_player_input(self.id)
 end
 
-function PlayerSession:find_matching_gates()
+function Player:find_matching_gates()
   local gates = {}
   local selection = self.selection
 
@@ -279,7 +336,7 @@ function PlayerSession:find_matching_gates()
   return gates
 end
 
-function PlayerSession:find_gate_points(id)
+function Player:find_gate_points(id)
   local points = {}
   local instance = self.instance
   for i = 1, #instance.points_of_interest, 1 do
@@ -289,16 +346,18 @@ function PlayerSession:find_gate_points(id)
   return points
 end
 
-function PlayerSession:find_closest_guardian()
+function Player:find_closest_guardian()
   local closest_guardian
   local closest_distance = math.huge
+
+  local x, y, z = self:position_multi()
 
   for _, enemy in ipairs(self.instance.enemies) do
     if enemy.is_boss then
       goto continue
     end
 
-    local distance = EnemyHelpers.chebyshev_tile_distance(enemy, self.player.x, self.player.y, self.player.z)
+    local distance = EnemyHelpers.chebyshev_tile_distance(enemy, x, y, z)
 
     if distance < closest_distance then
       closest_distance = distance
@@ -311,34 +370,34 @@ function PlayerSession:find_closest_guardian()
   return closest_guardian
 end
 
-function PlayerSession:liberate_panels(panels, results)
+function Player:liberate_panels(panels, results)
   return Async.create_scope(function()
     -- Allow time for the player to see the liberation range
     Async.await(Async.sleep(2))
 
     -- If the results do not exist, notify the player of the issue to start a bug report.
     if results == nil then
-      Async.await(self.player:message_with_mug("Something's wrong!\nThere's no results!")).and_then(function()
-        Async.await(self.player:message_with_mug("Please report this!"))
+      Async.await(self:message_with_mug("Something's wrong!\nThere's no results!")).and_then(function()
+        Async.await(self:message_with_mug("Please report this!"))
       end)
     else
       -- Message based on the results.
       if results.success == false then
-        Async.await(self.player:message_with_mug("Oh, no!\nLiberation failed!"))
+        Async.await(self:message_with_mug("Oh, no!\nLiberation failed!"))
       elseif results.turns == 1 then
-        Async.await(self.player:message_with_mug("One turn liberation!"))
+        Async.await(self:message_with_mug("One turn liberation!"))
       else
-        Async.await(self.player:message_with_mug("Yeah!\nI liberated it!"))
+        Async.await(self:message_with_mug("Yeah!\nI liberated it!"))
       end
     end
   end)
 end
 
-function PlayerSession:get_cash(panel, destroy_items)
+function Player:get_cash(panel, destroy_items)
   return Async.create_promise(function(resolve) -- Only obtain money if we did not destroy the item grids.
     if self.get_monies and not destroy_items then
       print("attempting to get cash")
-      local cash = Net.get_player_money(self.player.id)
+      local cash = Net.get_player_money(self.id)
 
       -- Default value is 100.
       local bonus = tonumber(100)
@@ -349,7 +408,7 @@ function PlayerSession:get_cash(panel, destroy_items)
       end
 
       -- Tell the player about the cash earned.
-      Async.await(self.player:message("Obtained $" .. tostring(bonus) .. "!"))
+      Async.await(self:message("Obtained $" .. tostring(bonus) .. "!"))
 
       player_data.update_player_money(self.id, bonus)
     end
@@ -360,7 +419,7 @@ function PlayerSession:get_cash(panel, destroy_items)
 end
 
 -- returns a promise that resolves after looting
-function PlayerSession:loot_panels(panels, remove_traps, destroy_items)
+function Player:loot_panels(panels, remove_traps, destroy_items)
   return Async.create_scope(function()
     for _, panel in ipairs(panels) do
       if panel.loot then
@@ -374,7 +433,7 @@ function PlayerSession:loot_panels(panels, remove_traps, destroy_items)
         local spawn_z = panel.z
 
         Net.slide_player_camera(
-          self.player.id,
+          self.id,
           spawn_x,
           spawn_y,
           spawn_z,
@@ -384,19 +443,19 @@ function PlayerSession:loot_panels(panels, remove_traps, destroy_items)
         Async.await(Async.sleep(slide_time))
 
         if remove_traps then
-          Async.await(self.player:message_with_mug("I found a trap! It's been removed."))
+          Async.await(self:message_with_mug("I found a trap! It's been removed."))
         elseif panel.custom_properties["Damage Trap"] == "true" then
           if panel.custom_properties["Trap Message"] ~= nil then
-            Async.await(self.player:message_with_mug(panel.custom_properties["Trap Message"]))
+            Async.await(self:message_with_mug(panel.custom_properties["Trap Message"]))
           else
-            Async.await(self.player:message_with_mug("Ah! A damage trap!"))
+            Async.await(self:message_with_mug("Ah! A damage trap!"))
           end
           self:hurt(tonumber(panel.custom_properties["Damage Dealt"]))
         elseif panel.custom_properties["Stun Trap"] == "true" then
           if panel.custom_properties["Trap Message"] ~= nil then
-            Async.await(self.player:message_with_mug(panel.custom_properties["Trap Message"]))
+            Async.await(self:message_with_mug(panel.custom_properties["Trap Message"]))
           else
-            Async.await(self.player:message_with_mug("Ah! A paralysis trap!"))
+            Async.await(self:message_with_mug("Ah! A paralysis trap!"))
           end
           self:paralyze()
         end
@@ -412,7 +471,7 @@ function PlayerSession:loot_panels(panels, remove_traps, destroy_items)
   end)
 end
 
-function PlayerSession:liberate_and_loot_panels(panels, results, remove_traps, destroy_items)
+function Player:liberate_and_loot_panels(panels, results, remove_traps, destroy_items)
   return Async.create_scope(function()
     self:liberate_panels(panels, results).and_then(function()
       self:loot_panels(panels, remove_traps, destroy_items).and_then(function()
@@ -422,7 +481,7 @@ function PlayerSession:liberate_and_loot_panels(panels, results, remove_traps, d
   end)
 end
 
-function PlayerSession:handle_disconnect()
+function Player:handle_disconnect()
   self.selection:clear()
 
   if self.completed_turn then
@@ -437,4 +496,4 @@ function PlayerSession:handle_disconnect()
 end
 
 -- export
-return PlayerSession
+return Player

@@ -11,6 +11,8 @@ end
 
 -- public
 ---@class Liberation._PlayerSelection
+---@field private player_id Net.ActorId
+---@field private instance Liberation.MissionInstance
 ---@field private selection Liberation._Selection
 local PlayerSelection = {}
 
@@ -101,7 +103,7 @@ function PlayerSelection:clear()
 end
 
 function PlayerSelection:count_panels()
-  return #self.objects
+  return #self.selection.objects
 end
 
 -- todo: add an update function that is called when a player liberates a panel? may fix issues with overlapped panels

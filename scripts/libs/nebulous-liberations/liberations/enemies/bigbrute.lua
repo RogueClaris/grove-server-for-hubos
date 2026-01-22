@@ -116,15 +116,14 @@ end
 
 local function attempt_move(self)
   return Async.create_promise(function(resolve)
-    local closest_session = EnemyHelpers.find_closest_player_session(self.instance, self, 4)
+    local player = EnemyHelpers.find_closest_player(self.instance, self, 4)
 
     local success = false
 
-    if closest_session == nil then
+    if player == nil then
       -- all players left
       return resolve(success)
     end
-    local player = closest_session.player
 
     -- local distance = EnemyHelpers.chebyshev_tile_distance(self, player.x, player.y, player.z)
 
@@ -134,8 +133,9 @@ local function attempt_move(self)
     --   return
     -- end
 
-    local xdiff = math.floor(player.x) - self.x
-    local ydiff = math.floor(player.y) - self.y
+    local player_x, player_y = player:position_multi()
+    local xdiff = math.floor(player_x) - self.x
+    local ydiff = math.floor(player_y) - self.y
 
     if (ydiff == 0 or math.abs(xdiff) < math.abs(ydiff)) and xdiff ~= 0 then
       -- travel along the x axis
@@ -161,15 +161,17 @@ local function attempt_attack(self)
   return Async.create_promise(function(resolve)
     self.selection:move(self, Net.get_bot_direction(self.id))
 
-    local caught_sessions = self.selection:detect_player_sessions()
+    local caught_players = self.selection:detect_players()
 
-    if #caught_sessions == 0 then
+    if #caught_players == 0 then
       return resolve(false)
     end
 
-    local closest_session = EnemyHelpers.find_closest_player_session(self.instance, self)
-    if closest_session ~= nil then
-      EnemyHelpers.face_position(self, closest_session.player.x, closest_session.player.y)
+    local closest_player = EnemyHelpers.find_closest_player(self.instance, self)
+
+    if closest_player ~= nil then
+      local x, y = closest_player:position_multi()
+      EnemyHelpers.face_position(self, x, y)
     end
 
     self.selection:indicate()
@@ -180,8 +182,8 @@ local function attempt_attack(self)
 
     local spawned_bots = {}
 
-    for _, player_session in ipairs(caught_sessions) do
-      local player = player_session.player
+    for _, player in ipairs(caught_players) do
+      local player = player.player
 
       table.insert(spawned_bots, Net.create_bot({
         texture_path = "/server/assets/NebuLibsAssets/bots/beast breath.png",
@@ -201,8 +203,8 @@ local function attempt_attack(self)
       Net.shake_player_camera(player.id, 2, .5)
     end
 
-    for _, player_session in ipairs(caught_sessions) do
-      player_session:hurt(self.damage)
+    for _, player in ipairs(caught_players) do
+      player:hurt(self.damage)
     end
 
     Async.await(Async.sleep(.5))

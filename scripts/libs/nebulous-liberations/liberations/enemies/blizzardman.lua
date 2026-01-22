@@ -5,6 +5,11 @@ local Preloader = require("scripts/libs/nebulous-liberations/liberations/preload
 Preloader.add_asset("/server/assets/NebuLibsAssets/bots/snowball.png")
 Preloader.add_asset("/server/assets/NebuLibsAssets/bots/snowball.animation")
 
+---@class Liberation.Enemies.BlizzardMan: Liberation.Enemy
+---@field instance Liberation.MissionInstance
+---@field selection Liberation.EnemySelection
+---@field damage number
+---@field direction string
 local BlizzardMan = {}
 
 --Setup ranked health and damage
@@ -12,6 +17,7 @@ local mob_health = { 400, 1200, 1600, 2000 }
 local mob_damage = { 40, 80, 120, 160 }
 local mob_ranks = { 0, 1, 2, 3 }
 
+---@return Liberation.Enemies.BlizzardMan
 function BlizzardMan:new(instance, position, direction, rank)
   rank = rank or 1
 
@@ -93,9 +99,9 @@ function BlizzardMan:take_turn()
 
     self.selection:move(self, Net.get_bot_direction(self.id))
 
-    local caught_sessions = self.selection:detect_player_sessions()
+    local caught_players = self.selection:detect_players()
 
-    if #caught_sessions == 0 then
+    if #caught_players == 0 then
       return
     end
 
@@ -117,17 +123,16 @@ function BlizzardMan:take_turn()
 
     local spawned_bots = {}
 
-    for _, player_session in ipairs(caught_sessions) do
-      local player = player_session.player
-
+    for _, player in ipairs(caught_players) do
+      local player_x, player_y, player_z = player:position_multi()
       local snowball_bot_id = Net.create_bot({
         texture_path = "/server/assets/NebuLibsAssets/bots/snowball.png",
         animation_path = "/server/assets/NebuLibsAssets/bots/snowball.animation",
         area_id = self.instance.area_id,
         warp_in = false,
-        x = player.x - .5,
-        y = player.y - .5,
-        z = player.z + 8
+        x = player_x - .5,
+        y = player_y - .5,
+        z = player_z + 8
       })
 
       Net.animate_bot_properties(snowball_bot_id, {
@@ -138,7 +143,7 @@ function BlizzardMan:take_turn()
         },
         {
           properties = {
-            { property = "Z", ease = "Linear", value = player.z + 1 },
+            { property = "Z", ease = "Linear", value = player_z + 1 },
           },
           duration = .5
         }
@@ -153,8 +158,8 @@ function BlizzardMan:take_turn()
       Net.shake_player_camera(player.id, 2, .5)
     end
 
-    for _, player_session in ipairs(caught_sessions) do
-      player_session:hurt(self.damage)
+    for _, player in ipairs(caught_players) do
+      player:hurt(self.damage)
     end
 
     Async.await(Async.sleep(.5))

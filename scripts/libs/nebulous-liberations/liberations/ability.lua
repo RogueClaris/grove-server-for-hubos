@@ -8,46 +8,46 @@ local function static_shape_generator(offset_x, offset_y, shape)
 end
 
 ---@param instance Liberation.MissionInstance
----@param player_session Liberation.PlayerSession
+---@param player Liberation.Player
 ---@param results Net.BattleResults?
-local function liberate_and_loot(instance, player_session, results)
-  local remove_traps, destroy_items = player_session.ability.remove_traps, player_session.ability.destroy_items
-  local panels = player_session.selection:get_panels()
+local function liberate_and_loot(instance, player, results)
+  local remove_traps, destroy_items = player.ability.remove_traps, player.ability.destroy_items
+  local panels = player.selection:get_panels()
 
-  player_session:liberate_and_loot_panels(panels, results, remove_traps, destroy_items).and_then(function()
-    player_session:complete_turn()
+  player:liberate_and_loot_panels(panels, results, remove_traps, destroy_items).and_then(function()
+    player:complete_turn()
   end)
 end
 
 ---@param instance Liberation.MissionInstance
----@param player_session Liberation.PlayerSession
-local function panel_search(instance, player_session)
-  local remove_traps, destroy_items = player_session.ability.remove_traps, player_session.ability.destroy_items
-  local panels = player_session.selection:get_panels()
+---@param player Liberation.Player
+local function panel_search(instance, player)
+  local remove_traps, destroy_items = player.ability.remove_traps, player.ability.destroy_items
+  local panels = player.selection:get_panels()
 
-  player_session:loot_panels(panels, remove_traps, destroy_items).and_then(function()
-    player_session:complete_turn()
+  player:loot_panels(panels, remove_traps, destroy_items).and_then(function()
+    player:complete_turn()
   end)
 end
 
 ---@param instance Liberation.MissionInstance
----@param player_session Liberation.PlayerSession
-local function initiate_encounter(instance, player_session)
+---@param player Liberation.Player
+local function initiate_encounter(instance, player)
   local data = {
-    terrain = PanelEncounters.resolve_terrain(instance, player_session.player)
+    terrain = PanelEncounters.resolve_terrain(instance, player)
   }
 
   local encounter_path = instance.default_encounter
 
-  return player_session:initiate_encounter(encounter_path, data)
+  return player:initiate_encounter(encounter_path, data)
 end
 
-local function battle_to_liberate_and_loot(instance, player_session)
-  initiate_encounter(instance, player_session).and_then(function(battle_results)
+local function battle_to_liberate_and_loot(instance, player)
+  initiate_encounter(instance, player).and_then(function(battle_results)
     if battle_results.success then
-      liberate_and_loot(instance, player_session, battle_results)
+      liberate_and_loot(instance, player, battle_results)
     else
-      player_session:complete_turn()
+      player:complete_turn()
     end
   end)
 end
@@ -63,8 +63,8 @@ end
 ---@field cost number,
 ---@field remove_traps? boolean
 ---@field destroy_items? boolean
----@field generate_shape fun(): boolean[][], number, number
----@field activate fun(instance: Liberation.MissionInstance, player_session: Liberation.PlayerSession)
+---@field generate_shape fun(instance: Liberation.MissionInstance, player: Liberation.Player): boolean[][], number, number
+---@field activate fun(instance: Liberation.MissionInstance, player: Liberation.Player)
 
 local Ability = {
   Guard = { name = "Guard" },           -- passive, knightman's ability
@@ -170,11 +170,12 @@ end
 
 build_ability_map()
 
-function Ability.resolve_for_player(player)
+---@param id Net.ActorId
+function Ability.resolve_for_player(id)
   local ability = Ability.LongSwrd
 
   for key, value in pairs(navi_ability_map) do
-    if player_data.count_player_item(player.id, value[2].name) > 0 and navi_ability_map[value[2].ability] ~= nil then
+    if player_data.count_player_item(id, value[2].name) > 0 and navi_ability_map[value[2].ability] ~= nil then
       ability = navi_ability_map[value[2].ability]
       break
     end

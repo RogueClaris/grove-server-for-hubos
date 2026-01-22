@@ -1,9 +1,10 @@
-local PlayerSession = require("scripts/libs/nebulous-liberations/liberations/player_session")
+local Player = require("scripts/libs/nebulous-liberations/liberations/player")
 local Enemy = require("scripts/libs/nebulous-liberations/liberations/enemy")
 local EnemyHelpers = require("scripts/libs/nebulous-liberations/liberations/enemy_helpers")
 local PanelEncounters = require("scripts/libs/nebulous-liberations/liberations/panel_encounters")
 local Loot = require("scripts/libs/nebulous-liberations/liberations/loot")
 local PanelTypes = require("scripts/libs/nebulous-liberations/liberations/panel_types")
+local TargetPhase = require("scripts/libs/nebulous-liberations/liberations/target_phase")
 local Preloader = require("scripts/libs/nebulous-liberations/liberations/preloader")
 
 local compression = require('scripts/custom-scripts/compression')
@@ -29,6 +30,7 @@ local function boot_player(player, is_victory, map_name)
   player:boot_to_lobby(is_victory, map_name)
 end
 
+---@param self Liberation.MissionInstance
 local function liberate(self)
   self.liberated = true
 
@@ -70,7 +72,7 @@ local function liberate(self)
 
   local victory_message =
       self.area_name .. " Liberated\n" ..
-      "Target: " .. self.target_phase .. "\n" ..
+      "Target: " .. self.target_phase:calculate() .. "\n" ..
       "Actual: " .. self.phase
 
   for _, player in ipairs(self.players) do
@@ -87,15 +89,15 @@ local DARK_HOLE_SHAPE = {
 }
 
 -- expects execution in a coroutine
+---@param self Liberation.MissionInstance
 local function convert_indestructible_panels(self)
   local slide_time = .5
   local hold_time = 2
 
   -- notify players
-  for _, player_session in pairs(self.player_sessions) do
-    player_session.player:message("No more DarkHoles! Nothing will save the Darkloids now!")
-
-    local player = player_session.player
+  for _, player in ipairs(self.players) do
+    player:message("No more DarkHoles! Nothing will save the Darkloids now!")
+    local player_x, player_y, player_z = player:position_multi()
 
     Net.lock_player_input(player.id)
 
@@ -105,7 +107,7 @@ local function convert_indestructible_panels(self)
     Net.move_player_camera(player.id, self.boss.x, self.boss.y, self.boss.z, hold_time)
 
     -- return the camera
-    Net.slide_player_camera(player.id, player.x, player.y, player.z, slide_time)
+    Net.slide_player_camera(player.id, player_x, player_y, player_z, slide_time)
     Net.unlock_player_camera(player.id)
   end
 
@@ -122,19 +124,19 @@ local function convert_indestructible_panels(self)
   Async.await(Async.sleep(hold_time / 2 + slide_time))
 
   -- returning control
-  for _, player_session in pairs(self.player_sessions) do
-    if not player_session.completed_turn then
-      Net.unlock_player_input(player_session.player.id)
+  for _, player in ipairs(self.players) do
+    if not player.completed_turn then
+      Net.unlock_player_input(player.id)
     end
   end
 end
 
 ---@param self Liberation.MissionInstance
----@param player_session Liberation.PlayerSession
-local function liberate_panel(self, player_session)
+---@param player Liberation.Player
+local function liberate_panel(self, player)
   return Async.create_scope(function()
-    local player = player_session.player
-    local selection = player_session.selection
+    local player = player
+    local selection = player.selection
     local panel = selection.root_panel
 
     if panel.type == PanelTypes.BONUS then
@@ -148,9 +150,9 @@ local function liberate_panel(self, player_session)
 
       selection:clear()
 
-      Async.await(Loot.loot_bonus_panel(self, player_session, panel))
+      Async.await(Loot.loot_bonus_panel(self, player, panel))
 
-      Net.unlock_player_input(player_session.player.id)
+      Net.unlock_player_input(player.id)
     else
       if panel.custom_properties["Message"] ~= nil then
         Async.await(player:message_with_mug(panel.custom_properties["Message"]))
@@ -170,7 +172,9 @@ local function liberate_panel(self, player_session)
 
       -- If an overworld enemy exists, set facing & data
       if enemy then
-        EnemyHelpers.face_position(enemy, player.x, player.y)
+        local player_x, player_y = player:position_multi()
+
+        EnemyHelpers.face_position(enemy, player_x, player_y)
         encounter_path = enemy.encounter
         data.health = enemy.health
         data.rank = enemy.rank
@@ -194,7 +198,7 @@ local function liberate_panel(self, player_session)
       if DEBUG_AUTO_WIN then
         results = { success = true }
       else
-        results = Async.await(player_session:initiate_encounter(encounter_path, data))
+        results = Async.await(player:initiate_encounter(encounter_path, data))
       end
 
       if not results or not results.success then
@@ -202,7 +206,7 @@ local function liberate_panel(self, player_session)
           EnemyHelpers.sync_health(enemy, results)
         end
 
-        player_session:complete_turn()
+        player:complete_turn()
         return
       end
 
@@ -212,7 +216,7 @@ local function liberate_panel(self, player_session)
 
       local panels = selection:get_panels()
 
-      Async.await(player_session:liberate_panels(panels, results))
+      Async.await(player:liberate_panels(panels, results))
 
       -- destroy enemy
       local destroyed_enemy = Async.await(Enemy.destroy(self, enemy or panel.enemy))
@@ -222,19 +226,19 @@ local function liberate_panel(self, player_session)
       end
 
       -- loot
-      Async.await(player_session:loot_panels(panels))
+      Async.await(player:loot_panels(panels))
 
-      print(enemy and enemy.is_boss)
       -- figure out if we've won
       if destroyed_enemy and enemy and enemy.is_boss then
         liberate(self)
       else
-        player_session:complete_turn()
+        player:complete_turn()
       end
     end
   end)
 end
 
+---@param self Liberation.MissionInstance
 local function take_enemy_turn(self)
   self.updating = true
 
@@ -243,8 +247,8 @@ local function take_enemy_turn(self)
     local slide_time = .5
     local down_count = 0
 
-    for _, player_session in pairs(self.player_sessions) do
-      if player_session.health == 0 then
+    for _, player in ipairs(self.players) do
+      if player.health == 0 then
         down_count = down_count + 1
       end
     end
@@ -279,7 +283,7 @@ local function take_enemy_turn(self)
       self.updating = false
 
       if self.needs_disposal then
-        self:clean_up()
+        self:destroy()
       end
 
       return
@@ -376,24 +380,25 @@ local function take_enemy_turn(self)
     end
 
     -- completed turn, return camera to players
-    for _, player in pairs(self.players) do
+    for _, player in ipairs(self.players) do
+      local x, y, z = player:position_multi()
+
       -- Slide camera back to the player
-      Net.slide_player_camera(player.id, player.x, player.y, player.z, slide_time)
+      Net.slide_player_camera(player.id, x, y, z, slide_time)
 
       -- Return camera control
       Net.unlock_player_camera(player.id)
 
       -- If they aren't paralyzed or otherwise unable to move, return input
-      local session = self.player_sessions[player.id]
-      if session.is_trapped ~= true then Net.unlock_player_input(player.id) end
+      if player.is_trapped ~= true then Net.unlock_player_input(player.id) end
     end
 
     -- wait for the camera
     Async.await(Async.sleep(slide_time))
 
     -- give turn back to players
-    for _, player_session in pairs(self.player_sessions) do
-      player_session:give_turn()
+    for _, player in ipairs(self.players) do
+      player:give_turn()
     end
 
     self.emote_timer = 0
@@ -401,7 +406,7 @@ local function take_enemy_turn(self)
     self.updating = false
 
     if self.needs_disposal then
-      self:clean_up()
+      self:destroy()
     end
   end)
 end
@@ -417,52 +422,52 @@ end
 ---@field area_name string
 ---@field default_encounter string
 ---@field package emote_timer number
----@field package target_phase number
+---@field package target_phase Liberation._TargetPhase
 ---@field package liberated boolean
----@field package phase number
+---@field phase number
 ---@field ready_count number
----@field package order_points number
----@field package MAX_ORDER_POINTS number
+---@field order_points number
+---@field MAX_ORDER_POINTS number
 ---@field points_of_interest Net.Object[]
----@field package players LiberationPlayer[]
----@field player_sessions Liberation.PlayerSession[]
+---@field players Liberation.Player[]
+---@field player_map table<Net.ActorId, Liberation.Player>
 ---@field package boss Liberation.Enemy
 ---@field enemies Liberation.Enemy[]
 ---@field panels table<number, table<number, table<number, Liberation._PanelObject>>>
 ---@field dark_holes Net.Object[]
 ---@field indestructible_panels Net.Object[]
 ---@field gate_panels Net.Object[]
+---@field package spawn_positions Net.Object[]
+---@field package net_listeners [string, fun()][]
 ---@field package updating boolean
 ---@field package needs_disposal boolean
 ---@field package disposal_promise Net.Promise?
 local MissionInstance = {}
 
-function MissionInstance:new(base_area_id, new_area_id, players)
-  local base_target_phase = tonumber(Net.get_area_custom_property(base_area_id, "Target Phase")) or 10
-  local base_player_count = tonumber(Net.get_area_custom_property(base_area_id, "Target Player Count")) or 1
-  local minimum_phase_target = tonumber(Net.get_area_custom_property(base_area_id, "Minimum Target Phase")) or 1
-  local solo_target_phase = base_target_phase * base_player_count
-
+---@return Liberation.MissionInstance
+function MissionInstance:new(base_area_id, new_area_id)
   local mission = {
     area_id = new_area_id,
     area_name = Net.get_area_name(base_area_id),
     default_encounter = Net.get_area_custom_property(base_area_id, "Liberation Encounter"),
     emote_timer = 0,
-    target_phase = math.max(minimum_phase_target, math.ceil(solo_target_phase / #players)),
+    target_phase = TargetPhase:new(base_area_id),
     liberated = false,
     phase = 1,
     ready_count = 0,
     order_points = 3,
     MAX_ORDER_POINTS = 8,
     points_of_interest = {},
-    players = players,
-    player_sessions = {},
+    players = {},
+    player_map = {},
     boss = nil,
     enemies = {},
     panels = {},
     dark_holes = {},
     indestructible_panels = {},
     gate_panels = {},
+    spawn_positions = {},
+    net_listeners = {},
     updating = false,
     needs_disposal = false,
     disposal_promise = nil
@@ -605,10 +610,73 @@ function MissionInstance:new(base_area_id, new_area_id, players)
     end
   end
 
+  -- resolve spawn positions
+  local current_spawn = Net.get_object_by_name(new_area_id, "Spawn")
+  mission.spawn_positions = { current_spawn }
+  local spawns_loaded = {}
+
+  while true do
+    local id = current_spawn.custom_properties["Next Spawn"]
+
+    if not id or spawns_loaded[id] then
+      -- prevent infinite loops
+      break
+    end
+
+    spawns_loaded[id] = true
+
+    current_spawn = Net.get_object_by_id(mission.area_id, id)
+
+    if not current_spawn then
+      break
+    end
+
+    mission.spawn_positions[#mission.spawn_positions + 1] = current_spawn
+  end
+
+  -- add event listeners
+  local function add_event_listener(name, callback)
+    mission.net_listeners[#mission.net_listeners + 1] = { name, callback }
+    Net:on(name, callback)
+  end
+
+  add_event_listener("tick", function(event)
+    mission:tick(event.delta_time)
+  end)
+
+  add_event_listener("handle_tile_interaction", function(event)
+    mission:handle_tile_interaction(event.player_id, event.x, event.y, event.z, event.button)
+  end)
+
+  add_event_listener("object_interaction", function(event)
+    mission:handle_object_interaction(event.player_id, event.object_id)
+  end)
+
+  add_event_listener("player_area_transfer", function(event)
+    if Net.get_player_area(event.player_id) ~= new_area_id then
+      mission:handle_player_disconnect(event.player_id)
+    end
+  end)
+
+  add_event_listener("player_disconnect", function(event)
+    mission:handle_player_disconnect(event.player_id)
+  end)
+
   return mission
 end
 
-function MissionInstance:clean_up()
+function MissionInstance:transfer_player(player_id)
+  local spawn_position = self.spawn_positions[#self.players % #self.spawn_positions + 1]
+
+  local player = Player:new(self, player_id)
+  self.players[#self.players + 1] = player
+  self.player_map[player_id] = player
+  self.target_phase.players_joined = self.target_phase.players_joined + 1
+
+  Net.transfer_player(player.id, self.area_id, true, spawn_position.x, spawn_position.y, spawn_position.z)
+end
+
+function MissionInstance:destroy()
   if not self.disposal_promise then
     self.disposal_promise = Async.create_promise(function(resolve)
       self.resolve_disposal = resolve
@@ -628,20 +696,21 @@ function MissionInstance:clean_up()
   Net.remove_area(self.area_id)
   self.resolve_disposal(nil)
 
+  for i = #self.net_listeners, 1, -1 do
+    local name, callback = table.unpack(self.net_listeners[i])
+    self.net_listeners[i] = nil
+
+    Net:remove_listener(name, callback)
+  end
+
   return self.disposal_promise
 end
 
-function MissionInstance:cleaning_up()
+function MissionInstance:destroying()
   return self.needs_disposal
 end
 
-function MissionInstance:begin()
-  for _, player in ipairs(self.players) do
-    -- create data
-    self.player_sessions[player.id] = PlayerSession:new(self, player)
-  end
-end
-
+---@package
 function MissionInstance:tick(elapsed)
   if not self.liberated and self.ready_count == #self.players then
     self.ready_count = 0
@@ -652,8 +721,8 @@ function MissionInstance:tick(elapsed)
   self.emote_timer = self.emote_timer - elapsed
 
   if self.emote_timer <= 0 then
-    for _, player_session in pairs(self.player_sessions) do
-      player_session:emote_state()
+    for _, player in ipairs(self.players) do
+      player:emote_state()
     end
 
     -- emote every second
@@ -661,10 +730,14 @@ function MissionInstance:tick(elapsed)
   end
 end
 
+---@package
 function MissionInstance:handle_tile_interaction(player_id, x, y, z, button)
-  local player_session = self.player_sessions[player_id]
+  local player = self.player_map[player_id]
 
-  local panel_under_player = self:get_panel_at(player_session.player.x, player_session.player.y, player_session.player.z)
+  if not player then return end
+
+  local player_x, player_y, player_z = player:position_multi()
+  local panel_under_player = self:get_panel_at(player_x, player_y, player_z)
 
   if panel_under_player then return end
 
@@ -673,19 +746,19 @@ function MissionInstance:handle_tile_interaction(player_id, x, y, z, button)
     return
   end
 
-  if player_session.completed_turn or Net.is_player_in_widget(player_id) then
+  if player.completed_turn or Net.is_player_in_widget(player_id) then
     -- ignore selection as it's not our turn or waiting for a response
     return
   end
 
   Net.lock_player_input(player_id)
 
-  local quiz_promise = player_session:quiz_with_points("Pass", "Cancel")
+  local quiz_promise = player:quiz_with_points("Pass", "Cancel")
 
   quiz_promise.and_then(function(response)
     if response == 0 then
       -- Pass
-      player_session:get_pass_turn_permission()
+      player:get_pass_turn_permission()
     elseif response == 1 then
       -- Cancel
       Net.unlock_player_input(player_id)
@@ -693,12 +766,14 @@ function MissionInstance:handle_tile_interaction(player_id, x, y, z, button)
   end)
 end
 
+---@package
 function MissionInstance:handle_object_interaction(player_id, object_id, button)
-  local player_session = self.player_sessions[player_id]
+  local player = self.player_map[player_id]
 
-  if not player_session then return end
+  if not player then return end
 
-  local panel_under_player = self:get_panel_at(player_session.player.x, player_session.player.y, player_session.player.z)
+  local player_position = player:position()
+  local panel_under_player = self:get_panel_at(player_position.x, player_position.y, player_position.z)
 
   -- Player is moving over dark panels with an ability and thus cannot interact.
   if panel_under_player then return end
@@ -708,7 +783,7 @@ function MissionInstance:handle_object_interaction(player_id, object_id, button)
     return
   end
 
-  if player_session.completed_turn or Net.is_player_in_widget(player_id) then
+  if player.completed_turn or Net.is_player_in_widget(player_id) then
     -- ignore selection as it's not our turn or waiting for a response
     return
   end
@@ -719,12 +794,12 @@ function MissionInstance:handle_object_interaction(player_id, object_id, button)
 
   if not object then
     -- must have been liberated
-    local x, y, z = player_session.player.x, player_session.player.y, player_session.player.z
+    local x, y, z = player_position.x, player_position.y, player_position.z
     self:handle_tile_interaction(player_id, x, y, z, button)
     return
   end
 
-  if not is_adjacent(player_session.player, object) then
+  if not is_adjacent(player_position, object) then
     -- can't select panels diagonally
     return
   end
@@ -740,8 +815,8 @@ function MissionInstance:handle_object_interaction(player_id, object_id, button)
 
   local panel_already_selected = false
 
-  for _, player_session in pairs(self.player_sessions) do
-    if player_session.selection.root_panel == panel then
+  for _, player in ipairs(self.players) do
+    if player.selection.root_panel == panel then
       panel_already_selected = true
       break
     end
@@ -751,12 +826,12 @@ function MissionInstance:handle_object_interaction(player_id, object_id, button)
 
   if not can_liberate then
     -- indestructible panels
-    local quiz_promise = player_session:quiz_with_points("Pass", "Cancel")
+    local quiz_promise = player:quiz_with_points("Pass", "Cancel")
 
     quiz_promise.and_then(function(response)
       if response == 0 then
         -- Pass
-        player_session:get_pass_turn_permission()
+        player:get_pass_turn_permission()
       elseif response == 1 then
         -- Cancel
         Net.unlock_player_input(player_id)
@@ -766,7 +841,7 @@ function MissionInstance:handle_object_interaction(player_id, object_id, button)
     return
   end
 
-  local ability = player_session.ability
+  local ability = player.ability
   local can_use_ability = (
     ability ~= nil and
     ability.question and                                 -- no question = passive ability
@@ -775,10 +850,10 @@ function MissionInstance:handle_object_interaction(player_id, object_id, button)
     PanelTypes.ABILITY_ACTIONABLE[panel.type]
   )
 
-  player_session.selection:select_panel(panel)
+  player.selection:select_panel(panel)
 
   if ability and can_use_ability then
-    local quiz_promise = player_session:quiz_with_points(
+    local quiz_promise = player:quiz_with_points(
       "Liberation",
       ability.name,
       "Pass"
@@ -787,24 +862,24 @@ function MissionInstance:handle_object_interaction(player_id, object_id, button)
     quiz_promise.and_then(function(response)
       if response == 0 then
         -- Liberate
-        liberate_panel(self, player_session)
+        liberate_panel(self, player)
       elseif response == 1 then
         -- Ability
-        local selection_shape, shape_offset_x, shape_offset_y = ability.generate_shape(self, player_session)
-        player_session.selection:set_shape(selection_shape, shape_offset_x, shape_offset_y)
+        local selection_shape, shape_offset_x, shape_offset_y = ability.generate_shape(self, player)
+        player.selection:set_shape(selection_shape, shape_offset_x, shape_offset_y)
 
         -- ask if we should use the ability
-        player_session:get_ability_permission()
+        player:get_ability_permission()
       elseif response == 2 then
         -- Pass
-        player_session.selection:clear()
-        player_session:get_pass_turn_permission()
+        player.selection:clear()
+        player:get_pass_turn_permission()
       end
     end)
     return
   end
 
-  local quiz_promise = player_session:quiz_with_points(
+  local quiz_promise = player:quiz_with_points(
     "Liberation",
     "Pass",
     "Cancel"
@@ -813,50 +888,39 @@ function MissionInstance:handle_object_interaction(player_id, object_id, button)
   quiz_promise.and_then(function(response)
     if response == 0 then
       -- Liberation
-      liberate_panel(self, player_session)
+      liberate_panel(self, player)
     elseif response == 1 then
       -- Pass
-      player_session.selection:clear()
-      player_session:get_pass_turn_permission()
+      player.selection:clear()
+      player:get_pass_turn_permission()
     elseif response == 2 then
       -- Cancel
-      player_session.selection:clear()
+      player.selection:clear()
       Net.unlock_player_input(player_id)
     end
   end)
 end
 
-function MissionInstance:handle_player_avatar_change(player_id)
-  local player = self.player_sessions[player_id].player
-  player:boot_to_lobby(false, self.area_name)
-end
-
+---@package
 function MissionInstance:handle_player_disconnect(player_id)
-  for i, player in ipairs(self.players) do
-    if player_id == player.id then
+  local player = self.player_map[player_id]
+
+  if not player then return end
+
+  self.player_map[player_id] = nil
+
+  for i, p in ipairs(self.players) do
+    if player == p then
       table.remove(self.players, i)
       break
     end
   end
 
-  self.player_sessions[player_id]:handle_disconnect()
-  self.player_sessions[player_id] = nil
+  player:handle_disconnect()
 end
 
 function MissionInstance:get_players()
   return self.players
-end
-
-function MissionInstance:get_spawn_position()
-  return Net.get_object_by_name(self.area_id, "Spawn")
-end
-
-function MissionInstance:get_next_spawn_from_object(object_id)
-  local object = Net.get_object_by_id(self.area_id, object_id)
-  if object.custom_properties["Next Spawn"] and Net.get_object_by_id(self.area_id, object.custom_properties["Next Spawn"]).type == "Spawn Point" then
-    return Net.get_object_by_id(self.area_id, object.custom_properties["Next Spawn"])
-  end
-  return self:get_spawn_position()
 end
 
 -- helper functions

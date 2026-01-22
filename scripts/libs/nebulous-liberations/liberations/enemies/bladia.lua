@@ -2,6 +2,11 @@ local EnemySelection = require("scripts/libs/nebulous-liberations/liberations/en
 local EnemyHelpers = require("scripts/libs/nebulous-liberations/liberations/enemy_helpers")
 local Direction = require("scripts/libs/direction")
 
+---@class Liberation.Enemies.Bladia: Liberation.Enemy
+---@field instance Liberation.MissionInstance
+---@field selection Liberation.EnemySelection
+---@field damage number
+---@field direction string
 local Bladia = {}
 
 --Setup ranked health and damage
@@ -9,6 +14,7 @@ local mob_health = { 200, 230, 230, 300, 340, 400 }
 local mob_damage = { 50, 80, 120, 160, 200, 250 }
 local mob_ranks = { 1, 2, 3, 4, 5, 6 }
 
+---@return Liberation.Enemies.Bladia
 function Bladia:new(instance, position, direction, rank)
   rank = rank or 1
 
@@ -66,15 +72,19 @@ end
 
 function Bladia:take_turn()
   return Async.create_scope(function()
-    local player = EnemyHelpers.find_closest_player_session(self.instance, self, 5)
+    local player = EnemyHelpers.find_closest_player(self.instance, self, 5)
     if not player then return end --No player. Don't bother.
-    -- local distance = EnemyHelpers.chebyshev_tile_distance(self, player.player.x, player.player.y, player.player.z)
+
+    local player_position = player:position()
+    local player_x, player_y, player_z = player_position.x, player_position.y, player_position.z
+
+    -- local distance = EnemyHelpers.chebyshev_tile_distance(self, player_x, player_y, player_z)
     -- if distance > 5 then return end --Player too far. Don't bother.
-    self.selection:move(player.player, Direction.None)
-    local targetx = player.player.x
-    local targety = player.player.y
-    local original_coordinates = { x = targetx, y = targety, z = player.player.z }
-    local tile_to_check = Net.get_tile(self.instance.area_id, targetx, targety, player.player.z)
+    self.selection:move(player_position, Direction.None)
+    local targetx = player_x
+    local targety = player_y
+    local original_coordinates = { x = targetx, y = targety, z = player_z }
+    local tile_to_check = Net.get_tile(self.instance.area_id, targetx, targety, player_z)
 
     --Helper function to return if we can move to this tile or not
     local function coordinate_check(checkx, checky)
@@ -85,12 +95,15 @@ function Bladia:take_turn()
     end
 
     local function panel_check(checkx, checky)
-      local spare_object = self.instance:get_panel_at(checkx, checky, player.player.z)
+      local spare_object = self.instance:get_panel_at(checkx, checky, player_z)
+
       if not spare_object then return false end --No panel, return false, can warp
+
       if EnemyHelpers.can_move_to(self.instance, spare_object.x, spare_object.y, spare_object.z) then
-        return false                            --can warp
+        return false --can warp
       end
-      return true                               --cannot warp
+
+      return true --cannot warp
     end
 
     if not tile_to_check then return end --No tile, return.
@@ -101,7 +114,7 @@ function Bladia:take_turn()
     end
 
     --Reacquire the tile with new coordinates.
-    tile_to_check = Net.get_tile(self.instance.area_id, targetx, targety, player.player.z)
+    tile_to_check = Net.get_tile(self.instance.area_id, targetx, targety, player_z)
     if not tile_to_check then return end --No tile, return.
     if tile_to_check.gid == 0 or coordinate_check(targetx, targety) or panel_check(targetx, targety) then
       targetx = original_coordinates.x
@@ -109,7 +122,7 @@ function Bladia:take_turn()
     end
 
     --Reacquire the tile with new coordinates.
-    tile_to_check = Net.get_tile(self.instance.area_id, targetx, targety, player.player.z)
+    tile_to_check = Net.get_tile(self.instance.area_id, targetx, targety, player_z)
     if not tile_to_check then return end --No tile, return.
     if tile_to_check.gid == 0 or coordinate_check(targetx, targety) or panel_check(targetx, targety) then
       targety = original_coordinates.y
@@ -117,33 +130,38 @@ function Bladia:take_turn()
     end
 
     --Reacquire the tile with new coordinates.
-    tile_to_check = Net.get_tile(self.instance.area_id, targetx, targety, player.player.z)
+    tile_to_check = Net.get_tile(self.instance.area_id, targetx, targety, player_z)
     if not tile_to_check then return end --No tile, return.
     if tile_to_check.gid == 0 or coordinate_check(targetx, targety) or panel_check(targetx, targety) then
       targety = original_coordinates.y
       targetx = original_coordinates.x - 1
     end
 
-    tile_to_check = Net.get_tile(self.instance.area_id, targetx, targety, player.player.z)
+    tile_to_check = Net.get_tile(self.instance.area_id, targetx, targety, player_z)
     if not tile_to_check then return end --No tile, return.
     if tile_to_check.gid == 0 or coordinate_check(targetx, targety) or panel_check(targetx, targety) then
       return                             --We can't move anywhere safe. Return.
     end
 
     --Get the direction to face.
-    local target_direction = Direction.diagonal_from_offset((player.player.x - targetx), (player.player.y - targety))
+    local target_direction = Direction.diagonal_from_offset((player_x - targetx), (player_y - targety))
 
     --Grab example tiles from which to generate a new dark panel.
     local example_panel = self.instance:get_panel_at(self.x, self.y, self.z)
+
+    if not example_panel then
+      return
+    end
+
     local example_collision = Net.get_object_by_id(self.instance.area_id, example_panel.visual_object_id)
 
     if not example_panel or not example_collision then return end --If they don't exist (SOMEHOW) then return.
 
-    Async.await(EnemyHelpers.move(self.instance, self, targetx, targety, player.player.z, target_direction))
-    if not self.instance:get_panel_at(targetx, targety, player.player.z) then
+    Async.await(EnemyHelpers.move(self.instance, self, targetx, targety, player_z, target_direction))
+    if not self.instance:get_panel_at(targetx, targety, player_z) then
       local x = math.floor(targetx) + 1
       local y = math.floor(targety) + 1
-      local z = math.floor(player.player.z) + 1
+      local z = math.floor(player_z) + 1
 
       --Generate the data for the Collision
       local new_panel = {
