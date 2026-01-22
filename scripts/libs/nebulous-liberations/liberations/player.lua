@@ -1,9 +1,8 @@
-local Ability = require("scripts/libs/nebulous-liberations/liberations/ability")
 local PlayerSelection = require("scripts/libs/nebulous-liberations/liberations/player_selection")
 local Loot = require("scripts/libs/nebulous-liberations/liberations/loot")
 local EnemyHelpers = require("scripts/libs/nebulous-liberations/liberations/enemy_helpers")
-local ParalysisEffect = require("scripts/libs/nebulous-liberations/utils/paralysis_effect")
-local RecoverEffect = require("scripts/libs/nebulous-liberations/utils/recover_effect")
+local ParalysisEffect = require("scripts/libs/nebulous-liberations/liberations/effects/paralysis_effect")
+local RecoverEffect = require("scripts/libs/nebulous-liberations/liberations/effects/recover_effect")
 local Emotes = require("scripts/libs/emotes")
 
 ---@class Liberation.Player

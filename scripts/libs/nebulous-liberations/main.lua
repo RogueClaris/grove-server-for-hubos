@@ -1,7 +1,7 @@
 local player_data = require('scripts/custom-scripts/player_data')
 local Instance = require("scripts/libs/nebulous-liberations/liberations/instance")
 local Ability = require("scripts/libs/nebulous-liberations/liberations/ability")
-local Parties = require("scripts/libs/nebulous-liberations/utils/parties")
+local Parties = require("scripts/libs/parties")
 
 local Liberations = {}
 

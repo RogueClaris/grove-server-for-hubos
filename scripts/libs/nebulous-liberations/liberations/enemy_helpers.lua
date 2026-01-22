@@ -1,4 +1,4 @@
-local RecoverEffect = require("scripts/libs/nebulous-liberations/utils/recover_effect")
+local RecoverEffect = require("scripts/libs/nebulous-liberations/liberations/effects/recover_effect")
 local Direction = require("scripts/libs/direction")
 
 local EnemyHelpers = {
