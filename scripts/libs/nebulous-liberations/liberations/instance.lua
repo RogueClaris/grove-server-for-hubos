@@ -824,13 +824,13 @@ end
 
 function Mission:handle_object_interaction(player_id, object_id, button)
   local player_session = self.player_sessions[player_id]
-  if player_session == nil then return end;
 
-  local x, y, z = player_session.player.x, player_session.player.y, player_session.player.z
-  local object = self:get_panel_at(x, y, z)
+  if not player_session then return end
+
+  local panel_under_player = self:get_panel_at(player_session.player.x, player_session.player.y, player_session.player.z)
 
   -- Player is moving over dark panels with an ability and thus cannot interact.
-  if object then return end
+  if panel_under_player then return end
 
   if button == 1 then
     -- Shoulder L
@@ -843,25 +843,18 @@ function Mission:handle_object_interaction(player_id, object_id, button)
   end
 
   -- panel selection detection
-  object = Net.get_object_by_id(self.area_id, object_id)
 
-  -- If it no longer exists, it must have been liberated.
-  if not object then return self:handle_tile_interaction(player_id, x, y, z, button) end
+  local object = Net.get_object_by_id(self.area_id, object_id)
 
-  if not is_adjacent(
-        {
-          x = player_session.player.x,
-          y = player_session.player.y,
-          z = player_session.player.z
-        },
-        {
-          x = object.x,
-          y = object.y,
-          z = object.z
-        }
-      ) then
+  if not object then
+    -- must have been liberated
+    local x, y, z = player_session.player.x, player_session.player.y, player_session.player.z
+    self:handle_tile_interaction(player_id, x, y, z, button)
+    return
+  end
+
+  if not is_adjacent(player_session.player, object) then
     -- can't select panels diagonally
-    print("diagonal")
     return
   end
 
@@ -869,7 +862,6 @@ function Mission:handle_object_interaction(player_id, object_id, button)
 
   if not panel then
     -- no data associated with this object
-    print("no panel somehow")
     return
   end
 
@@ -877,8 +869,8 @@ function Mission:handle_object_interaction(player_id, object_id, button)
 
   local panel_already_selected = false
 
-  for _, check_player_session in pairs(self.player_sessions) do
-    if check_player_session.selection.root_panel == panel then
+  for _, player_session in pairs(self.player_sessions) do
+    if player_session.selection.root_panel == panel then
       panel_already_selected = true
       break
     end
@@ -897,9 +889,11 @@ function Mission:handle_object_interaction(player_id, object_id, button)
     local quiz_promise = player_session:quiz_with_points("Pass", "Cancel")
 
     quiz_promise.and_then(function(response)
-      if response == 0 then     -- Pass
+      if response == 0 then
+        -- Pass
         player_session:get_pass_turn_permission()
-      elseif response == 1 then -- Cancel
+      elseif response == 1 then
+        -- Cancel
         Net.unlock_player_input(player_id)
       end
     end)
@@ -908,21 +902,10 @@ function Mission:handle_object_interaction(player_id, object_id, button)
   end
 
   local ability = player_session.ability
-
-  local has_enemy = false
-
-  -- Check for existence of an enemy.
-  for _, enemy in ipairs(self.enemies) do
-    if (math.min(panel.x) == enemy.x and math.min(panel.y) == enemy.y and enemy.z == panel.z) then
-      has_enemy = true
-      break
-    end
-  end
-
   local can_use_ability = (
     ability ~= nil and
-    ability.question and -- no question = passive ability
-    not has_enemy and    -- cant have an enemy standing on this tile
+    ability.question and                                 -- no question = passive ability
+    not self:get_enemy_at(panel.x, panel.y, panel.z) and -- cant have an enemy standing on this tile
     self.order_points >= ability.cost and
     (
       panel.type == "Dark Panel" or
@@ -931,49 +914,54 @@ function Mission:handle_object_interaction(player_id, object_id, button)
     )
   )
 
-  local quiz_promise = nil;
+  player_session.selection:select_panel(panel)
 
-  if can_use_ability == false then
-    quiz_promise = player_session:quiz_with_points(
+  if not can_use_ability then
+    local quiz_promise = player_session:quiz_with_points(
       "Liberation",
       "Pass",
       "Cancel"
     )
-  else
-    quiz_promise = player_session:quiz_with_points(
-      "Liberation",
-      ability.name,
-      "Pass"
-    )
+
+    quiz_promise.and_then(function(response)
+      if response == 0 then
+        -- Liberation
+        liberate_panel(self, player_session)
+      elseif response == 1 then
+        -- Pass
+        player_session.selection:clear()
+        player_session:get_pass_turn_permission()
+      elseif response == 2 then
+        -- Cancel
+        player_session.selection:clear()
+        Net.unlock_player_input(player_id)
+      end
+    end)
+
+    return
   end
 
-  player_session.selection:select_panel(panel)
+  local quiz_promise = player_session:quiz_with_points(
+    "Liberation",
+    ability.name,
+    "Pass"
+  )
 
   quiz_promise.and_then(function(response)
     if response == 0 then
-      -- Liberation
-      liberate_panel(self, player_session).and_then(function(result)
-        -- Return control to the player
-        -- Net.unlock_player_input(player_id)
-
-        -- Always last! Complete the turn to progress the mission!
-        -- player_session:complete_turn()
-      end)
-    elseif (response == 1 and can_use_ability == false) or (response == 2 and can_use_ability == true) then
-      -- Pass
-      player_session.selection:clear()
-      player_session:get_pass_turn_permission()
-    elseif response == 1 and can_use_ability == true then
+      -- Liberate
+      liberate_panel(self, player_session)
+    elseif response == 1 then
       -- Ability
       local selection_shape, shape_offset_x, shape_offset_y = ability.generate_shape(self, player_session)
       player_session.selection:set_shape(selection_shape, shape_offset_x, shape_offset_y)
 
       -- ask if we should use the ability
       player_session:get_ability_permission()
-    elseif (response == 2 and can_use_ability == false) then
-      -- Cancel
+    elseif response == 2 then
+      -- Pass
       player_session.selection:clear()
-      Net.unlock_player_input(player_id)
+      player_session:get_pass_turn_permission()
     end
   end)
 end
