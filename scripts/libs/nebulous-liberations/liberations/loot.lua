@@ -15,9 +15,8 @@ Loot.HEART = {
   breakable = true,
   activate = function(instance, player)
     return Async.create_scope(function()
-      player:message_with_mug("I found\na heart!").and_then(function()
-        player:heal(player.max_health / 2)
-      end)
+      Async.await(player:message_with_mug("I found\na heart!"))
+      player:heal(player.max_health / 2)
     end)
   end
 }
@@ -28,9 +27,7 @@ Loot.CHIP = {
   breakable = true,
   activate = function(instance, player)
     return Async.create_scope(function()
-      player:message_with_mug("I found a\nBattleChip!").and_then(function()
-
-      end)
+      Async.await(player:message_with_mug("I found a\nBattleChip!"))
     end)
   end
 }
@@ -60,25 +57,24 @@ Loot.BUGFRAG = {
   breakable = true,
   activate = function(instance, player)
     return Async.create_scope(function()
-      player:message_with_mug("I found a\nBugFrag!").and_then(function()
-
-      end)
+      Async.await(player:message_with_mug("I found a\nBugFrag!"))
     end)
   end
 }
 
+---@type Liberation._Loot
 Loot.ORDER_POINT = {
   animation = "ORDER_POINT",
   breakable = false,
   activate = function(instance, player)
     return Async.create_scope(function()
-      player:message_with_mug("I found\nOrder Points!")
+      Async.await(player:message_with_mug("I found\nOrder Points!"))
 
       local previous_points = instance.order_points
       instance.order_points = math.min(instance.order_points + 3, instance.MAX_ORDER_POINTS)
 
       local recovered_points = instance.order_points - previous_points
-      player:message(recovered_points .. "\nOrder Pts Recovered!")
+      Async.await(player:message_with_points(recovered_points .. "\nOrder Pts Recovered!"))
     end)
   end
 }
@@ -89,11 +85,11 @@ Loot.INVINCIBILITY = {
   breakable = false,
   activate = function(instance, player)
     return Async.create_scope(function()
-      player:message("Team becomes invincible for\n 1 phase!!").and_then(function()
-        for _, other_player in pairs(instance.players) do
-          other_player.invincible = true
-        end
-      end)
+      for _, other_player in pairs(instance.players) do
+        other_player.invincible = true
+      end
+
+      Async.await(player:message("Team becomes invincible for\n 1 phase!!"))
     end)
   end
 }
@@ -134,6 +130,7 @@ Loot.KEY = {
         Async.await(player:message_with_mug("But it doesn't open anything..."))
         return
       end
+
       local id = gates[1].custom_properties["Gate Key"]
       local points = player:find_gate_points(id)
       local function unlock_gates()
@@ -141,6 +138,7 @@ Loot.KEY = {
           instance:remove_panel(gates[i])
         end
       end
+
       if #points > 0 then
         local hold_time = .4
         local slide_time = .4
