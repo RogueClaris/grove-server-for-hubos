@@ -5,10 +5,11 @@ local package_ids = {
   "BattleNetwork4.FireMan",
   "BattleNetwork4.GutsMan",
   "BattleNetwork5.BlizzardMan",
+  "BattleNetwork5.Virus.BigBrute",
   -- viruses
   "BattleNetwork3.Basher",
   "BattleNetwork3.Ratty",
-  "BattleNetwork3.Spikey",
+  "BattleNetwork3.Enemy.Spikey",
   "BattleNetwork4.Gaia",
   "BattleNetwork3.Canodumb",
   "BattleNetwork6.Mettaur",
