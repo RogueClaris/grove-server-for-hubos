@@ -793,9 +793,10 @@ end
 
 function Mission:handle_tile_interaction(player_id, x, y, z, button)
   local player_session = self.player_sessions[player_id]
-  local object = self:get_panel_at(player_session.player.x, player_session.player.y, player_session.player.z)
 
-  if object then return end
+  local panel_under_player = self:get_panel_at(player_session.player.x, player_session.player.y, player_session.player.z)
+
+  if panel_under_player then return end
 
   if button == 1 then
     -- Shoulder L
