@@ -1,4 +1,4 @@
-local LibPlugin = {}
+local Liberations = {}
 
 local Instance = require("scripts/libs/nebulous-liberations/liberations/instance")
 local Parties = require("scripts/libs/nebulous-liberations/utils/parties")
@@ -15,7 +15,7 @@ local function transfer_players_to_new_instance(base_area, player_ids)
   end
 end
 
-function LibPlugin.start_game_for_player(player_id, liberation_id)
+function Liberations.start_game_for_player(player_id, liberation_id)
   local party = Parties.find(player_id)
   if party == nil then
     transfer_players_to_new_instance(liberation_id, { player_id })
@@ -30,9 +30,11 @@ local function detect_door_interaction(player_id, object_id, button)
   local player_area = Net.get_player_area(player_id)
 
   if missionArea ~= nil and player_area == missionArea[1] then
-    player:question_with_mug("Start mission?").and_then(function(response)
+    local mug_option = { mug = Net.get_player_mugshot(player_id) }
+
+    Async.question_player(player_id, "Start mission?", mug_option).and_then(function(response)
       if response == 1 then
-        LibPlugin.start_game_for_player(player_id, missionArea[2])
+        Liberations.start_game_for_player(player_id, missionArea[2])
       end
     end)
   end
@@ -83,15 +85,17 @@ Net:on("actor_interaction", function(event)
 
   local name = Net.get_player_name(other_player_id)
 
+  local mug_option = { mug = Net.get_player_mugshot(player_id) }
+
   if Parties.is_in_same_party(player_id, other_player_id) then
-    player:message_with_mug(name .. " is already in our party.")
+    Net.message_player(player_id, name .. " is already in our party.", mug_option)
     return
   end
 
   -- checking for an invite
   if Parties.has_request(player_id, other_player_id) then
     -- other player has a request for us
-    player:question_with_mug("Join " .. name .. "'s party?").and_then(function(response)
+    Async.question_player(player_id, "Join " .. name .. "'s party?", mug_option).and_then(function(response)
       if response == 1 then
         Parties.accept(player_id, other_player_id)
       end
@@ -102,11 +106,11 @@ Net:on("actor_interaction", function(event)
 
   -- try making a party request
   if Parties.has_request(other_player_id, player_id) then
-    player:message_with_mug("We already asked " .. name .. " to join our party.")
+    Async.message_player(player_id, "We already asked " .. name .. " to join our party.", mug_option)
     return
   end
 
-  player:question_with_mug("Recruit " .. name .. "?").and_then(function(response)
+  Async.question_player(player_id, "Recruit " .. name .. "?", mug_option).and_then(function(response)
     if response == 1 then
       -- create a request
       Parties.request(player_id, other_player_id)
@@ -140,4 +144,4 @@ for i, area_id in next, areas do
   end
 end
 
-return LibPlugin
+return Liberations
