@@ -8,7 +8,7 @@ end
 
 ---@param instance Liberation.MissionInstance
 ---@param player Liberation.Player
----@param results Net.BattleResults?
+---@param results Liberation.BattleResults
 local function liberate_and_loot(instance, player, results)
   local remove_traps, destroy_items = player.ability.remove_traps, player.ability.destroy_items
   local panels = player.selection:get_panels()

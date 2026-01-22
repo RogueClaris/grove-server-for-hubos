@@ -334,6 +334,10 @@ function Player:find_closest_guardian()
   return closest_guardian
 end
 
+---@class Liberation.BattleResults: Net.BattleResults
+---@field success boolean
+
+---@param results Liberation.BattleResults
 function Player:liberate_panels(panels, results)
   return Async.create_scope(function()
     -- Allow time for the player to see the liberation range
@@ -409,6 +413,7 @@ function Player:loot_panels(panels, remove_traps, destroy_items)
   end)
 end
 
+---@param results Liberation.BattleResults
 function Player:liberate_and_loot_panels(panels, results, remove_traps, destroy_items)
   return Async.create_scope(function()
     self:liberate_panels(panels, results).and_then(function()

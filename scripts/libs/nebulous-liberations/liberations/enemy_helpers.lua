@@ -198,9 +198,11 @@ function EnemyHelpers.find_closest_player(instance, enemy, max_distance)
   return closest_player
 end
 
+---@param enemy Liberation.Enemy
+---@param results Liberation.BattleResults
 function EnemyHelpers.sync_health(enemy, results)
   for _, data in ipairs(results.enemies) do
-    if enemy.battle_name == data.id then
+    if enemy.battle_name == data.name then
       enemy.health = data.health
       EnemyHelpers.update_name(enemy)
       break
