@@ -75,8 +75,12 @@ function BigBrute:spawn(direction)
   Net.set_bot_map_color(self.id, EnemyHelpers.guardian_minimap_marker)
 end
 
-function BigBrute.get_death_message(self)
+function BigBrute:get_death_message()
   return "Gyaaaaahh!!"
+end
+
+function BigBrute:banter()
+  return Async.create_scope(function() end)
 end
 
 local function sign(a)

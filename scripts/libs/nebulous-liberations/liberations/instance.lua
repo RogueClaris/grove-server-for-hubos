@@ -181,10 +181,7 @@ local function liberate_panel(self, player)
         data.health = enemy.health
         data.rank = enemy.rank
 
-        -- Boss check for banter
-        if enemy.is_boss and not enemy.is_engaged then
-          Async.await(enemy:do_first_encounter_banter(player.id))
-        end
+        Async.await(enemy:banter(player.id))
       elseif panel.enemy then
         -- hidden enemy within dark panel
         local hidden_enemy = panel.enemy

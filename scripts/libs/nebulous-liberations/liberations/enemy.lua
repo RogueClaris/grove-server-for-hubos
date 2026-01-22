@@ -13,11 +13,10 @@
 ---@field z number should be floored
 ---@field mug Net.TextureAnimationPair?
 ---@field encounter string
----@field is_engaged boolean
 ---@field new fun(self: Liberation.Enemy, mission: Liberation.MissionInstance, position: Net.Position): Liberation.Enemy
 ---@field take_turn fun(self: Liberation.Enemy): Net.Promise
 ---@field get_death_message fun(self: Liberation.Enemy): string
----@field do_first_encounter_banter fun(self: Liberation.Enemy, player_id: Net.ActorId): Net.Promise called when is_engaged is false
+---@field banter fun(self: Liberation.Enemy, player_id: Net.ActorId): Net.Promise
 
 local BlizzardMan = require("scripts/libs/nebulous-liberations/liberations/enemies/blizzardman")
 local BigBrute = require("scripts/libs/nebulous-liberations/liberations/enemies/bigbrute")

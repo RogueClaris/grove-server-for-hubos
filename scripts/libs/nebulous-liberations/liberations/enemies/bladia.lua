@@ -75,10 +75,8 @@ function Bladia:get_death_message()
   return "Gyaaaahh!!"
 end
 
-function Bladia:do_first_encounter_banter(player_id)
-  return Async.create_scope(function()
-    self.is_engaged = true
-  end)
+function Bladia:banter(player_id)
+  return Async.create_scope(function() end)
 end
 
 function Bladia:take_turn()

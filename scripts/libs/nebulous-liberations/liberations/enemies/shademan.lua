@@ -7,6 +7,7 @@ local Direction = require("scripts/libs/direction")
 ---@field selection Liberation.EnemySelection
 ---@field damage number
 ---@field direction string
+---@field is_engaged boolean
 local ShadeMan = {}
 
 --Setup ranked health and damage
@@ -79,11 +80,16 @@ function ShadeMan:get_death_message()
   return "Grr! I can't\nbelieve I've been\ndisgraced again...!\nGyaaaahh!!"
 end
 
-function ShadeMan:do_first_encounter_banter(player_id)
+function ShadeMan:banter(player_id)
   return Async.create_scope(function()
+    if self.is_engaged then
+      return
+    end
+
+    self.is_engaged = true
+
     Async.await(Async.message_player(player_id, "Your deletion will be delicious!", self.mug.texture_path,
       self.mug.animation_path))
-    self.is_engaged = true
   end)
 end
 

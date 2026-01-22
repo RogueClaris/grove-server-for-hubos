@@ -10,6 +10,7 @@ Preloader.add_asset("/server/assets/NebuLibsAssets/bots/snowball.animation")
 ---@field selection Liberation.EnemySelection
 ---@field damage number
 ---@field direction string
+---@field is_engaged boolean
 local BlizzardMan = {}
 
 --Setup ranked health and damage
@@ -66,13 +67,18 @@ function BlizzardMan:new(instance, position, direction, rank)
   return blizzardman
 end
 
-function BlizzardMan:do_first_encounter_banter(player_id)
+function BlizzardMan:banter(player_id)
   return Async.create_scope(function()
+    if self.is_engaged then
+      return
+    end
+
+    self.is_engaged = true
+
     Async.await(Async.message_player(player_id, "I didn't think you would make it this far! *Whoosh*",
       self.mug.texture_path, self.mug.animation_path))
     Async.await(Async.message_player(player_id, "I'll freeze you to the bone!", self.mug.texture_path,
       self.mug.animation_path))
-    self.is_engaged = true
   end)
 end
 
