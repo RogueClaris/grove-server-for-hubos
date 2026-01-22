@@ -5,7 +5,7 @@
  <image source="panels.png" width="350" height="300"/>
  <tile id="0">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="-3.5" y="3.5" width="34" height="34"/>
+   <object id="2" x="-4" y="3" width="35" height="35"/>
   </objectgroup>
   <animation>
    <frame tileid="0" duration="1000"/>
@@ -18,7 +18,7 @@
  </tile>
  <tile id="1">
   <objectgroup draworder="index" id="2">
-   <object id="2" x="-3.5" y="3.5" width="34" height="34"/>
+   <object id="3" x="-4" y="3" width="35" height="35"/>
   </objectgroup>
   <animation>
    <frame tileid="1" duration="1000"/>
@@ -31,7 +31,7 @@
  </tile>
  <tile id="2">
   <objectgroup draworder="index" id="2">
-   <object id="3" x="-3.5" y="3.5" width="34" height="34"/>
+   <object id="4" x="-4" y="3" width="35" height="35"/>
   </objectgroup>
   <animation>
    <frame tileid="2" duration="500"/>
@@ -44,7 +44,7 @@
  </tile>
  <tile id="3">
   <objectgroup draworder="index" id="2">
-   <object id="3" x="-3.5" y="3.5" width="34" height="34"/>
+   <object id="4" x="-4" y="3" width="35" height="35"/>
   </objectgroup>
   <animation>
    <frame tileid="3" duration="320"/>
@@ -57,7 +57,7 @@
  </tile>
  <tile id="4">
   <objectgroup draworder="index" id="2">
-   <object id="3" x="-3.5" y="3.5" width="34" height="34"/>
+   <object id="4" x="-4" y="3" width="35" height="35"/>
   </objectgroup>
   <animation>
    <frame tileid="4" duration="180"/>
@@ -74,7 +74,7 @@
  </tile>
  <tile id="5">
   <objectgroup draworder="index" id="2">
-   <object id="3" x="-3.5" y="3.5" width="34" height="34"/>
+   <object id="4" x="-4" y="3" width="35" height="35"/>
   </objectgroup>
   <animation>
    <frame tileid="5" duration="180"/>
@@ -86,7 +86,7 @@
  </tile>
  <tile id="6">
   <objectgroup draworder="index" id="2">
-   <object id="3" x="-3.5" y="3.5" width="34" height="34"/>
+   <object id="3" x="-4" y="3" width="35" height="35"/>
   </objectgroup>
   <animation>
    <frame tileid="6" duration="180"/>
