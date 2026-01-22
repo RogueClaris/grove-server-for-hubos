@@ -1,4 +1,4 @@
-local Selection = require("scripts/libs/nebulous-liberations/liberations/selection")
+local Selection = require("scripts/libs/nebulous-liberations/liberations/selections/selection")
 local Direction = require("scripts/libs/direction")
 local PanelTypes = require("scripts/libs/nebulous-liberations/liberations/panel_types")
 

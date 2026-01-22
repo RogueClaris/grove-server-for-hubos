@@ -1,4 +1,4 @@
-local EnemySelection = require("scripts/libs/nebulous-liberations/liberations/enemy_selection")
+local EnemySelection = require("scripts/libs/nebulous-liberations/liberations/selections/enemy_selection")
 local EnemyHelpers = require("scripts/libs/nebulous-liberations/liberations/enemy_helpers")
 local Direction = require("scripts/libs/direction")
 
