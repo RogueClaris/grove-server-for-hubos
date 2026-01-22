@@ -238,7 +238,6 @@ function BigBrute:take_turn()
     local success = Async.await(attempt_move(self))
     if success == true then
       Async.await(attempt_attack(self))
-      Net.move_bot(self.id, self.x, self.y, self.z)
     end
   end)
 end
