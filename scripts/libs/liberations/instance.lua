@@ -605,7 +605,7 @@ function MissionInstance:new(base_area_id, new_area_id)
     mission:tick(event.delta_time)
   end)
 
-  add_event_listener("handle_tile_interaction", function(event)
+  add_event_listener("tile_interaction", function(event)
     mission:handle_tile_interaction(event.player_id, event.x, event.y, event.z, event.button)
   end)
 
