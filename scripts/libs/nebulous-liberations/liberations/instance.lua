@@ -436,9 +436,9 @@ end
 ---@field package boss Liberation.Enemy
 ---@field enemies Liberation.Enemy[]
 ---@field panels table<number, table<number, table<number, Liberation._PanelObject>>>
----@field dark_holes Net.Object[]
----@field indestructible_panels Net.Object[]
----@field gate_panels Net.Object[]
+---@field dark_holes Liberation._PanelObject[]
+---@field indestructible_panels Liberation._PanelObject[]
+---@field gate_panels Liberation._PanelObject[]
 ---@field panel_gid_map table<string, number>
 ---@field package spawn_positions Net.Object[]
 ---@field package net_listeners [string, fun()][]
