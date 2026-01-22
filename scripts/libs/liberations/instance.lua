@@ -8,7 +8,7 @@ local Preloader = require("scripts/libs/liberations/preloader")
 
 local compression = require('scripts/custom-scripts/compression')
 
-local DEBUG_AUTO_WIN = true
+local DEBUG_AUTO_WIN = false
 
 -- private functions
 
@@ -194,12 +194,12 @@ local function liberate_panel(self, player)
       local results
 
       if DEBUG_AUTO_WIN then
-        results = { success = true }
+        results = { won = true, turns = 1 }
       else
         results = Async.await(player:initiate_encounter(encounter_path, data))
       end
 
-      if not results or not results.success then
+      if not results or not results.won then
         if enemy then
           EnemyHelpers.sync_health(enemy, results)
         end

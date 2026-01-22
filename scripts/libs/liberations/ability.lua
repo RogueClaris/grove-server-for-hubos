@@ -41,7 +41,7 @@ end
 
 local function battle_to_liberate_and_loot(instance, player)
   initiate_encounter(instance, player).and_then(function(battle_results)
-    if battle_results.success then
+    if battle_results.won then
       liberate_and_loot(instance, player, battle_results)
     else
       player:complete_turn()

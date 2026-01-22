@@ -228,13 +228,7 @@ function Player:initiate_encounter(encounter_path, data)
     local results = Async.await(Async.initiate_encounter(self.id, encounter_path, data))
 
     if results == nil then
-      return { success = false, turns = 0 }
-    end
-
-    local total_enemy_health = 0
-
-    for _, enemy in ipairs(results.enemies) do
-      total_enemy_health = total_enemy_health + enemy.health
+      return { won = false, turns = 0 }
     end
 
     self.health = results.health
@@ -245,12 +239,6 @@ function Player:initiate_encounter(encounter_path, data)
 
     if self.health == 0 then
       self:paralyze()
-    end
-
-    if total_enemy_health > 0 or results.ran then
-      results.success = false
-    else
-      results.success = true
     end
 
     return results
@@ -373,8 +361,9 @@ function Player:find_closest_guardian()
   return closest_guardian
 end
 
----@class Liberation.BattleResults: Net.BattleResults
----@field success boolean
+---@class Liberation.BattleResults
+---@field won boolean
+---@field turns number
 
 ---@param results Liberation.BattleResults
 function Player:liberate_panels(panels, results)
@@ -389,7 +378,7 @@ function Player:liberate_panels(panels, results)
       end)
     else
       -- Message based on the results.
-      if results.success == false then
+      if not results.won then
         Async.await(self:message_with_mug("Oh, no!\nLiberation failed!"))
       elseif results.turns == 1 then
         Async.await(self:message_with_mug("One turn liberation!"))
