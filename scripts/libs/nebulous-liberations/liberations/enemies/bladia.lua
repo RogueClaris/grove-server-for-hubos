@@ -5,13 +5,13 @@ local Direction = require("scripts/libs/direction")
 local Bladia = {}
 
 --Setup ranked health and damage
-local rank = 1
 local mob_health = { 200, 230, 230, 300, 340, 400 }
 local mob_damage = { 50, 80, 120, 160, 200, 250 }
 local mob_ranks = { 1, 2, 3, 4, 5, 6 }
 
-function Bladia:new(instance, position, direction, local_rank)
-  if local_rank ~= nil then rank = tonumber(local_rank) end
+function Bladia:new(instance, position, direction, rank)
+  rank = rank or 1
+
   local bladia = {
     instance = instance,
     id = nil,

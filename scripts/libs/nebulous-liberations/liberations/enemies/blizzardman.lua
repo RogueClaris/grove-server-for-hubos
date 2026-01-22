@@ -8,13 +8,13 @@ Preloader.add_asset("/server/assets/NebuLibsAssets/bots/snowball.animation")
 local BlizzardMan = {}
 
 --Setup ranked health and damage
-local rank = tonumber(1)
 local mob_health = { 400, 1200, 1600, 2000 }
 local mob_damage = { 40, 80, 120, 160 }
 local mob_ranks = { 0, 1, 2, 3 }
 
-function BlizzardMan:new(instance, position, direction, local_rank)
-  if local_rank ~= nil then rank = tonumber(local_rank) end
+function BlizzardMan:new(instance, position, direction, rank)
+  rank = rank or 1
+
   local blizzardman = {
     instance = instance,
     id = nil,

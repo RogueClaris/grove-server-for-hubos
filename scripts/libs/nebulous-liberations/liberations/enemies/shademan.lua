@@ -1,18 +1,17 @@
 local EnemySelection = require("scripts/libs/nebulous-liberations/liberations/enemy_selection")
 local EnemyHelpers = require("scripts/libs/nebulous-liberations/liberations/enemy_helpers")
-local Preloader = require("scripts/libs/nebulous-liberations/liberations/preloader")
 local Direction = require("scripts/libs/direction")
 
 local ShadeMan = {}
 
 --Setup ranked health and damage
-local rank = 1
 local mob_health = { 600, 1000, 1200, 1500 }
 local mob_damage = { 60, 90, 120, 200 }
 local mob_ranks = { 0, 4, 3, 0 }
 
-function ShadeMan:new(instance, position, direction, local_rank)
-  if local_rank ~= nil then rank = tonumber(local_rank) end
+function ShadeMan:new(instance, position, direction, rank)
+  rank = rank or 1
+
   local shademan = {
     instance = instance,
     id = nil,

@@ -9,13 +9,13 @@ Preloader.add_asset("/server/assets/NebuLibsAssets/bots/beast breath.animation")
 local BigBrute = {}
 
 --Setup ranked health and damage
-local rank = tonumber(1)
 local mob_health = { 120, 180, 220, 250, 300, 360 }
 local mob_damage = { 30, 60, 90, 130, 170, 200 }
 local mob_ranks = { 0, 0, 0, 0, 0, 0 }
 
-function BigBrute:new(instance, position, direction, local_rank)
-  if local_rank ~= nil then rank = tonumber(local_rank) end
+function BigBrute:new(instance, position, direction, rank)
+  rank = rank or 1
+
   local bigbrute = {
     instance = instance,
     id = nil,
