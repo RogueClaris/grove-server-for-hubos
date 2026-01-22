@@ -114,25 +114,57 @@ Loot.MAJOR_HIT = {
   end
 }
 
+---@param player Liberation.Player
+---@param key_id string
+local function find_matching_gates(player, key_id)
+  local gates = {}
+
+  for i = 1, #player.instance.gate_panels do
+    local gate = player.instance.gate_panels[i]
+
+    if gate.custom_properties["Gate Key"] == key_id then
+      table.insert(gates, gate)
+    end
+  end
+
+  return gates
+end
+
+---@param instance Liberation.MissionInstance
+---@param key_id string
+local function find_gate_points(instance, key_id)
+  local points = {}
+
+  for i = 1, #instance.points_of_interest, 1 do
+    local prospective_point = instance.points_of_interest[i]
+    if prospective_point.custom_properties["Gate ID"] == key_id then
+      table.insert(points, prospective_point)
+    end
+  end
+
+  return points
+end
+
 ---@type Liberation._Loot
 Loot.KEY = {
   animation = "KEY",
   breakable = false,
-  activate = function(instance, player)
+  activate = function(instance, player, panel)
     return Async.create_scope(function()
       local player_x, player_y, player_z = player:position_multi()
 
       Async.await(player:message_with_mug("I found a Key!"))
 
-      local gates = player:find_matching_gates()
+      local key_id = panel.custom_properties["Gate Key"]
+      local gates = find_matching_gates(player, key_id)
 
       if #gates == 0 then
         Async.await(player:message_with_mug("But it doesn't open anything..."))
         return
       end
 
-      local id = gates[1].custom_properties["Gate Key"]
-      local points = player:find_gate_points(id)
+      local points = find_gate_points(instance, key_id)
+
       local function unlock_gates()
         for i = 1, #gates, 1 do
           instance:remove_panel(gates[i])

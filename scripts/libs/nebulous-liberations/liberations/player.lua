@@ -311,38 +311,6 @@ function Player:give_turn()
   Net.unlock_player_input(self.id)
 end
 
-function Player:find_matching_gates()
-  local gates = {}
-  local selection = self.selection
-
-  for i = 1, #selection:get_panels(), 1 do
-    for j = 1, #self.instance.gate_panels, 1 do
-      local check_selection = selection:get_panels()[i]
-      local check_gate = self.instance.gate_panels[j]
-
-      print(check_selection.custom_properties)
-
-      if check_selection.custom_properties["Gate Key"] == check_gate.custom_properties["Gate Key"] then
-        table.insert(gates, check_gate)
-      end
-    end
-  end
-
-  print(gates)
-
-  return gates
-end
-
-function Player:find_gate_points(id)
-  local points = {}
-  local instance = self.instance
-  for i = 1, #instance.points_of_interest, 1 do
-    local prospective_point = instance.points_of_interest[i]
-    if prospective_point.custom_properties["Gate ID"] == id then table.insert(points, prospective_point) end
-  end
-  return points
-end
-
 function Player:find_closest_guardian()
   local closest_guardian
   local closest_distance = math.huge
