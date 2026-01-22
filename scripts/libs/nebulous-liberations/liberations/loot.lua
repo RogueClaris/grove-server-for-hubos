@@ -5,7 +5,7 @@ local ITEM_ANIMATION_PATH = "/server/assets/NebuLibsAssets/bots/item.animation"
 ---@class Liberation._Loot
 ---@field animation string
 ---@field breakable boolean
----@field activate fun(instance: Liberation.MissionInstance, player: Liberation.Player, panel: Liberation._PanelObject): Net.Promise
+---@field activate fun(instance: Liberation.MissionInstance, player: Liberation.Player, panel: Liberation.PanelObject): Net.Promise
 
 local Loot = {}
 
@@ -359,7 +359,7 @@ end
 -- returns a promise, resolves when looting is completed
 ---@param instance Liberation.MissionInstance
 ---@param player Liberation.Player
----@param panel Liberation._PanelObject
+---@param panel Liberation.PanelObject
 ---@param destroy_items boolean
 function Loot.loot_item_panel(instance, player, panel, destroy_items)
   local loot = panel.loot
@@ -405,7 +405,7 @@ end
 -- returns a promise, resolves when looting is completed
 ---@param instance Liberation.MissionInstance
 ---@param player Liberation.Player
----@param panel Liberation._PanelObject
+---@param panel Liberation.PanelObject
 function Loot.loot_bonus_panel(instance, player, panel)
   local loot_index = math.random(#Loot.BONUS_POOL)
 

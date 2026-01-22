@@ -410,7 +410,7 @@ local function take_enemy_turn(self)
   end)
 end
 
----@class Liberation._PanelObject: Net.Object
+---@class Liberation.PanelObject: Net.Object
 ---@field visual_object_id number
 ---@field enemy Liberation.Enemy
 ---@field loot Liberation._Loot?
@@ -432,10 +432,10 @@ end
 ---@field player_map table<Net.ActorId, Liberation.Player>
 ---@field package boss Liberation.Enemy
 ---@field enemies Liberation.Enemy[]
----@field panels table<number, table<number, table<number, Liberation._PanelObject>>>
----@field dark_holes Liberation._PanelObject[]
----@field indestructible_panels Liberation._PanelObject[]
----@field gate_panels Liberation._PanelObject[]
+---@field panels table<number, table<number, table<number, Liberation.PanelObject>>>
+---@field dark_holes Liberation.PanelObject[]
+---@field indestructible_panels Liberation.PanelObject[]
+---@field gate_panels Liberation.PanelObject[]
 ---@field panel_gid_map table<string, number>
 ---@field events Net.EventEmitter "money" { player_id, money }
 ---@field package spawn_positions Net.Object[]
@@ -956,7 +956,7 @@ function MissionInstance:get_enemy_at(x, y, z)
 end
 
 ---@param object Net.Object
----@return Liberation._PanelObject
+---@return Liberation.PanelObject
 function MissionInstance:create_panel(object)
   --Create the actual panel we'll be using with collisions
   local new_panel = {
