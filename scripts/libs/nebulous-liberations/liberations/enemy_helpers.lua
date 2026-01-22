@@ -187,12 +187,9 @@ function EnemyHelpers.find_closest_player(instance, enemy, max_distance)
 
     local distance = EnemyHelpers.chebyshev_tile_distance(enemy, player_x, player_y, player_z)
 
-    if distance < closest_distance then
-      -- It might be closer, but only update the session if it's within the acceptable distance
+    if distance < closest_distance and (max_distance == nil or distance <= max_distance) then
       closest_distance = distance
-      if max_distance == nil or distance <= max_distance then
-        closest_player = player
-      end
+      closest_player = player
     end
 
     ::continue::
