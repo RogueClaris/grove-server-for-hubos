@@ -3,6 +3,7 @@ local Loot = require("scripts/libs/nebulous-liberations/liberations/loot")
 local EnemyHelpers = require("scripts/libs/nebulous-liberations/liberations/enemy_helpers")
 local ParalysisEffect = require("scripts/libs/nebulous-liberations/liberations/effects/paralysis_effect")
 local RecoverEffect = require("scripts/libs/nebulous-liberations/liberations/effects/recover_effect")
+local PanelTypes = require("scripts/libs/nebulous-liberations/liberations/panel_types")
 local Emotes = require("scripts/libs/emotes")
 
 ---@class Liberation.Player
@@ -184,12 +185,50 @@ function Player:get_pass_turn_permission()
   end)
 end
 
+local corner_offsets = {
+  { 1,  -1 },
+  { 1,  1 },
+  { -1, -1 },
+  { -1, 1 },
+}
+
+function Player:resolve_terrain()
+  local function has_dark_panel(x, y, z)
+    local panel = self.instance:get_panel_at(x, y, z)
+
+    return panel and PanelTypes.TERRAIN[panel.type]
+  end
+
+  local x, y, z = self:position_multi()
+  local x_left = has_dark_panel(x - 1, y, z)
+  local x_right = has_dark_panel(x + 1, y, z)
+  local y_left = has_dark_panel(x, y - 1, z)
+  local y_right = has_dark_panel(x, y + 1, z)
+
+  if (x_left and x_right) or (y_left and y_right) then
+    return "surrounded"
+  end
+
+  if (x_left or x_right) and (y_left or y_right) then
+    return "disadvantage"
+  end
+
+  for _, offset in ipairs(corner_offsets) do
+    if has_dark_panel(x + offset[1], y + offset[2], z) then
+      return "even"
+    end
+  end
+
+  return "advantage"
+end
+
+---@return Net.Promise<Liberation.BattleResults>
 function Player:initiate_encounter(encounter_path, data)
   return Async.create_scope(function()
     local results = Async.await(Async.initiate_encounter(self.id, encounter_path, data))
 
     if results == nil then
-      return
+      return { success = false, turns = 0 }
     end
 
     local total_enemy_health = 0

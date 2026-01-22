@@ -47,4 +47,12 @@ PanelTypes.ABILITY_ACTIONABLE = add_values_as_keys({
   PanelTypes.TRAP,
 })
 
+PanelTypes.TERRAIN = add_values_as_keys({
+  PanelTypes.DARK,
+  PanelTypes.DARK_HOLE,
+  PanelTypes.ITEM,
+  PanelTypes.INDESTRUCTIBLE,
+  PanelTypes.TRAP,
+})
+
 return PanelTypes

@@ -1,5 +1,3 @@
-local PanelEncounters = require("scripts/libs/nebulous-liberations/liberations/panel_encounters")
-
 local function static_shape_generator(offset_x, offset_y, shape)
   return function()
     return shape, offset_x, offset_y
@@ -33,7 +31,7 @@ end
 ---@param player Liberation.Player
 local function initiate_encounter(instance, player)
   local data = {
-    terrain = PanelEncounters.resolve_terrain(instance, player)
+    terrain = player:resolve_terrain()
   }
 
   local encounter_path = instance.default_encounter

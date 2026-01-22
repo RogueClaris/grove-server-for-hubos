@@ -1,7 +1,6 @@
 local Player = require("scripts/libs/nebulous-liberations/liberations/player")
 local Enemy = require("scripts/libs/nebulous-liberations/liberations/enemy")
 local EnemyHelpers = require("scripts/libs/nebulous-liberations/liberations/enemy_helpers")
-local PanelEncounters = require("scripts/libs/nebulous-liberations/liberations/panel_encounters")
 local Loot = require("scripts/libs/nebulous-liberations/liberations/loot")
 local PanelTypes = require("scripts/libs/nebulous-liberations/liberations/panel_types")
 local TargetPhase = require("scripts/libs/nebulous-liberations/liberations/target_phase")
@@ -166,7 +165,7 @@ local function liberate_panel(self, player)
 
       local encounter_path = panel.custom_properties["Encounter"] or self.default_encounter
       local data = {
-        terrain = PanelEncounters.resolve_terrain(self, player),
+        terrain = player:resolve_terrain(),
       }
 
       -- Obtain enemy
@@ -239,6 +238,11 @@ end
 
 ---@param self Liberation.MissionInstance
 local function take_enemy_turn(self)
+  if self.needs_disposal then
+    self:destroy()
+    return
+  end
+
   self.updating = true
 
   return Async.create_scope(function()
