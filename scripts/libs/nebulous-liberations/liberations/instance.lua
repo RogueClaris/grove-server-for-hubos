@@ -33,14 +33,13 @@ end
 
 local function is_adjacent(position_a, position_b)
   if position_a.z ~= position_b.z then
-    print("[NebuLibs] Object Interaction: Layer mismatch!")
     return false
   end
 
   local x_diff = math.abs(math.floor(position_a.x) - math.floor(position_b.x))
   local y_diff = math.abs(math.floor(position_a.y) - math.floor(position_b.y))
 
-  return (x_diff + y_diff) == 1
+  return x_diff + y_diff == 1
 end
 
 local function boot_player(player, isVictory, mapName)
