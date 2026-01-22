@@ -9,7 +9,7 @@ local RecoverEffect = require("scripts/libs/nebulous-liberations/utils/recover_e
 local Emotes = require("scripts/libs/emotes")
 
 ---@class Liberation.PlayerSession
----@field instance Liberation.Mission
+---@field instance Liberation.MissionInstance
 ---@field player number
 ---@field health number
 ---@field max_health number

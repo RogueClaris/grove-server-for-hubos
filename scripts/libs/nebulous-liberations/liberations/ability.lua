@@ -7,7 +7,7 @@ local function static_shape_generator(offset_x, offset_y, shape)
   end
 end
 
----@param instance Liberation.Mission
+---@param instance Liberation.MissionInstance
 ---@param player_session Liberation.PlayerSession
 ---@param results Net.BattleResults?
 local function liberate_and_loot(instance, player_session, results)
@@ -19,7 +19,7 @@ local function liberate_and_loot(instance, player_session, results)
   end)
 end
 
----@param instance Liberation.Mission
+---@param instance Liberation.MissionInstance
 ---@param player_session Liberation.PlayerSession
 local function panel_search(instance, player_session)
   local remove_traps, destroy_items = player_session.ability.remove_traps, player_session.ability.destroy_items
@@ -30,7 +30,7 @@ local function panel_search(instance, player_session)
   end)
 end
 
----@param instance Liberation.Mission
+---@param instance Liberation.MissionInstance
 ---@param player_session Liberation.PlayerSession
 local function initiate_encounter(instance, player_session)
   local data = {
@@ -64,7 +64,7 @@ end
 ---@field remove_traps? boolean
 ---@field destroy_items? boolean
 ---@field generate_shape fun(): boolean[][], number, number
----@field activate fun(instance: Liberation.Mission, player_session: Liberation.PlayerSession)
+---@field activate fun(instance: Liberation.MissionInstance, player_session: Liberation.PlayerSession)
 
 local Ability = {
   Guard = { name = "Guard" },           -- passive, knightman's ability

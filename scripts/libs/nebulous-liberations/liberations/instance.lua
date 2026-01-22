@@ -129,7 +129,7 @@ local function convert_indestructible_panels(self)
   end
 end
 
----@param self Liberation.Mission
+---@param self Liberation.MissionInstance
 ---@param player_session Liberation.PlayerSession
 local function liberate_panel(self, player_session)
   return Async.create_scope(function()
@@ -412,7 +412,7 @@ end
 ---@field loot Liberation._Loot?
 
 -- public
----@class Liberation.Mission
+---@class Liberation.MissionInstance
 ---@field area_id string
 ---@field area_name string
 ---@field default_encounter string
@@ -425,19 +425,19 @@ end
 ---@field package MAX_ORDER_POINTS number
 ---@field points_of_interest Net.Object[]
 ---@field package players LiberationPlayer[]
----@field package player_sessions Liberation.PlayerSession[]
+---@field player_sessions Liberation.PlayerSession[]
 ---@field package boss Liberation.Enemy
----@field package enemies Liberation.Enemy[]
----@field package panels table<number, table<number, table<number, Liberation._PanelObject>>>
----@field package dark_holes Net.Object[]
----@field package indestructible_panels Net.Object[]
+---@field enemies Liberation.Enemy[]
+---@field panels table<number, table<number, table<number, Liberation._PanelObject>>>
+---@field dark_holes Net.Object[]
+---@field indestructible_panels Net.Object[]
 ---@field gate_panels Net.Object[]
 ---@field package updating boolean
 ---@field package needs_disposal boolean
 ---@field package disposal_promise Net.Promise?
-local Mission = {}
+local MissionInstance = {}
 
-function Mission:new(base_area_id, new_area_id, players)
+function MissionInstance:new(base_area_id, new_area_id, players)
   local base_target_phase = tonumber(Net.get_area_custom_property(base_area_id, "Target Phase")) or 10
   local base_player_count = tonumber(Net.get_area_custom_property(base_area_id, "Target Player Count")) or 1
   local minimum_phase_target = tonumber(Net.get_area_custom_property(base_area_id, "Minimum Target Phase")) or 1
@@ -608,7 +608,7 @@ function Mission:new(base_area_id, new_area_id, players)
   return mission
 end
 
-function Mission:clean_up()
+function MissionInstance:clean_up()
   if not self.disposal_promise then
     self.disposal_promise = Async.create_promise(function(resolve)
       self.resolve_disposal = resolve
@@ -631,18 +631,18 @@ function Mission:clean_up()
   return self.disposal_promise
 end
 
-function Mission:cleaning_up()
+function MissionInstance:cleaning_up()
   return self.needs_disposal
 end
 
-function Mission:begin()
+function MissionInstance:begin()
   for _, player in ipairs(self.players) do
     -- create data
     self.player_sessions[player.id] = PlayerSession:new(self, player)
   end
 end
 
-function Mission:tick(elapsed)
+function MissionInstance:tick(elapsed)
   if not self.liberated and self.ready_count == #self.players then
     self.ready_count = 0
     -- now we can take a turn !
@@ -661,7 +661,7 @@ function Mission:tick(elapsed)
   end
 end
 
-function Mission:handle_tile_interaction(player_id, x, y, z, button)
+function MissionInstance:handle_tile_interaction(player_id, x, y, z, button)
   local player_session = self.player_sessions[player_id]
 
   local panel_under_player = self:get_panel_at(player_session.player.x, player_session.player.y, player_session.player.z)
@@ -693,7 +693,7 @@ function Mission:handle_tile_interaction(player_id, x, y, z, button)
   end)
 end
 
-function Mission:handle_object_interaction(player_id, object_id, button)
+function MissionInstance:handle_object_interaction(player_id, object_id, button)
   local player_session = self.player_sessions[player_id]
 
   if not player_session then return end
@@ -826,12 +826,12 @@ function Mission:handle_object_interaction(player_id, object_id, button)
   end)
 end
 
-function Mission:handle_player_avatar_change(player_id)
+function MissionInstance:handle_player_avatar_change(player_id)
   local player = self.player_sessions[player_id].player
   player:boot_to_lobby(false, self.area_name)
 end
 
-function Mission:handle_player_disconnect(player_id)
+function MissionInstance:handle_player_disconnect(player_id)
   for i, player in ipairs(self.players) do
     if player_id == player.id then
       table.remove(self.players, i)
@@ -843,15 +843,15 @@ function Mission:handle_player_disconnect(player_id)
   self.player_sessions[player_id] = nil
 end
 
-function Mission:get_players()
+function MissionInstance:get_players()
   return self.players
 end
 
-function Mission:get_spawn_position()
+function MissionInstance:get_spawn_position()
   return Net.get_object_by_name(self.area_id, "Spawn")
 end
 
-function Mission:get_next_spawn_from_object(object_id)
+function MissionInstance:get_next_spawn_from_object(object_id)
   local object = Net.get_object_by_id(self.area_id, object_id)
   if object.custom_properties["Next Spawn"] and Net.get_object_by_id(self.area_id, object.custom_properties["Next Spawn"]).type == "Spawn Point" then
     return Net.get_object_by_id(self.area_id, object.custom_properties["Next Spawn"])
@@ -860,7 +860,7 @@ function Mission:get_next_spawn_from_object(object_id)
 end
 
 -- helper functions
-function Mission:get_panel_at(x, y, z)
+function MissionInstance:get_panel_at(x, y, z)
   y = math.floor(y) + 1
   z = math.floor(z) + 1
 
@@ -880,7 +880,7 @@ function Mission:get_panel_at(x, y, z)
   return row[x]
 end
 
-function Mission:remove_panel(panel)
+function MissionInstance:remove_panel(panel)
   local y = math.floor(panel.y) + 1
   local z = math.floor(panel.z) + 1
   local row = self.panels[z][y]
@@ -909,7 +909,7 @@ function Mission:remove_panel(panel)
   end
 end
 
-function Mission:get_enemy_at(x, y, z)
+function MissionInstance:get_enemy_at(x, y, z)
   x = math.floor(x)
   y = math.floor(y)
 
@@ -923,4 +923,4 @@ function Mission:get_enemy_at(x, y, z)
 end
 
 -- exporting
-return Mission
+return MissionInstance

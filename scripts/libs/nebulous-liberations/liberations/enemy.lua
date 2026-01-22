@@ -13,7 +13,7 @@
 ---@field mug Net.TextureAnimationPair?
 ---@field encounter string
 ---@field is_engaged boolean
----@field new fun(self: Liberation.Enemy, mission: Liberation.Mission, position: Net.Position): Liberation.Enemy
+---@field new fun(self: Liberation.Enemy, mission: Liberation.MissionInstance, position: Net.Position): Liberation.Enemy
 ---@field take_turn fun(self: Liberation.Enemy): Net.Promise
 ---@field get_death_message fun(self: Liberation.Enemy): string
 ---@field do_first_encounter_banter fun(self: Liberation.Enemy, player_id: Net.ActorId): Net.Promise called when is_engaged is false
@@ -52,6 +52,7 @@ function Enemy.get_death_message()
   return ""
 end
 
+---@param instance Liberation.MissionInstance
 function Enemy.destroy(instance, enemy)
   return Async.create_promise(function(resolve)
     local success = false

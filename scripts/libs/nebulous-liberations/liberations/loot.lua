@@ -5,7 +5,7 @@ local ITEM_ANIMATION_PATH = "/server/assets/NebuLibsAssets/bots/item.animation"
 ---@class Liberation._Loot
 ---@field animation string
 ---@field breakable boolean
----@field activate fun(instance: Liberation.Mission, player_session: Liberation.PlayerSession): Net.Promise
+---@field activate fun(instance: Liberation.MissionInstance, player_session: Liberation.PlayerSession): Net.Promise
 
 local Loot = {}
 

@@ -27,7 +27,7 @@ end
 ---@field private filter? fun(x: number, y: number, z: number): boolean
 local Selection = {}
 
----@param instance Liberation.Mission
+---@param instance Liberation.MissionInstance
 ---@return Liberation._Selection
 function Selection:new(instance)
   local attack_collider = {
