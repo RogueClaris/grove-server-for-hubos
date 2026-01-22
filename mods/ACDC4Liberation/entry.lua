@@ -17,8 +17,8 @@ function encounter_init(encounter, data)
             encounter:create_spawner("BattleNetwork3.Character.Spikey", Rank.V1):spawn_at(5, 2)
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(6, 3)
         elseif choice == 2 then
-            encounter:create_spawner("EXE3.Basher.Enemy", Rank.V1):spawn_at(5, 1)
-            encounter:create_spawner("EXE3.Basher.Enemy", Rank.V1):spawn_at(6, 2)
+            encounter:create_spawner("BattleNetwork3.Basher.Enemy", Rank.V1):spawn_at(5, 1)
+            encounter:create_spawner("BattleNetwork3.Basher.Enemy", Rank.V1):spawn_at(6, 2)
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(5, 3)
         elseif choice == 3 then
             encounter:create_spawner("BattleNetwork3.Character.Spikey", Rank.V1):spawn_at(5, 1)
@@ -30,7 +30,7 @@ function encounter_init(encounter, data)
             encounter:create_spawner("BattleNetwork3.Character.Spikey", Rank.V1):spawn_at(6, 3)
         elseif choice == 5 then
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(5, 1)
-            encounter:create_spawner("EXE3.Basher.Enemy", Rank.V1):spawn_at(6, 2)
+            encounter:create_spawner("BattleNetwork3.Basher.Enemy", Rank.V1):spawn_at(6, 2)
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(5, 3)
         elseif choice == 6 then
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(5, 1)
@@ -39,7 +39,7 @@ function encounter_init(encounter, data)
         elseif choice == 7 then
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(6, 1)
             encounter:create_spawner("BattleNetwork3.Character.Spikey", Rank.V1):spawn_at(5, 2)
-            encounter:create_spawner("EXE3.Basher.Enemy", Rank.V1):spawn_at(6, 3)
+            encounter:create_spawner("BattleNetwork3.Basher.Enemy", Rank.V1):spawn_at(6, 3)
         elseif choice == 8 then
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(6, 1)
             encounter:create_spawner("BattleNetwork3.Character.Spikey", Rank.V1):spawn_at(5, 2)
@@ -59,9 +59,9 @@ function encounter_init(encounter, data)
             encounter:create_spawner("BattleNetwork3.Character.Spikey", Rank.V1):spawn_at(5, 2)
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(6, 3)
         elseif choice == 2 then
-            encounter:create_spawner("EXE3.Basher.Enemy", Rank.V1):spawn_at(4, 1)
+            encounter:create_spawner("BattleNetwork3.Basher.Enemy", Rank.V1):spawn_at(4, 1)
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(3, 3)
-            encounter:create_spawner("EXE3.Basher.Enemy", Rank.V1):spawn_at(5, 2)
+            encounter:create_spawner("BattleNetwork3.Basher.Enemy", Rank.V1):spawn_at(5, 2)
         elseif choice == 3 then
             encounter:create_spawner("BattleNetwork3.Character.Spikey", Rank.V1):spawn_at(4, 1)
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(5, 2)
@@ -72,7 +72,7 @@ function encounter_init(encounter, data)
             encounter:create_spawner("BattleNetwork3.Character.Spikey", Rank.V1):spawn_at(6, 3)
         elseif choice == 5 then
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(4, 1)
-            encounter:create_spawner("EXE3.Basher.Enemy", Rank.V1):spawn_at(5, 2)
+            encounter:create_spawner("BattleNetwork3.Basher.Enemy", Rank.V1):spawn_at(5, 2)
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(6, 3)
         elseif choice == 6 then
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(4, 1)
@@ -81,7 +81,7 @@ function encounter_init(encounter, data)
         elseif choice == 7 then
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(6, 1)
             encounter:create_spawner("BattleNetwork3.Character.Spikey", Rank.V1):spawn_at(4, 2)
-            encounter:create_spawner("EXE3.Basher.Enemy", Rank.V1):spawn_at(5, 3)
+            encounter:create_spawner("BattleNetwork3.Basher.Enemy", Rank.V1):spawn_at(5, 3)
         elseif choice == 8 then
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(5, 1)
             encounter:create_spawner("BattleNetwork3.Character.Spikey", Rank.V1):spawn_at(4, 2)
@@ -122,12 +122,12 @@ function encounter_init(encounter, data)
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(1, 3)
         elseif choice == 4 then
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(1, 1)
-            encounter:create_spawner("EXE3.Basher.Enemy", Rank.V1):spawn_at(6, 2)
+            encounter:create_spawner("BattleNetwork3.Basher.Enemy", Rank.V1):spawn_at(6, 2)
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(1, 3)
         elseif choice == 5 then
-            encounter:create_spawner("EXE3.Basher.Enemy", Rank.V1):spawn_at(2, 1)
+            encounter:create_spawner("BattleNetwork3.Basher.Enemy", Rank.V1):spawn_at(2, 1)
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(1, 3)
-            encounter:create_spawner("EXE3.Basher.Enemy", Rank.V1):spawn_at(6, 3)
+            encounter:create_spawner("BattleNetwork3.Basher.Enemy", Rank.V1):spawn_at(6, 3)
         elseif choice == 6 then
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(6, 1)
             encounter:create_spawner("BattleNetwork3.Character.Spikey", Rank.V1):spawn_at(2, 2)
@@ -135,7 +135,7 @@ function encounter_init(encounter, data)
         elseif choice == 7 then
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(1, 1)
             encounter:create_spawner("BattleNetwork3.Character.Spikey", Rank.V1):spawn_at(5, 2)
-            encounter:create_spawner("EXE3.Basher.Enemy", Rank.V1):spawn_at(6, 3)
+            encounter:create_spawner("BattleNetwork3.Basher.Enemy", Rank.V1):spawn_at(6, 3)
         elseif choice == 8 then
             encounter:create_spawner("BattleNetwork3.Character.Spikey", Rank.V1):spawn_at(6, 1)
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(5, 2)
@@ -157,12 +157,12 @@ function encounter_init(encounter, data)
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(4, 3)
         elseif choice == 4 then
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(5, 1)
-            encounter:create_spawner("EXE3.Basher.Enemy", Rank.V1):spawn_at(6, 2)
+            encounter:create_spawner("BattleNetwork3.Basher.Enemy", Rank.V1):spawn_at(6, 2)
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(5, 3)
         elseif choice == 5 then
-            encounter:create_spawner("EXE3.Basher.Enemy", Rank.V1):spawn_at(5, 1)
+            encounter:create_spawner("BattleNetwork3.Basher.Enemy", Rank.V1):spawn_at(5, 1)
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(4, 3)
-            encounter:create_spawner("EXE3.Basher.Enemy", Rank.V1):spawn_at(6, 3)
+            encounter:create_spawner("BattleNetwork3.Basher.Enemy", Rank.V1):spawn_at(6, 3)
         elseif choice == 6 then
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(6, 1)
             encounter:create_spawner("BattleNetwork3.Character.Spikey", Rank.V1):spawn_at(5, 2)
@@ -170,7 +170,7 @@ function encounter_init(encounter, data)
         elseif choice == 7 then
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(6, 1)
             encounter:create_spawner("BattleNetwork3.Character.Spikey", Rank.V1):spawn_at(4, 2)
-            encounter:create_spawner("EXE3.Basher.Enemy", Rank.V1):spawn_at(5, 3)
+            encounter:create_spawner("BattleNetwork3.Basher.Enemy", Rank.V1):spawn_at(5, 3)
         elseif choice == 8 then
             encounter:create_spawner("BattleNetwork3.Character.Spikey", Rank.V1):spawn_at(6, 1)
             encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1):spawn_at(5, 2)

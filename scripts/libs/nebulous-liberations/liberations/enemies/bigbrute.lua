@@ -95,7 +95,6 @@ local function attempt_axis_move(self, player, diff, xfilter, yfilter)
     local offset = find_offset(self, step * xfilter, step * yfilter, limit)
 
     if offset == 0 then
-      print("axis move failed - offset is zero.")
       return resolve(false)
     end
 
@@ -122,7 +121,6 @@ local function attempt_move(self)
     local success = false
 
     if closest_session == nil then
-      print("nobody within range")
       -- all players left
       return resolve(success)
     end
@@ -141,20 +139,16 @@ local function attempt_move(self)
 
     if (ydiff == 0 or math.abs(xdiff) < math.abs(ydiff)) and xdiff ~= 0 then
       -- travel along the x axis
-      print("x axis travel attempt")
       success = Async.await(attempt_axis_move(self, player, xdiff, 1, 0))
       if not success then
         -- failed, try the other axis
-        print("failed, try other direction, x axis")
         success = Async.await(attempt_axis_move(self, player, ydiff, 0, 1))
       end
     elseif ydiff ~= 0 then
       -- travel along the y axis
-      print("y axis move attempt")
       success = Async.await(attempt_axis_move(self, player, ydiff, 0, 1))
       if not success then
         -- failed, try the other axis
-        print("failed, try other direction, y axis")
         success = Async.await(attempt_axis_move(self, player, xdiff, 1, 0))
       end
     end
@@ -165,28 +159,20 @@ end
 
 local function attempt_attack(self)
   return Async.create_promise(function(resolve)
-    print("are we attacking?")
     self.selection:move(self, Net.get_bot_direction(self.id))
 
     local caught_sessions = self.selection:detect_player_sessions()
 
     if #caught_sessions == 0 then
-      print("no.")
       return resolve(false)
     end
-
-    print("yes!")
 
     local closest_session = EnemyHelpers.find_closest_player_session(self.instance, self)
     if closest_session ~= nil then
       EnemyHelpers.face_position(self, closest_session.player.x, closest_session.player.y)
     end
 
-    print("attempting to indicate selection.")
-
     self.selection:indicate()
-
-    print("should have indicated.")
 
     Async.await(Async.sleep(1))
 

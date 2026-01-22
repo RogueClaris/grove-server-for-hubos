@@ -1,8 +1,8 @@
 local PanelEncounters = {}
 
 local corner_offsets = {
-  { 1, -1 },
-  { 1, 1 },
+  { 1,  -1 },
+  { 1,  1 },
   { -1, -1 },
   { -1, 1 },
 }
@@ -10,7 +10,7 @@ local corner_offsets = {
 local function has_dark_panel(instance, x, y, z)
   local panel = instance:get_panel_at(x, y, z)
   if not panel then return false end
-  local panel_type_table = {"Dark Panel", "Dark Hole", "Indestructible Panel", "Item Panel", "Trap Panel"}
+  local panel_type_table = { "Dark Panel", "Dark Hole", "Indestructible Panel", "Item Panel", "Trap Panel" }
   function includes(table, value)
     for _, v in ipairs(table) do
       if value == v then
@@ -18,6 +18,7 @@ local function has_dark_panel(instance, x, y, z)
       end
     end
   end
+
   return includes(panel_type_table, panel.type)
 end
 
@@ -42,14 +43,6 @@ function PanelEncounters.resolve_terrain(instance, player)
   end
 
   return "advantage"
-end
-
-local areas = Net.list_areas()
-for i, area_id in next, areas do
-  local is_encounter = Net.get_area_custom_property(area_id, "Liberation Encounters")
-  if is_encounter ~= nil then
-    PanelEncounters[Net.get_area_name(area_id)] = is_encounter
-  end
 end
 
 return PanelEncounters

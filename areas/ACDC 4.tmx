@@ -60,8 +60,8 @@
    <properties>
     <property name="Asset" value="bots/prog-gold"/>
     <property name="Direction" value="Down Right"/>
-    <property name="Next 1" type="object" value="10"/>
-    <property name="Next 2" type="object" value="9"/>
+    <property name="Next 1" type="object" value="9"/>
+    <property name="Next 2" type="object" value="10"/>
     <property name="On Load" type="bool" value="true"/>
     <property name="Solid" type="bool" value="true"/>
     <property name="Text 1" value="A GREAT BATTLE TOOK PLACE HERE. DO YOU HAVE WHAT IT TAKES TO RELIVE IT?"/>

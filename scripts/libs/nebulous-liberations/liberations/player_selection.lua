@@ -1,14 +1,6 @@
 local Selection = require("scripts/libs/nebulous-liberations/liberations/selection")
 local Direction = require("scripts/libs/direction")
-
-local function includes(table, value)
-  for _, v in ipairs(table) do
-    if value == v then
-      return true
-    end
-  end
-  return false
-end
+local PanelTypes = require("scripts/libs/nebulous-liberations/liberations/panel_types")
 
 -- private functions
 local function resolve_selection_direction(player_pos, panel_object)
@@ -18,8 +10,11 @@ local function resolve_selection_direction(player_pos, panel_object)
 end
 
 -- public
+---@class Liberation._PlayerSelection
+---@field private selection Liberation._Selection
 local PlayerSelection = {}
 
+---@return Liberation._PlayerSelection
 function PlayerSelection:new(instance, player_id)
   local LIBERATING_PANEL_GID = Net.get_tileset(instance.area_id, "/server/assets/tiles/selected tile.tsx").first_gid
 
@@ -55,8 +50,8 @@ function PlayerSelection:new(instance, player_id)
     end
 
     return (
-      includes(instance.BASIC_PANEL_GID_LIST, panel.visual_gid) or
-      includes(instance.ITEM_PANEL_GID_LIST, panel.visual_gid)
+      panel.type == PanelTypes.DARK or
+      panel.type == PanelTypes.ITEM
     )
   end
 

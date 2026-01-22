@@ -7,14 +7,22 @@ local function static_shape_generator(offset_x, offset_y, shape)
   end
 end
 
-local function liberate_and_loot(instance, player_session, results, remove_traps, destroy_items)
+---@param instance Liberation.Mission
+---@param player_session Liberation.PlayerSession
+---@param results Net.BattleResults?
+local function liberate_and_loot(instance, player_session, results)
+  local remove_traps, destroy_items = player_session.ability.remove_traps, player_session.ability.destroy_items
   local panels = player_session.selection:get_panels()
+
   player_session:liberate_and_loot_panels(panels, results, remove_traps, destroy_items).and_then(function()
     player_session:complete_turn()
   end)
 end
 
-local function panel_search(instance, player_session, results, remove_traps, destroy_items)
+---@param instance Liberation.Mission
+---@param player_session Liberation.PlayerSession
+local function panel_search(instance, player_session)
+  local remove_traps, destroy_items = player_session.ability.remove_traps, player_session.ability.destroy_items
   local panels = player_session.selection:get_panels()
 
   player_session:loot_panels(panels, remove_traps, destroy_items).and_then(function()
@@ -22,25 +30,41 @@ local function panel_search(instance, player_session, results, remove_traps, des
   end)
 end
 
+---@param instance Liberation.Mission
+---@param player_session Liberation.PlayerSession
 local function initiate_encounter(instance, player_session)
   local data = {
     terrain = PanelEncounters.resolve_terrain(instance, player_session.player)
   }
 
-  local encounter_path = PanelEncounters[instance.area_name]
+  local encounter_path = instance.default_encounter
 
   return player_session:initiate_encounter(encounter_path, data)
 end
 
-local function battle_to_liberate_and_loot(instance, player_session, results, remove_traps, destroy_items)
+local function battle_to_liberate_and_loot(instance, player_session)
   initiate_encounter(instance, player_session).and_then(function(battle_results)
     if battle_results.success then
-      liberate_and_loot(instance, player_session, results, remove_traps, destroy_items)
+      liberate_and_loot(instance, player_session, battle_results)
     else
       player_session:complete_turn()
     end
   end)
 end
+
+---@alias Liberation.Ability Liberation.ActiveAbility | Liberation.PassiveAbility
+
+---@class Liberation.PassiveAbility
+---@field name string
+
+---@class Liberation.ActiveAbility
+---@field name string
+---@field question string missing a question turns this ability into a passive
+---@field cost number,
+---@field remove_traps? boolean
+---@field destroy_items? boolean
+---@field generate_shape fun(): boolean[][], number, number
+---@field activate fun(instance: Liberation.Mission, player_session: Liberation.PlayerSession)
 
 local Ability = {
   Guard = { name = "Guard" },           -- passive, knightman's ability
@@ -49,8 +73,6 @@ local Ability = {
     name = "LongSwrd",
     question = "Use LongSwrd?",
     cost = 1,
-    remove_traps = false,
-    destroy_items = false,
     generate_shape = static_shape_generator(0, 0, {
       { 1 },
       { 1 }
@@ -61,8 +83,6 @@ local Ability = {
     name = "WideSwrd",
     question = "Use WideSwrd?",
     cost = 1,
-    remove_traps = false,
-    destroy_items = false,
     generate_shape = static_shape_generator(0, 0, {
       { 1, 1, 1 },
     }),
@@ -72,7 +92,6 @@ local Ability = {
     name = "GutsWave",
     question = "Destroy with GutsWave?",
     cost = 2,
-    remove_traps = false,
     destroy_items = true,
     generate_shape = static_shape_generator(0, 0, {
       { 1 },
@@ -87,8 +106,6 @@ local Ability = {
     name = "ScrenDiv",
     question = "Use ScrenDiv to liberate?",
     cost = 3,
-    remove_traps = false,
-    destroy_items = false,
     generate_shape = static_shape_generator(0, 0, {
       { 1, 0, 1 },
       { 0, 1, 0 },
@@ -101,7 +118,6 @@ local Ability = {
     question = "Search in this area?",
     cost = 1,
     remove_traps = true,
-    destroy_items = false,
     -- todo: this should stretch to select all item panels in a line with dark panels between?
     generate_shape = static_shape_generator(0, 0, {
       { 0, 1, 0 },
@@ -116,7 +132,6 @@ local Ability = {
     question = "Remove traps & get items?",
     cost = 1,
     remove_traps = true,
-    destroy_items = false,
     generate_shape = static_shape_generator(0, 0, {
       { 1, 1, 1 },
       { 1, 1, 1 },
@@ -129,7 +144,6 @@ local Ability = {
     question = "Should I cut panels with HexSickle?",
     cost = 1,
     remove_traps = true,
-    destroy_items = false,
     generate_shape = static_shape_generator(0, 1, {
       { 1, 1, 1 }
     }),

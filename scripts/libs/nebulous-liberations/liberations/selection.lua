@@ -17,11 +17,21 @@ local function generate_selection_object(self)
 end
 
 -- public
+---@class Liberation._Selection
+---@field private area_id string
+---@field private position Net.Position
+---@field private shape_offset_x number
+---@field private shape_offset_y number
+---@field private direction string?
+---@field private objects Net.Object[]
+---@field private filter? fun(x: number, y: number, z: number): boolean
 local Selection = {}
 
+---@param instance Liberation.Mission
+---@return Liberation._Selection
 function Selection:new(instance)
   local attack_collider = {
-    instance = instance,
+    area_id = instance.area_id,
     position = { x = 0, y = 0, z = 0 },
     shape = {},
     shape_offset_x = 0,
@@ -38,6 +48,7 @@ function Selection:new(instance)
   return attack_collider
 end
 
+---@param filter fun(x: number, y: number, z: number): boolean
 function Selection:set_filter(filter)
   self.filter = filter
 end
@@ -89,11 +100,11 @@ function Selection:is_within(x, y, z)
     offset_y = -offset_y -- flipped
   elseif self.direction == Direction.UP_LEFT then
     local old_offset_y = offset_y
-    offset_y = -offset_x -- 🤷
+    offset_y = -offset_x    -- 🤷
     offset_x = old_offset_y -- negative for going left
   elseif self.direction == Direction.DOWN_RIGHT then
     local old_offset_y = offset_y
-    offset_y = offset_x -- 🤷
+    offset_y = offset_x      -- 🤷
     offset_x = -old_offset_y -- positive for going right
   end
 
@@ -141,11 +152,11 @@ function Selection:indicate()
         offset_y = -offset_y -- flipped
       elseif self.direction == Direction.UP_LEFT then
         local old_offset_y = offset_y
-        offset_y = -offset_x -- 🤷
+        offset_y = -offset_x    -- 🤷
         offset_x = old_offset_y -- negative for going left
       elseif self.direction == Direction.DOWN_RIGHT then
         local old_offset_y = offset_y
-        offset_y = offset_x -- 🤷
+        offset_y = offset_x      -- 🤷
         offset_x = -old_offset_y -- positive for going right
       end
 
@@ -165,8 +176,8 @@ function Selection:indicate()
       object.layer = z
       object.z = z
 
-      object.id = Net.create_object(self.instance.area_id, object)
-      self.objects[#self.objects+1] = object
+      object.id = Net.create_object(self.area_id, object)
+      self.objects[#self.objects + 1] = object
 
       ::continue::
     end
@@ -174,9 +185,8 @@ function Selection:indicate()
 end
 
 function Selection:remove_indicators()
-  -- delete objects
   for _, object in pairs(self.objects) do
-    Net.remove_object(self.instance.area_id, object.id)
+    Net.remove_object(self.area_id, object.id)
   end
 
   self.objects = {}

@@ -476,7 +476,9 @@
    <properties>
     <property name="Asset" value="bots/prog-gold"/>
     <property name="Direction" value="Down Right"/>
-    <property name="Next" type="object" value="158"/>
+    <property name="On Interact" type="object" value="158"/>
+    <property name="On Load" type="bool" value="true"/>
+    <property name="Solid" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
@@ -597,8 +599,8 @@
   <object id="157" name="Rematch Question" type="Script Node: Question" x="264" y="448">
    <properties>
     <property name="Mug" value="mugs/prog_gold_mug"/>
-    <property name="Next 1" type="object" value="86"/>
-    <property name="Next 2" type="object" value="85"/>
+    <property name="Next 1" type="object" value="85"/>
+    <property name="Next 2" type="object" value="86"/>
     <property name="Text 1" value="A GREAT BATTLE TOOK PLACE HERE. DO YOU HAVE WHAT IT TAKES TO RELIVE IT?"/>
    </properties>
    <point/>

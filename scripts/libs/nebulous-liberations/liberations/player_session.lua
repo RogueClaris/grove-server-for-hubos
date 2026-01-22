@@ -4,12 +4,27 @@ local Ability = require("scripts/libs/nebulous-liberations/liberations/ability")
 local PlayerSelection = require("scripts/libs/nebulous-liberations/liberations/player_selection")
 local Loot = require("scripts/libs/nebulous-liberations/liberations/loot")
 local EnemyHelpers = require("scripts/libs/nebulous-liberations/liberations/enemy_helpers")
-local ParalyzeEffect = require("scripts/libs/nebulous-liberations/utils/paralyze_effect")
+local ParalysisEffect = require("scripts/libs/nebulous-liberations/utils/paralysis_effect")
 local RecoverEffect = require("scripts/libs/nebulous-liberations/utils/recover_effect")
 local Emotes = require("scripts/libs/emotes")
 
+---@class Liberation.PlayerSession
+---@field instance Liberation.Mission
+---@field player number
+---@field health number
+---@field max_health number
+---@field shadowsteps number
+---@field paralysis_effect Liberation.ParalysisEffect?
+---@field paralysis_counter number
+---@field invincible boolean
+---@field completed_turn boolean
+---@field selection Liberation._PlayerSelection
+---@field ability Liberation.Ability?
+---@field disconnected boolean
+---@field is_trapped boolean
 local PlayerSession = {}
 
+---@return Liberation.PlayerSession
 function PlayerSession:new(instance, player)
   local player_session = {
     instance = instance,
@@ -17,8 +32,8 @@ function PlayerSession:new(instance, player)
     health = 100,
     max_health = 100,
     shadowsteps = {},
-    paralyze_effect = nil,
-    paralyze_counter = 0,
+    paralysis_effect = nil,
+    paralysis_counter = 0,
     invincible = false,
     completed_turn = false,
     selection = PlayerSelection:new(instance, player.id),
@@ -117,8 +132,12 @@ function PlayerSession:get_pass_turn_permission()
 end
 
 function PlayerSession:initiate_encounter(encounter_path, data)
-  Async.await(Async.initiate_encounter(self.player.id, encounter_path, data)).and_then(function(results)
-    if results == nil then return end
+  return Async.create_scope(function()
+    local results = Async.await(Async.initiate_encounter(self.player.id, encounter_path, data))
+
+    if results == nil then
+      return
+    end
 
     local total_enemy_health = 0
 
@@ -141,7 +160,8 @@ function PlayerSession:initiate_encounter(encounter_path, data)
     else
       results.success = true
     end
-    return results;
+
+    return results
   end)
 end
 
@@ -180,8 +200,8 @@ function PlayerSession:hurt(amount)
 end
 
 function PlayerSession:paralyze()
-  self.paralyze_counter = 2
-  self.paralyze_effect = ParalyzeEffect:new(self.player.id)
+  self.paralysis_counter = 2
+  self.paralysis_effect = ParalysisEffect:new(self.player.id)
   self.is_trapped = true
 end
 
@@ -212,18 +232,18 @@ end
 function PlayerSession:give_turn()
   self.invincible = false
 
-  if self.paralyze_counter > 0 then
-    self.paralyze_counter = self.paralyze_counter - 1
+  if self.paralysis_counter > 0 then
+    self.paralysis_counter = self.paralysis_counter - 1
 
-    if self.paralyze_counter > 0 then
+    if self.paralysis_counter > 0 then
       -- still paralyzed
       self:complete_turn()
       return
     end
 
     -- release
-    self.paralyze_effect:remove()
-    self.paralyze_effect = nil
+    self.paralysis_effect:remove()
+    self.paralysis_effect = nil
 
     -- heal 50% so we don't just start battles with 0 lol
     if not self.is_trapped then
@@ -242,9 +262,9 @@ function PlayerSession:find_matching_gates()
   local selection = self.selection
 
   for i = 1, #selection:get_panels(), 1 do
-    for j = 1, #self.instance.panel_gates, 1 do
+    for j = 1, #self.instance.gate_panels, 1 do
       local check_selection = selection:get_panels()[i]
-      local check_gate = self.instance.panel_gates[j]
+      local check_gate = self.instance.gate_panels[j]
 
       print(check_selection.custom_properties)
 
@@ -409,8 +429,8 @@ function PlayerSession:handle_disconnect()
     self.instance.ready_count = self.instance.ready_count - 1
   end
 
-  if self.paralyze_effect then
-    self.paralyze_effect:remove()
+  if self.paralysis_effect then
+    self.paralysis_effect:remove()
   end
 
   self.disconnected = true

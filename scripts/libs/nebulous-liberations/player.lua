@@ -1,5 +1,3 @@
-local player_data = require('scripts/custom-scripts/player_data')
-
 local Player = {}
 
 function Player:new(player_id)
@@ -25,7 +23,6 @@ function Player:new(player_id)
   return player
 end
 
--- all messages to this player should be made through the session while the session is alive
 function Player:message(message, texture_path, animation_path)
   return Async.message_player(self.id, message, texture_path, animation_path)
 end
@@ -34,58 +31,24 @@ function Player:message_auto(message, close_delay, texture_path, animation_path)
   return Async.message_player_auto(self.id, message, close_delay, texture_path, animation_path)
 end
 
--- all messages to this player should be made through the session while the session is alive
 function Player:message_with_mug(message)
   return self:message(message, self.mug.texture_path, self.mug.animation_path)
 end
 
--- all questions to this player should be made through the session while the session is alive
 function Player:question(question, texture_path, animation_path)
   return Async.question_player(self.id, question, texture_path, animation_path)
 end
 
--- all questions to this player should be made through the session while the session is alive
 function Player:question_with_mug(question)
   return self:question(question, self.mug.texture_path, self.mug.animation_path)
 end
 
--- all quizzes to this player should be made through the session while the session is alive
 function Player:quiz(a, b, c, texture_path, animation_path)
   return Async.quiz_player(self.id, a, b, c, texture_path, animation_path)
 end
 
 function Player:is_battling()
   return self.resolve_battle ~= nil
-end
-
-local function create_default_results()
-  -- { health: number, score: number, time: number, ran: bool, emotion: number }
-  return {
-    health = 1,
-    score = 0,
-    time = 0,
-    ran = true,
-    emotion = 0
-  }
-end
-
--- all encounters to this player should be made through the session while the session is alive
-function Player:initiate_encounter(asset_path, data)
-  if self.disconnected then
-    return Async.create_function(function()
-      return create_default_results()
-    end)
-  end
-
-  if self:is_battling() then
-    error("This player is already in a battle")
-  end
-
-  return Async.initiate_encounter(self.id, asset_path, data)
-
-  -- return Async.create_function(function()
-  --   self.resolve_battle = resolve
-  -- end)
 end
 
 -- will throw if a textbox is sent to the player using Net directly

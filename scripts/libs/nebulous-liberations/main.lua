@@ -122,7 +122,7 @@ Net:on("tick", function(event)
   local dead_instances = {}
 
   for area_id, instance in pairs(instances) do
-    instance:on_tick(elapsed)
+    instance:tick(elapsed)
 
     if #instance:get_players() == 0 and not instance:cleaning_up() then
       table.insert(dead_instances, area_id)
@@ -252,14 +252,7 @@ Net:on("player_area_transfer", function(event)
   local player_id = event.player_id
   local player = players[player_id]
 
-  local player_pos = Net.get_player_position(player_id)
-  player.x = player_pos.x
-  player.y = player_pos.y
-  player.z = player_pos.z
-
-  if player.activity then
-    player.activity:handle_player_transfer(player_id)
-  end
+  player.x, player.y, player.z = Net.get_player_position_multi(player_id)
 end)
 
 Net:on("player_request", function(event)

@@ -1,24 +1,22 @@
 -- enemy implementations are in the enemies folder
--- enemy shape:
--- {
---   id, -- id of the spawned bot
---   battle_name, -- name of the virus for syncing hp
---   name?, -- reserved, will automatically be set on creation
---   is_boss?, -- reserved, will automatically be set on creation
---   health,
---   max_health,
---   x, -- should be floored, but spawned bots should be centered on tiles (x + .5)
---   y, -- should be floored, but spawned bots should be centered on tiles (y + .5)
---   z, -- should be floored
---   mug? = {
---     texture_path
---     animation_path
---   }
---   encounter = asset_path
--- }
---   :new(instance, position, direction)
---   :take_turn() -- promise
---   :get_death_message() -- string
+
+---@class Liberation.Enemy
+---@field id Net.ActorId
+---@field battle_name string
+---@field name string? reserved, will automatically be set on creation
+---@field is_boss boolean? reserved, will automatically be set on creation
+---@field health number
+---@field max_health number
+---@field x number should be floored, but spawned bots should be centered on tiles (x + .5)
+---@field y number should be floored, but spawned bots should be centered on tiles (y + .5)
+---@field z number should be floored
+---@field mug Net.TextureAnimationPair?
+---@field encounter string
+---@field is_engaged boolean
+---@field new fun(self: Liberation.Enemy, mission: Liberation.Mission, position: Net.Position): Liberation.Enemy
+---@field take_turn fun(self: Liberation.Enemy): Net.Promise
+---@field get_death_message fun(self: Liberation.Enemy): string
+---@field do_first_encounter_banter fun(self: Liberation.Enemy, player_id: Net.ActorId): Net.Promise called when is_engaged is false
 
 local BlizzardMan = require("scripts/libs/nebulous-liberations/liberations/enemies/blizzardman")
 local BigBrute = require("scripts/libs/nebulous-liberations/liberations/enemies/bigbrute")
@@ -35,6 +33,7 @@ local name_to_enemy = {
   Bladia = Bladia
 }
 
+---@return Liberation.Enemy
 function Enemy.from(instance, position, direction, name, rank)
   local enemy = name_to_enemy[name]:new(instance, position, direction, rank)
   enemy.name = enemy.name or name
@@ -77,10 +76,7 @@ function Enemy.destroy(instance, enemy)
     local hold_time = 3
     local extra_explosion_time = .5
 
-    local lock_tracker = {}
-
     for _, player in ipairs(instance.players) do
-      lock_tracker[player.id] = Net.is_player_input_locked(player.id)
       Net.lock_player_input(player.id)
 
       Net.slide_player_camera(player.id, enemy.x + .5, enemy.y + .5, enemy.z, slide_time)
@@ -120,9 +116,7 @@ function Enemy.destroy(instance, enemy)
 
     -- unlock players who were not locked
     for _, player_session in ipairs(instance.player_sessions) do
-      if not lock_tracker[player_session.player.id] then
-        Net.unlock_player_input(player_session.player.id)
-      end
+      Net.unlock_player_input(player_session.player.id)
     end
 
     success = true

@@ -2,144 +2,163 @@ local Enemy = require("scripts/libs/nebulous-liberations/liberations/enemy")
 local ITEM_ASSET_PATH = "/server/assets/NebuLibsAssets/bots/item.png"
 local ITEM_ANIMATION_PATH = "/server/assets/NebuLibsAssets/bots/item.animation"
 
-local Loot = {
-  HEART = {
-    animation = "HEART",
-    breakable = true,
-    activate = function(instance, player_session)
-      return Async.create_function(function()
-        player_session.player:message_with_mug("I found\na heart!").and_then(function()
-          player_session:heal(player_session.max_health / 2)
-        end)
-      end)
-    end
-  },
-  CHIP = {
-    animation = "CHIP",
-    breakable = true,
-    activate = function(instance, player_session)
-      return Async.create_function(function()
-        player_session.player:message_with_mug("I found a\nBattleChip!").and_then(function()
+---@class Liberation._Loot
+---@field animation string
+---@field breakable boolean
+---@field activate fun(instance: Liberation.Mission, player_session: Liberation.PlayerSession): Net.Promise
 
-        end)
-      end)
-    end
-  },
-  MONEY = {
-    animation = "MONEY",
-    breakable = true,
-    activate = function(instance, player_session)
-      return Async.create_function(function()
-        player_session.player:message_with_mug("I found some\nMonies!").and_then(function()
-          player_session.get_monies = true
-        end)
-      end)
-    end
-  },
-  BUGFRAG = {
-    animation = "BUGFRAG",
-    breakable = true,
-    activate = function(instance, player_session)
-      return Async.create_function(function()
-        player_session.player:message_with_mug("I found a\nBugFrag!").and_then(function()
+local Loot = {}
 
-        end)
+---@type Liberation._Loot
+Loot.HEART = {
+  animation = "HEART",
+  breakable = true,
+  activate = function(instance, player_session)
+    return Async.create_scope(function()
+      player_session.player:message_with_mug("I found\na heart!").and_then(function()
+        player_session:heal(player_session.max_health / 2)
       end)
-    end
-  },
-  ORDER_POINT = {
-    animation = "ORDER_POINT",
-    breakable = false,
-    activate = function(instance, player_session)
-      return Async.create_function(function()
-        player_session.player:message_with_mug("I found\nOrder Points!")
+    end)
+  end
+}
 
-        local previous_points = instance.order_points
-        instance.order_points = math.min(instance.order_points + 3, instance.MAX_ORDER_POINTS)
+---@type Liberation._Loot
+Loot.CHIP = {
+  animation = "CHIP",
+  breakable = true,
+  activate = function(instance, player_session)
+    return Async.create_scope(function()
+      player_session.player:message_with_mug("I found a\nBattleChip!").and_then(function()
 
-        local recovered_points = instance.order_points - previous_points
-        player_session.player:message(recovered_points .. "\nOrder Pts Recovered!")
       end)
-    end
-  },
-  INVINCIBILITY = {
-    animation = "INVINCIBILITY",
-    breakable = false,
-    activate = function(instance, player_session)
-      return Async.create_function(function()
-        player_session.player:message("Team becomes invincible for\n 1 phase!!").and_then(function()
-          for _, other_session in pairs(instance.player_sessions) do
-            other_session.invincible = true
-          end
-        end)
+    end)
+  end
+}
+
+---@type Liberation._Loot
+Loot.MONEY = {
+  animation = "MONEY",
+  breakable = true,
+  activate = function(instance, player_session)
+    return Async.create_scope(function()
+      player_session.player:message_with_mug("I found some\nMonies!").and_then(function()
+        player_session.get_monies = true
       end)
-    end
-  },
-  MAJOR_HIT = {
-    animation = "MAJOR_HIT",
-    breakable = false,
-    activate = function(instance, player_session)
-      return Async.create_scope(function()
-        Async.await(player_session.player:message("Damages the closest Guardian the most!"))
+    end)
+  end
+}
 
-        local enemy = player_session:find_closest_guardian()
+---@type Liberation._Loot
+Loot.BUGFRAG = {
+  animation = "BUGFRAG",
+  breakable = true,
+  activate = function(instance, player_session)
+    return Async.create_scope(function()
+      player_session.player:message_with_mug("I found a\nBugFrag!").and_then(function()
 
-        if not enemy then
-          Async.await(player_session.player:message("No Guardians found"))
-          return
+      end)
+    end)
+  end
+}
+
+Loot.ORDER_POINT = {
+  animation = "ORDER_POINT",
+  breakable = false,
+  activate = function(instance, player_session)
+    return Async.create_scope(function()
+      player_session.player:message_with_mug("I found\nOrder Points!")
+
+      local previous_points = instance.order_points
+      instance.order_points = math.min(instance.order_points + 3, instance.MAX_ORDER_POINTS)
+
+      local recovered_points = instance.order_points - previous_points
+      player_session.player:message(recovered_points .. "\nOrder Pts Recovered!")
+    end)
+  end
+}
+
+---@type Liberation._Loot
+Loot.INVINCIBILITY = {
+  animation = "INVINCIBILITY",
+  breakable = false,
+  activate = function(instance, player_session)
+    return Async.create_scope(function()
+      player_session.player:message("Team becomes invincible for\n 1 phase!!").and_then(function()
+        for _, other_session in pairs(instance.player_sessions) do
+          other_session.invincible = true
         end
-
-        Async.await(Enemy.destroy(instance, enemy))
       end)
-    end
-  },
-  KEY = {
-    animation = "KEY",
-    breakable = false,
-    activate = function(instance, player_session)
-      return Async.create_scope(function()
-        Async.await(player_session.player:message_with_mug("I found a Key!"))
+    end)
+  end
+}
 
-        local gates = player_session:find_matching_gates()
+---@type Liberation._Loot
+Loot.MAJOR_HIT = {
+  animation = "MAJOR_HIT",
+  breakable = false,
+  activate = function(instance, player_session)
+    return Async.create_scope(function()
+      Async.await(player_session.player:message("Damages the closest Guardian the most!"))
 
-        if #gates == 0 then
-          Async.await(player_session.player:message_with_mug("But it doesn't open anything..."))
-          return
+      local enemy = player_session:find_closest_guardian()
+
+      if not enemy then
+        Async.await(player_session.player:message("No Guardians found"))
+        return
+      end
+
+      Async.await(Enemy.destroy(instance, enemy))
+    end)
+  end
+}
+
+---@type Liberation._Loot
+Loot.KEY = {
+  animation = "KEY",
+  breakable = false,
+  activate = function(instance, player_session)
+    return Async.create_scope(function()
+      Async.await(player_session.player:message_with_mug("I found a Key!"))
+
+      local gates = player_session:find_matching_gates()
+
+      if #gates == 0 then
+        Async.await(player_session.player:message_with_mug("But it doesn't open anything..."))
+        return
+      end
+      local id = gates[1].custom_properties["Gate Key"]
+      local points = player_session:find_gate_points(id)
+      local function unlock_gates()
+        for i = 1, #gates, 1 do
+          instance:remove_panel(gates[i])
         end
-        local id = gates[1].custom_properties["Gate Key"]
-        local points = player_session:find_gate_points(id)
-        local function unlock_gates()
-          for i = 1, #gates, 1 do
-            instance:remove_panel(gates[i])
-          end
-        end
-        if #points > 0 then
-          local hold_time = .4
-          local slide_time = .4
-          local total_camera_time = 0
-          for j = 1, #points, 1 do
-            local point = points[j]
-            Net.slide_player_camera(player_session.player.id, point.x, point.y, point.z, slide_time)
+      end
+      if #points > 0 then
+        local hold_time = .4
+        local slide_time = .4
+        local total_camera_time = 0
+        for j = 1, #points, 1 do
+          local point = points[j]
+          Net.slide_player_camera(player_session.player.id, point.x, point.y, point.z, slide_time)
+          Net.move_player_camera(player_session.player.id, point.x, point.y, point.z, hold_time)
+          total_camera_time = total_camera_time + slide_time + hold_time
+          if point == points[1] then
+            Async.await(player_session.player:message_with_mug("The gate opened!"))
             Net.move_player_camera(player_session.player.id, point.x, point.y, point.z, hold_time)
-            total_camera_time = total_camera_time + slide_time + hold_time
-            if point == points[1] then
-              Async.await(player_session.player:message_with_mug("The gate opened!"))
-              Net.move_player_camera(player_session.player.id, point.x, point.y, point.z, hold_time)
-              total_camera_time = total_camera_time + hold_time
-              unlock_gates()
-            end
+            total_camera_time = total_camera_time + hold_time
+            unlock_gates()
           end
-          total_camera_time = total_camera_time + slide_time
-          Net.slide_player_camera(player_session.player.id, player_session.player.x, player_session.player.y,
-            player_session.player.z, slide_time)
-          print(total_camera_time)
-          Async.await(Async.sleep(total_camera_time))
-        else
-          unlock_gates()
         end
-      end)
-    end
-  }
+        total_camera_time = total_camera_time + slide_time
+        Net.slide_player_camera(player_session.player.id, player_session.player.x, player_session.player.y,
+          player_session.player.z, slide_time)
+        print(total_camera_time)
+        Async.await(Async.sleep(total_camera_time))
+      else
+        unlock_gates()
+      end
+    end)
+  end
 }
 
 Loot.DEFAULT_POOL = {
@@ -159,14 +178,7 @@ Loot.BONUS_POOL = {
   Loot.MONEY,
 }
 
-Loot.TEST_POOL = {
-  Loot.HEART,
-  Loot.CHIP,
-  Loot.MONEY,
-  Loot.BUGFRAG,
-  Loot.ORDER_POINT,
-}
-
+---@type Liberation._Loot[]
 Loot.FULL_POOL = {
   Loot.HEART,
   Loot.CHIP,
@@ -200,7 +212,7 @@ local function spawn_item_bot(bot_data, property_animation)
 
   Net.animate_bot_properties(id, property_animation)
 
-  function cleanup()
+  local function cleanup()
     Net.remove_bot(shadow_id)
     Net.remove_bot(id)
   end

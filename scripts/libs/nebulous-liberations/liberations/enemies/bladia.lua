@@ -181,7 +181,6 @@ function Bladia:take_turn()
 
       --Insert the data and the Collision
       new_panel.visual_object_id = visual_panel.id
-      new_panel.visual_gid = visual_panel.data.gid
       self.instance.panels[z][y][x] = new_panel
 
       --Hold for half a second to spawn the tile.

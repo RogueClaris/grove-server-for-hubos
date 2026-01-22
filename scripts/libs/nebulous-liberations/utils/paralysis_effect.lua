@@ -1,8 +1,11 @@
-local ParalyzeEffect = {}
+---@class Liberation.ParalysisEffect
+---@field bot_id Net.ActorId
+local ParalysisEffect = {}
 
 local SFX_PATH = "/server/assets/NebuLibsAssets/sound effects/paralyze.ogg"
 
-function ParalyzeEffect:new(actor_id, area_wide_sfx)
+---@return Liberation.ParalysisEffect
+function ParalysisEffect:new(actor_id, area_wide_sfx)
   local paralyze_effect = {
     bot_id = nil
   }
@@ -40,8 +43,8 @@ function ParalyzeEffect:new(actor_id, area_wide_sfx)
   return paralyze_effect
 end
 
-function ParalyzeEffect:remove()
+function ParalysisEffect:remove()
   Net.remove_bot(self.bot_id)
 end
 
-return ParalyzeEffect
+return ParalysisEffect
