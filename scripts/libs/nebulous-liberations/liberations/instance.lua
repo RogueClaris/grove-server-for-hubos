@@ -57,13 +57,15 @@ local function liberate(self)
     for _, row in pairs(layer) do
       for _, panel in pairs(row) do
         if panel then
-          self:remove_panel(panel)
+          Net.remove_object(self.area_id, panel.id)
+          Net.remove_object(self.area_id, panel.visual_object_id)
         end
       end
     end
   end
 
   self.panels = {}
+  self.dark_holes = {}
 
   for _, enemy in ipairs(self.enemies) do
     Net.remove_bot(enemy.id, false)
@@ -71,15 +73,21 @@ local function liberate(self)
 
   self.enemies = {}
 
+  local area_properties = Net.get_area_custom_properties(self.area_id)
+
   Net.set_background(
     self.area_id,
-    Net.get_area_custom_properties(self.area_id)["Background Texture"],
-    Net.get_area_custom_properties(self.area_id)["Background Animation"],
-    Net.get_area_custom_properties(self.area_id)["Background Vel X"],
-    Net.get_area_custom_properties(self.area_id)["Background Vel Y"]
+    area_properties["Background Texture"],
+    area_properties["Background Animation"],
+    tonumber(area_properties["Background Vel X"]),
+    tonumber(area_properties["Background Vel Y"])
   )
 
-  Net.set_song(self.area_id, Net.get_area_custom_properties(self.area_id)["Song"])
+  if area_properties["Victory Song"] ~= nil then
+    Net.set_music(self.area_id, area_properties["Victory Song"])
+  else
+    Net.set_music(self.area_id, area_properties["Song"])
+  end
 
   local victory_message =
       self.area_name .. " Liberated\n" ..
@@ -106,9 +114,6 @@ local function convert_indestructible_panels(self)
 
   -- notify players
   for _, player_session in pairs(self.player_sessions) do
-    if Net.get_area_custom_properties(self.area_id)["Victory Lap Song"] ~= nil then
-      Net.set_song(self.area_id, Net.get_area_custom_properties(self.area_id)["Victory Lap Song"])
-    end
     player_session.player:message("No more DarkHoles! Nothing will save the Darkloids now!")
 
     local player = player_session.player
