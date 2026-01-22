@@ -6,6 +6,10 @@ local Direction = require("scripts/libs/direction")
 Preloader.add_asset("/server/assets/NebuLibsAssets/bots/beast breath.png")
 Preloader.add_asset("/server/assets/NebuLibsAssets/bots/beast breath.animation")
 
+---@class Liberation.Enemies.BigBrute: Liberation.Enemy
+---@field package instance Liberation.MissionInstance
+---@field package selection Liberation.EnemySelection
+---@field package damage number
 local BigBrute = {}
 
 --Setup ranked health and damage
@@ -98,6 +102,7 @@ local function find_offset(self, xstep, ystep, limit)
   return offset
 end
 
+---@param player Liberation.Player
 local function attempt_axis_move(self, player, diff, xfilter, yfilter)
   return Async.create_promise(function(resolve)
     local step = sign(diff)
@@ -113,9 +118,10 @@ local function attempt_axis_move(self, player, diff, xfilter, yfilter)
 
     EnemyHelpers.face_position(self, targetx + .5, targety + .5)
 
+    local player_x, player_y = player:position_multi()
     local target_direction = Direction.diagonal_from_offset(
-      player.x - (targetx + .5),
-      player.y - (targety + .5)
+      player_x - (targetx + .5),
+      player_y - (targety + .5)
     )
 
     EnemyHelpers.move(self.instance, self, targetx, targety, self.z, target_direction).and_then(function()
@@ -135,7 +141,9 @@ local function attempt_move(self)
       return resolve(success)
     end
 
-    -- local distance = EnemyHelpers.chebyshev_tile_distance(self, player.x, player.y, player.z)
+    local player_x, player_y, player_z = player:position_multi()
+
+    -- local distance = EnemyHelpers.chebyshev_tile_distance(self, player_x, player_y, player_z)
 
     -- if distance > 4 then
     --   -- too far to target
@@ -143,7 +151,6 @@ local function attempt_move(self)
     --   return
     -- end
 
-    local player_x, player_y = player:position_multi()
     local xdiff = math.floor(player_x) - self.x
     local ydiff = math.floor(player_y) - self.y
 
@@ -167,6 +174,7 @@ local function attempt_move(self)
   end)
 end
 
+---@param self Liberation.Enemies.BigBrute
 local function attempt_attack(self)
   return Async.create_promise(function(resolve)
     self.selection:move(self, Net.get_bot_direction(self.id))
@@ -193,7 +201,7 @@ local function attempt_attack(self)
     local spawned_bots = {}
 
     for _, player in ipairs(caught_players) do
-      local player = player.player
+      local player_x, player_y, player_z = player:position_multi()
 
       table.insert(spawned_bots, Net.create_bot({
         texture_path = "/server/assets/NebuLibsAssets/bots/beast breath.png",
@@ -201,9 +209,9 @@ local function attempt_attack(self)
         animation = "ANIMATE",
         area_id = self.instance.area_id,
         warp_in = false,
-        x = player.x + (1 / 32),
-        y = player.y + (1 / 32),
-        z = player.z
+        x = player_x + (1 / 32),
+        y = player_y + (1 / 32),
+        z = player_z
       }))
     end
 
