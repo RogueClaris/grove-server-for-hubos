@@ -1,6 +1,6 @@
 local RecoverEffect = {}
 
-local SFX_PATH = "/server/assets/NebuLibsAssets/sound effects/recover.ogg"
+local SFX_PATH = "/server/assets/liberations/sound effects/recover.ogg"
 
 function RecoverEffect:new(actor_id, area_wide_sfx)
   local recover_effect = {
@@ -27,8 +27,8 @@ function RecoverEffect:new(actor_id, area_wide_sfx)
   end
 
   local recover_bot_id = Net.create_bot({
-    texture_path = "/server/assets/NebuLibsAssets/bots/recover.png",
-    animation_path = "/server/assets/NebuLibsAssets/bots/recover.animation",
+    texture_path = "/server/assets/liberations/bots/recover.png",
+    animation_path = "/server/assets/liberations/bots/recover.animation",
     area_id = area_id,
     warp_in = false,
     x = position.x + 1 / 32,

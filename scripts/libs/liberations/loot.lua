@@ -1,6 +1,6 @@
-local Enemy = require("scripts/libs/nebulous-liberations/liberations/enemy")
-local ITEM_ASSET_PATH = "/server/assets/NebuLibsAssets/bots/item.png"
-local ITEM_ANIMATION_PATH = "/server/assets/NebuLibsAssets/bots/item.animation"
+local Enemy = require("scripts/libs/liberations/enemy")
+local ITEM_ASSET_PATH = "/server/assets/liberations/bots/item.png"
+local ITEM_ANIMATION_PATH = "/server/assets/liberations/bots/item.animation"
 
 ---@class Liberation._Loot
 ---@field animation string

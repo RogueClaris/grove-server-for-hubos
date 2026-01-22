@@ -1,4 +1,4 @@
-local LibPlugin = require('scripts/libs/nebulous-liberations/main')
+local LibPlugin = require('scripts/custom-scripts/liberations')
 local player_data = require('scripts/custom-scripts/player_data')
 
 ---@param scripts ScriptNodes

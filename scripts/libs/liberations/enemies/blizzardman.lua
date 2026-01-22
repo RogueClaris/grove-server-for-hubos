@@ -1,9 +1,9 @@
-local EnemySelection = require("scripts/libs/nebulous-liberations/liberations/selections/enemy_selection")
-local EnemyHelpers = require("scripts/libs/nebulous-liberations/liberations/enemy_helpers")
-local Preloader = require("scripts/libs/nebulous-liberations/liberations/preloader")
+local EnemySelection = require("scripts/libs/liberations/selections/enemy_selection")
+local EnemyHelpers = require("scripts/libs/liberations/enemy_helpers")
+local Preloader = require("scripts/libs/liberations/preloader")
 
-Preloader.add_asset("/server/assets/NebuLibsAssets/bots/snowball.png")
-Preloader.add_asset("/server/assets/NebuLibsAssets/bots/snowball.animation")
+Preloader.add_asset("/server/assets/liberations/bots/snowball.png")
+Preloader.add_asset("/server/assets/liberations/bots/snowball.animation")
 
 ---@class Liberation.Enemies.BlizzardMan: Liberation.Enemy
 ---@field instance Liberation.MissionInstance
@@ -43,10 +43,10 @@ function BlizzardMan:new(instance, position, direction, rank)
     y = math.floor(position.y),
     z = math.floor(position.z),
     mug = {
-      texture_path = "/server/assets/NebuLibsAssets/mugs/blizzardman.png",
-      animation_path = "/server/assets/NebuLibsAssets/mugs/blizzardman.animation",
+      texture_path = "/server/assets/liberations/mugs/blizzardman.png",
+      animation_path = "/server/assets/liberations/mugs/blizzardman.animation",
     },
-    encounter = "/server/assets/NebuLibsAssets/encounters/BigBrute.zip",
+    encounter = "/server/assets/liberations/encounters/BigBrute.zip",
     selection = EnemySelection:new(instance),
     is_engaged = false
   }
@@ -84,8 +84,8 @@ end
 
 function BlizzardMan:spawn(direction)
   self.id = Net.create_bot({
-    texture_path = "/server/assets/NebuLibsAssets/bots/blizzardman.png",
-    animation_path = "/server/assets/NebuLibsAssets/bots/blizzardman.animation",
+    texture_path = "/server/assets/liberations/bots/blizzardman.png",
+    animation_path = "/server/assets/liberations/bots/blizzardman.animation",
     area_id = self.instance.area_id,
     direction = direction,
     warp_in = false,
@@ -142,8 +142,8 @@ function BlizzardMan:take_turn()
     for _, player in ipairs(caught_players) do
       local player_x, player_y, player_z = player:position_multi()
       local snowball_bot_id = Net.create_bot({
-        texture_path = "/server/assets/NebuLibsAssets/bots/snowball.png",
-        animation_path = "/server/assets/NebuLibsAssets/bots/snowball.animation",
+        texture_path = "/server/assets/liberations/bots/snowball.png",
+        animation_path = "/server/assets/liberations/bots/snowball.animation",
         area_id = self.instance.area_id,
         warp_in = false,
         x = player_x - .5,

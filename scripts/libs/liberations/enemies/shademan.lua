@@ -1,5 +1,5 @@
-local EnemySelection = require("scripts/libs/nebulous-liberations/liberations/selections/enemy_selection")
-local EnemyHelpers = require("scripts/libs/nebulous-liberations/liberations/enemy_helpers")
+local EnemySelection = require("scripts/libs/liberations/selections/enemy_selection")
+local EnemyHelpers = require("scripts/libs/liberations/enemy_helpers")
 local Direction = require("scripts/libs/direction")
 
 ---@class Liberation.Enemies.ShadeMan: Liberation.Enemy
@@ -41,10 +41,10 @@ function ShadeMan:new(instance, position, direction, rank)
     z = math.floor(position.z),
     direction = direction,
     mug = {
-      texture_path = "/server/assets/NebuLibsAssets/mugs/shademan.png",
-      animation_path = "/server/assets/NebuLibsAssets/mugs/shademan.animation",
+      texture_path = "/server/assets/liberations/mugs/shademan.png",
+      animation_path = "/server/assets/liberations/mugs/shademan.animation",
     },
-    encounter = "/server/assets/NebuLibsAssets/encounters/Shademan.zip",
+    encounter = "/server/assets/liberations/encounters/Shademan.zip",
     selection = EnemySelection:new(instance),
     is_engaged = false
   }
@@ -64,8 +64,8 @@ end
 
 function ShadeMan:spawn(direction)
   self.id = Net.create_bot({
-    texture_path = "/server/assets/NebuLibsAssets/bots/shademan.png",
-    animation_path = "/server/assets/NebuLibsAssets/bots/shademan.animation",
+    texture_path = "/server/assets/liberations/bots/shademan.png",
+    animation_path = "/server/assets/liberations/bots/shademan.animation",
     area_id = self.instance.area_id,
     direction = direction,
     warp_in = false,

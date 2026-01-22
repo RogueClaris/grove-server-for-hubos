@@ -1,4 +1,4 @@
-local Selection = require("scripts/libs/nebulous-liberations/liberations/selections/selection")
+local Selection = require("scripts/libs/liberations/selections/selection")
 
 ---@class Liberation.EnemySelection
 ---@field instance Liberation.MissionInstance

@@ -18,11 +18,11 @@
 ---@field get_death_message fun(self: Liberation.Enemy): string
 ---@field banter fun(self: Liberation.Enemy, player_id: Net.ActorId): Net.Promise
 
-local BlizzardMan = require("scripts/libs/nebulous-liberations/liberations/enemies/blizzardman")
-local BigBrute = require("scripts/libs/nebulous-liberations/liberations/enemies/bigbrute")
-local ShadeMan = require("scripts/libs/nebulous-liberations/liberations/enemies/shademan")
-local Bladia = require("scripts/libs/nebulous-liberations/liberations/enemies/bladia")
-local ExplodingEffect = require("scripts/libs/nebulous-liberations/liberations/effects/exploding_effect")
+local BlizzardMan = require("scripts/libs/liberations/enemies/blizzardman")
+local BigBrute = require("scripts/libs/liberations/enemies/bigbrute")
+local ShadeMan = require("scripts/libs/liberations/enemies/shademan")
+local Bladia = require("scripts/libs/liberations/enemies/bladia")
+local ExplodingEffect = require("scripts/libs/liberations/effects/exploding_effect")
 
 local Enemy = {}
 

@@ -1,6 +1,6 @@
-local EnemySelection = require("scripts/libs/nebulous-liberations/liberations/selections/enemy_selection")
-local EnemyHelpers = require("scripts/libs/nebulous-liberations/liberations/enemy_helpers")
-local PanelTypes = require("scripts/libs/nebulous-liberations/liberations/panel_types")
+local EnemySelection = require("scripts/libs/liberations/selections/enemy_selection")
+local EnemyHelpers = require("scripts/libs/liberations/enemy_helpers")
+local PanelTypes = require("scripts/libs/liberations/panel_types")
 local Direction = require("scripts/libs/direction")
 
 ---@class Liberation.Enemies.Bladia: Liberation.Enemy
@@ -39,7 +39,7 @@ function Bladia:new(instance, position, direction, rank)
     x = math.floor(position.x),
     y = math.floor(position.y),
     z = math.floor(position.z),
-    encounter = "/server/assets/NebuLibsAssets/encounters/Bladia.zip",
+    encounter = "/server/assets/liberations/encounters/Bladia.zip",
     selection = EnemySelection:new(instance),
     is_engaged = false
   }
@@ -59,8 +59,8 @@ end
 
 function Bladia:spawn(direction)
   self.id = Net.create_bot({
-    texture_path = "/server/assets/NebuLibsAssets/bots/bladia.png",
-    animation_path = "/server/assets/NebuLibsAssets/bots/bladia.animation",
+    texture_path = "/server/assets/liberations/bots/bladia.png",
+    animation_path = "/server/assets/liberations/bots/bladia.animation",
     area_id = self.instance.area_id,
     direction = direction,
     warp_in = false,

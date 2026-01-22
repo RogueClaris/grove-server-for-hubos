@@ -66,7 +66,7 @@ return function(scripts)
           --Heal to max
           player_data.update_player_health(player_id, mhp)
           --Provide a recover SFX from the server so that we guarantee it exists.
-          Net.play_sound_for_player(player_id, "/server/assets/NebuLibsAssets/sound effects/recover.ogg")
+          Net.play_sound_for_player(player_id, "/server/assets/liberations/sound effects/recover.ogg")
         end)
 
         --Give the player 500 Monies!
@@ -98,7 +98,7 @@ return function(scripts)
 
         player_data.update_player_health(player_id, mhp)
         --Provide a recover SFX from the server so that we guarantee it exists.
-        Net.play_sound_for_player(player_id, "/server/assets/NebuLibsAssets/sound effects/recover.ogg")
+        Net.play_sound_for_player(player_id, "/server/assets/liberations/sound effects/recover.ogg")
         Net.message_player(player_id, "I'll log this incident right away.", mug_texture, mug_anim)
         Async.await(Async.message_player(player_id,
           "Come back in an hour if you're still willing to help me with my research.", mug_texture,

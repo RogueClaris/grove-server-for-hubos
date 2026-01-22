@@ -2,7 +2,7 @@
 ---@field bot_id Net.ActorId
 local ParalysisEffect = {}
 
-local SFX_PATH = "/server/assets/NebuLibsAssets/sound effects/paralyze.ogg"
+local SFX_PATH = "/server/assets/liberations/sound effects/paralyze.ogg"
 
 ---@return Liberation.ParalysisEffect
 function ParalysisEffect:new(actor_id, area_wide_sfx)
@@ -30,8 +30,8 @@ function ParalysisEffect:new(actor_id, area_wide_sfx)
   end
 
   paralyze_effect.bot_id = Net.create_bot({
-    texture_path = "/server/assets/NebuLibsAssets/bots/paralyze.png",
-    animation_path = "/server/assets/NebuLibsAssets/bots/paralyze.animation",
+    texture_path = "/server/assets/liberations/bots/paralyze.png",
+    animation_path = "/server/assets/liberations/bots/paralyze.animation",
     animation = "THIN",
     area_id = area_id,
     warp_in = false,

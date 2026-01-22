@@ -1,6 +1,6 @@
-local Selection = require("scripts/libs/nebulous-liberations/liberations/selections/selection")
+local Selection = require("scripts/libs/liberations/selections/selection")
 local Direction = require("scripts/libs/direction")
-local PanelTypes = require("scripts/libs/nebulous-liberations/liberations/panel_types")
+local PanelTypes = require("scripts/libs/liberations/panel_types")
 
 -- private functions
 local function resolve_selection_direction(player_pos, panel_object)

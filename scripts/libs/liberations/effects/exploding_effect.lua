@@ -34,7 +34,7 @@ local function explode(self, explosion_bot_id)
     return
   end
 
-  Net.play_sound(self.area_id, "/server/assets/NebuLibsAssets/sound effects/explode.ogg")
+  Net.play_sound(self.area_id, "/server/assets/liberations/sound effects/explode.ogg")
 
   if math.random(2) == 1 then
     Net.animate_bot(explosion_bot_id, "EXPLODE")
@@ -44,16 +44,16 @@ local function explode(self, explosion_bot_id)
 
   -- explode again
   Async.sleep(EXPLOSION_DURATION)
-    .and_then(function()
-      explode(self, explosion_bot_id)
-    end)
+      .and_then(function()
+        explode(self, explosion_bot_id)
+      end)
 end
 
 local function spawn(self, area_id, position)
   for i = 1, TOTAL_EXPLOSIONS, 1 do
     local explosion_bot_id = Net.create_bot({
-      texture_path = "/server/assets/NebuLibsAssets/bots/explosion.png",
-      animation_path = "/server/assets/NebuLibsAssets/bots/explosion.animation",
+      texture_path = "/server/assets/liberations/bots/explosion.png",
+      animation_path = "/server/assets/liberations/bots/explosion.animation",
       area_id = self.area_id,
       warp_in = false,
       x = self.position.x,
@@ -63,9 +63,9 @@ local function spawn(self, area_id, position)
 
     if i > 1 then
       Async.sleep((i - 1) * EXPLOSION_DURATION / TOTAL_EXPLOSIONS)
-        .and_then(function()
-          explode(self, explosion_bot_id)
-        end)
+          .and_then(function()
+            explode(self, explosion_bot_id)
+          end)
     else
       explode(self, explosion_bot_id)
     end

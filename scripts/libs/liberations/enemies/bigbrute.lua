@@ -1,10 +1,10 @@
-local EnemyHelpers = require("scripts/libs/nebulous-liberations/liberations/enemy_helpers")
-local EnemySelection = require("scripts/libs/nebulous-liberations/liberations/selections/enemy_selection")
-local Preloader = require("scripts/libs/nebulous-liberations/liberations/preloader")
+local EnemyHelpers = require("scripts/libs/liberations/enemy_helpers")
+local EnemySelection = require("scripts/libs/liberations/selections/enemy_selection")
+local Preloader = require("scripts/libs/liberations/preloader")
 local Direction = require("scripts/libs/direction")
 
-Preloader.add_asset("/server/assets/NebuLibsAssets/bots/beast breath.png")
-Preloader.add_asset("/server/assets/NebuLibsAssets/bots/beast breath.animation")
+Preloader.add_asset("/server/assets/liberations/bots/beast breath.png")
+Preloader.add_asset("/server/assets/liberations/bots/beast breath.animation")
 
 ---@class Liberation.Enemies.BigBrute: Liberation.Enemy
 ---@field package instance Liberation.MissionInstance
@@ -63,8 +63,8 @@ end
 
 function BigBrute:spawn(direction)
   self.id = Net.create_bot({
-    texture_path = "/server/assets/NebuLibsAssets/bots/bigbrute.png",
-    animation_path = "/server/assets/NebuLibsAssets/bots/bigbrute.animation",
+    texture_path = "/server/assets/liberations/bots/bigbrute.png",
+    animation_path = "/server/assets/liberations/bots/bigbrute.animation",
     area_id = self.instance.area_id,
     direction = direction,
     warp_in = false,
@@ -208,8 +208,8 @@ local function attempt_attack(self)
       local player_x, player_y, player_z = player:position_multi()
 
       table.insert(spawned_bots, Net.create_bot({
-        texture_path = "/server/assets/NebuLibsAssets/bots/beast breath.png",
-        animation_path = "/server/assets/NebuLibsAssets/bots/beast breath.animation",
+        texture_path = "/server/assets/liberations/bots/beast breath.png",
+        animation_path = "/server/assets/liberations/bots/beast breath.animation",
         animation = "ANIMATE",
         area_id = self.instance.area_id,
         warp_in = false,

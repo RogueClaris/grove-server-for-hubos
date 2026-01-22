@@ -116,7 +116,7 @@ return function(scripts)
 
         player_data.update_player_money(player_id, -50)
 
-        Net.play_sound_for_player(player_id, "/server/assets/NebuLibsAssets/sound effects/recover.ogg")
+        Net.play_sound_for_player(player_id, "/server/assets/liberations/sound effects/recover.ogg")
 
         local hp = Net.get_player_max_health(player_id)
 
@@ -158,7 +158,7 @@ return function(scripts)
 
         player_data.update_player_money(player_id, -50)
 
-        Net.play_sound_for_player(player_id, "/server/assets/NebuLibsAssets/sound effects/recover.ogg")
+        Net.play_sound_for_player(player_id, "/server/assets/liberations/sound effects/recover.ogg")
 
         local hp = Net.get_player_max_health(player_id)
 

@@ -1,10 +1,10 @@
-local Player = require("scripts/libs/nebulous-liberations/liberations/player")
-local Enemy = require("scripts/libs/nebulous-liberations/liberations/enemy")
-local EnemyHelpers = require("scripts/libs/nebulous-liberations/liberations/enemy_helpers")
-local Loot = require("scripts/libs/nebulous-liberations/liberations/loot")
-local PanelTypes = require("scripts/libs/nebulous-liberations/liberations/panel_types")
-local TargetPhase = require("scripts/libs/nebulous-liberations/liberations/target_phase")
-local Preloader = require("scripts/libs/nebulous-liberations/liberations/preloader")
+local Player = require("scripts/libs/liberations/player")
+local Enemy = require("scripts/libs/liberations/enemy")
+local EnemyHelpers = require("scripts/libs/liberations/enemy_helpers")
+local Loot = require("scripts/libs/liberations/loot")
+local PanelTypes = require("scripts/libs/liberations/panel_types")
+local TargetPhase = require("scripts/libs/liberations/target_phase")
+local Preloader = require("scripts/libs/liberations/preloader")
 
 local compression = require('scripts/custom-scripts/compression')
 

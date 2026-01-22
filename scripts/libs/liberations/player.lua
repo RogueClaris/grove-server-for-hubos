@@ -1,9 +1,9 @@
-local PlayerSelection = require("scripts/libs/nebulous-liberations/liberations/selections/player_selection")
-local Loot = require("scripts/libs/nebulous-liberations/liberations/loot")
-local EnemyHelpers = require("scripts/libs/nebulous-liberations/liberations/enemy_helpers")
-local ParalysisEffect = require("scripts/libs/nebulous-liberations/liberations/effects/paralysis_effect")
-local RecoverEffect = require("scripts/libs/nebulous-liberations/liberations/effects/recover_effect")
-local PanelTypes = require("scripts/libs/nebulous-liberations/liberations/panel_types")
+local PlayerSelection = require("scripts/libs/liberations/selections/player_selection")
+local Loot = require("scripts/libs/liberations/loot")
+local EnemyHelpers = require("scripts/libs/liberations/enemy_helpers")
+local ParalysisEffect = require("scripts/libs/liberations/effects/paralysis_effect")
+local RecoverEffect = require("scripts/libs/liberations/effects/recover_effect")
+local PanelTypes = require("scripts/libs/liberations/panel_types")
 local Emotes = require("scripts/libs/emotes")
 
 ---@class Liberation.Player
@@ -58,17 +58,17 @@ function Player:emote_state()
   end
 end
 
-local order_points_mug_texture = "/server/assets/NebuLibsAssets/mugs/order pts.png"
+local order_points_mug_texture = "/server/assets/liberations/mugs/order pts.png"
 local order_points_mug_animations = {
-  "/server/assets/NebuLibsAssets/mugs/order pts 0.animation",
-  "/server/assets/NebuLibsAssets/mugs/order pts 1.animation",
-  "/server/assets/NebuLibsAssets/mugs/order pts 2.animation",
-  "/server/assets/NebuLibsAssets/mugs/order pts 3.animation",
-  "/server/assets/NebuLibsAssets/mugs/order pts 4.animation",
-  "/server/assets/NebuLibsAssets/mugs/order pts 5.animation",
-  "/server/assets/NebuLibsAssets/mugs/order pts 6.animation",
-  "/server/assets/NebuLibsAssets/mugs/order pts 7.animation",
-  "/server/assets/NebuLibsAssets/mugs/order pts 8.animation",
+  "/server/assets/liberations/mugs/order pts 0.animation",
+  "/server/assets/liberations/mugs/order pts 1.animation",
+  "/server/assets/liberations/mugs/order pts 2.animation",
+  "/server/assets/liberations/mugs/order pts 3.animation",
+  "/server/assets/liberations/mugs/order pts 4.animation",
+  "/server/assets/liberations/mugs/order pts 5.animation",
+  "/server/assets/liberations/mugs/order pts 6.animation",
+  "/server/assets/liberations/mugs/order pts 7.animation",
+  "/server/assets/liberations/mugs/order pts 8.animation",
 }
 
 function Player:position()
@@ -278,7 +278,7 @@ function Player:hurt(amount)
     return
   end
 
-  Net.play_sound_for_player(self.id, "/server/assets/NebuLibsAssets/sound effects/hurt.ogg")
+  Net.play_sound_for_player(self.id, "/server/assets/liberations/sound effects/hurt.ogg")
 
   self.health = math.max(math.ceil(self.health - amount), 0)
 
