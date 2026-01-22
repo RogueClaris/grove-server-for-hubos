@@ -1,409 +1,414 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.6" orientation="isometric" renderorder="right-down" width="24" height="28" tilewidth="64" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="55">
- <properties>
-  <property name="Background" value="custom"/>
-  <property name="Background Animation" value="/server/assets/NebuLibsAssets/backgrounds/ACDC/ACDC.animation"/>
-  <property name="Background Texture" value="/server/assets/NebuLibsAssets/backgrounds/ACDC/ACDC.png"/>
-  <property name="Background Vel X" type="float" value="0.4"/>
-  <property name="Background Vel Y" type="float" value="0.125"/>
-  <property name="Forced Base HP" type="int" value="100"/>
-  <property name="Honor HPMem" type="bool" value="true"/>
-  <property name="Name" value="ACDC 3"/>
-  <property name="Song" value="/server/assets/songs/ACDC Theme.ogg"/>
- </properties>
- <tileset firstgid="1" source="../assets/tiles/central_arrows.tsx"/>
- <tileset firstgid="5" source="../assets/tiles/central_platform.tsx"/>
- <tileset firstgid="245" source="../assets/tiles/Custom_Central_Tiles.tsx"/>
- <tileset firstgid="253" source="../assets/tiles/SquareWarpsA.tsx"/>
- <tileset firstgid="293" source="../assets/tiles/Squirrel.tsx"/>
- <tileset firstgid="294" source="../assets/tiles/nebula door.tsx"/>
- <tileset firstgid="306" source="../assets/tiles/Den_Exits.tsx"/>
- <tileset firstgid="324" source="../assets/tiles/walkable space.tsx"/>
- <tileset firstgid="330" source="../assets/tiles/warp.tsx"/>
- <tileset firstgid="336" source="../assets/tiles/central_arrows2.tsx"/>
- <tileset firstgid="340" source="../assets/tiles/warp_lib.tsx"/>
- <tileset firstgid="346" source="../assets/tiles/Internet House.tsx"/>
- <tileset firstgid="347" source="../assets/tiles/gate.tsx"/>
- <tileset firstgid="352" source="../assets/tiles/bn6_cube_gray.tsx"/>
- <tileset firstgid="366" source="../assets/tiles/BlueMysteryData.tsx"/>
- <layer id="1" name="Tile Layer 1" width="24" height="28">
-  <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,245,246,245,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,246,245,246,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,245,246,245,0,0,0,0,0,
-0,0,0,0,0,0,0,29,0,0,0,0,0,0,0,0,0,56,0,0,0,0,0,0,
-0,0,0,0,2147483976,13,53,39,53,55,245,246,0,0,0,0,0,21,13,31,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,246,245,0,0,0,29,0,0,0,56,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,245,246,0,0,0,12,0,0,245,246,245,0,0,0,
-0,0,0,0,0,0,0,0,0,0,246,245,55,13,53,39,53,55,246,245,246,0,0,0,
-0,0,0,0,0,0,0,0,0,0,245,246,0,0,0,52,0,0,245,246,245,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,56,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,245,246,245,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,246,245,246,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,245,246,245,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,246,245,246,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,245,246,245,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,246,245,246,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,245,246,245,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,246,245,246,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,245,246,245,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,246,245,246,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,245,246,245,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,246,245,246,55,13,31,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,245,246,245,0,0,32,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2147483703,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+<map version="1.8" tiledversion="1.8.6" orientation="isometric" renderorder="right-down" width="24"
+  height="28" tilewidth="64" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="55">
+  <properties>
+    <property name="Background" value="custom" />
+    <property name="Background Animation" value="/server/assets/backgrounds/ACDC/ACDC.animation" />
+    <property name="Background Texture" value="/server/assets/backgrounds/ACDC/ACDC.png" />
+    <property name="Background Vel X" type="float" value="0.4" />
+    <property name="Background Vel Y" type="float" value="0.125" />
+    <property name="Forced Base HP" type="int" value="100" />
+    <property name="Honor HPMem" type="bool" value="true" />
+    <property name="Name" value="ACDC 3" />
+    <property name="Song" value="/server/assets/songs/ACDC Theme.ogg" />
+  </properties>
+  <tileset firstgid="1" source="../assets/tiles/central_arrows.tsx" />
+  <tileset firstgid="5" source="../assets/tiles/central_platform.tsx" />
+  <tileset firstgid="245" source="../assets/tiles/Custom_Central_Tiles.tsx" />
+  <tileset firstgid="253" source="../assets/tiles/SquareWarpsA.tsx" />
+  <tileset firstgid="293" source="../assets/tiles/Squirrel.tsx" />
+  <tileset firstgid="294" source="../assets/tiles/nebula door.tsx" />
+  <tileset firstgid="306" source="../assets/tiles/Den_Exits.tsx" />
+  <tileset firstgid="324" source="../assets/tiles/walkable space.tsx" />
+  <tileset firstgid="330" source="../assets/tiles/warp.tsx" />
+  <tileset firstgid="336" source="../assets/tiles/central_arrows2.tsx" />
+  <tileset firstgid="340" source="../assets/tiles/warp_lib.tsx" />
+  <tileset firstgid="346" source="../assets/tiles/Internet House.tsx" />
+  <tileset firstgid="347" source="../assets/tiles/gate.tsx" />
+  <tileset firstgid="352" source="../assets/tiles/bn6_cube_gray.tsx" />
+  <tileset firstgid="366" source="../assets/tiles/BlueMysteryData.tsx" />
+  <layer id="1" name="Tile Layer 1" width="24" height="28">
+    <data encoding="csv">
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,245,246,245,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,246,245,246,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,245,246,245,0,0,0,0,0,
+      0,0,0,0,0,0,0,29,0,0,0,0,0,0,0,0,0,56,0,0,0,0,0,0,
+      0,0,0,0,2147483976,13,53,39,53,55,245,246,0,0,0,0,0,21,13,31,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,246,245,0,0,0,29,0,0,0,56,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,245,246,0,0,0,12,0,0,245,246,245,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,246,245,55,13,53,39,53,55,246,245,246,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,245,246,0,0,0,52,0,0,245,246,245,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,56,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,245,246,245,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,246,245,246,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,245,246,245,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,246,245,246,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,245,246,245,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,246,245,246,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,245,246,245,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,246,245,246,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,245,246,245,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,246,245,246,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,245,246,245,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,246,245,246,55,13,31,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,245,246,245,0,0,32,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2147483703,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
- </layer>
- <objectgroup id="2" name="Object Layer 1">
-  <object id="9" name="ACDC 4 NEBULA GATE" type="Liberation Gate" gid="294" x="206.5" y="65.5" width="63" height="92">
-   <properties>
-    <property name="Liberation Map File Name" value="ACDC4Liberation"/>
-    <property name="Liberation Map Name" value="ACDC 4"/>
-   </properties>
-  </object>
-  <object id="11" name="Help Spawn" type="Liberation Tutorial" x="241" y="115">
-   <properties>
-    <property name="Direction" value="Down Left"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="12" name="Liberation Respawn" type="Spawn Point" x="208" y="144">
-   <point/>
-  </object>
-  <object id="17" gid="1" x="88" y="104" width="96" height="64"/>
-  <object id="19" name="Global Net Warp" gid="341" x="546" y="34" width="64" height="32"/>
-  <object id="22" name="G-Cube" type="Checkpoint" gid="352" x="560" y="112" width="48" height="52">
-   <properties>
-    <property name="Disappear Cooldown" type="float" value="1.3"/>
-    <property name="Locked GID" type="int" value="0"/>
-    <property name="Locked Message">GLOBAL CODE: NOT FOUND.
-ACCESS DENIED.</property>
-    <property name="Required Keys" type="int" value="1"/>
-    <property name="Take Item" type="bool" value="false"/>
-    <property name="Unlock GID" type="int" value="7"/>
-    <property name="Unlock Item" value="GCode"/>
-    <property name="Unlock Message">GLOBAL CODE:
-RECOGNIZED.
-ACCESSING GLOBAL NET...</property>
-   </properties>
-  </object>
-  <object id="27" name="To ACDC 3 Upper" type="Custom Warp" gid="331" x="480" y="160" width="61" height="32">
-   <properties>
-    <property name="On Warp" type="object" value="47"/>
-   </properties>
-  </object>
-  <object id="35" type="Script Entry: Collision" x="590" y="784" width="78.9729" height="63.469">
-   <properties>
-    <property name="On Enter" type="object" value="36"/>
-   </properties>
-  </object>
-  <object id="36" type="Script Node: Area Transition" x="576" y="832">
-   <properties>
-    <property name="Direction" value="Down Left"/>
-    <property name="Next" type="object" value="37"/>
-    <property name="Walk Distance" type="float" value="1"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="37" type="Script Node: Transfer To Area" x="544" y="832">
-   <properties>
-    <property name="Area" value="ACDC 2"/>
-    <property name="Target" type="int" value="165"/>
-    <property name="Warp" type="bool" value="false"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="38" x="624.5" y="783.5">
-   <properties>
-    <property name="Direction" value="Up Right"/>
-    <property name="Walk Distance" type="float" value="0.2"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="47" type="Script Node: Teleport" x="494" y="141">
-   <properties>
-    <property name="Target" type="object" value="46"/>
-    <property name="Warp" type="bool" value="true"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="48" x="496" y="176">
-   <properties>
-    <property name="Direction" value="Down Left"/>
-    <property name="Walk Distance" type="float" value="0.7"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="49" type="Script Entry: Collision" x="103" y="105" width="53.4729" height="82.5">
-   <properties>
-    <property name="On Enter" type="object" value="50"/>
-   </properties>
-  </object>
-  <object id="50" type="Script Node: Area Transition" x="96" y="96">
-   <properties>
-    <property name="Direction" value="Down Left"/>
-    <property name="Next" type="object" value="51"/>
-    <property name="Walk Distance" type="float" value="1"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="51" type="Script Node: Transfer To Area" x="96" y="64">
-   <properties>
-    <property name="Area" value="ACDC 4"/>
-    <property name="Target" type="int" value="84"/>
-    <property name="Warp" type="bool" value="false"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="52" x="159.5" y="144.5">
-   <properties>
-    <property name="Direction" value="Down Right"/>
-    <property name="Walk Distance" type="float" value="0.2"/>
-   </properties>
-   <point/>
-  </object>
- </objectgroup>
- <layer id="5" name="Tile Layer 2" width="24" height="28" offsetx="0" offsety="-16">
-  <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+  </layer>
+  <objectgroup id="2" name="Object Layer 1">
+    <object id="9" name="ACDC 4 NEBULA GATE" type="Liberation Gate" gid="294" x="206.5" y="65.5"
+      width="63" height="92">
+      <properties>
+        <property name="Liberation Map File Name" value="ACDC4Liberation" />
+        <property name="Liberation Map Name" value="ACDC 4" />
+      </properties>
+    </object>
+    <object id="11" name="Help Spawn" type="Liberation Tutorial" x="241" y="115">
+      <properties>
+        <property name="Direction" value="Down Left" />
+      </properties>
+      <point />
+    </object>
+    <object id="12" name="Liberation Respawn" type="Spawn Point" x="208" y="144">
+      <point />
+    </object>
+    <object id="17" gid="1" x="88" y="104" width="96" height="64" />
+    <object id="19" name="Global Net Warp" gid="341" x="546" y="34" width="64" height="32" />
+    <object id="22" name="G-Cube" type="Checkpoint" gid="352" x="560" y="112" width="48" height="52">
+      <properties>
+        <property name="Disappear Cooldown" type="float" value="1.3" />
+        <property name="Locked GID" type="int" value="0" />
+        <property name="Locked Message">GLOBAL CODE: NOT FOUND.
+          ACCESS DENIED.</property>
+        <property name="Required Keys" type="int" value="1" />
+        <property name="Take Item" type="bool" value="false" />
+        <property name="Unlock GID" type="int" value="7" />
+        <property name="Unlock Item" value="GCode" />
+        <property name="Unlock Message">GLOBAL CODE:
+          RECOGNIZED.
+          ACCESSING GLOBAL NET...</property>
+      </properties>
+    </object>
+    <object id="27" name="To ACDC 3 Upper" type="Custom Warp" gid="331" x="480" y="160" width="61"
+      height="32">
+      <properties>
+        <property name="On Warp" type="object" value="47" />
+      </properties>
+    </object>
+    <object id="35" type="Script Entry: Collision" x="590" y="784" width="78.9729" height="63.469">
+      <properties>
+        <property name="On Enter" type="object" value="36" />
+      </properties>
+    </object>
+    <object id="36" type="Script Node: Area Transition" x="576" y="832">
+      <properties>
+        <property name="Direction" value="Down Left" />
+        <property name="Next" type="object" value="37" />
+        <property name="Walk Distance" type="float" value="1" />
+      </properties>
+      <point />
+    </object>
+    <object id="37" type="Script Node: Transfer To Area" x="544" y="832">
+      <properties>
+        <property name="Area" value="ACDC 2" />
+        <property name="Target" type="int" value="165" />
+        <property name="Warp" type="bool" value="false" />
+      </properties>
+      <point />
+    </object>
+    <object id="38" x="624.5" y="783.5">
+      <properties>
+        <property name="Direction" value="Up Right" />
+        <property name="Walk Distance" type="float" value="0.2" />
+      </properties>
+      <point />
+    </object>
+    <object id="47" type="Script Node: Teleport" x="494" y="141">
+      <properties>
+        <property name="Target" type="object" value="46" />
+        <property name="Warp" type="bool" value="true" />
+      </properties>
+      <point />
+    </object>
+    <object id="48" x="496" y="176">
+      <properties>
+        <property name="Direction" value="Down Left" />
+        <property name="Walk Distance" type="float" value="0.7" />
+      </properties>
+      <point />
+    </object>
+    <object id="49" type="Script Entry: Collision" x="103" y="105" width="53.4729" height="82.5">
+      <properties>
+        <property name="On Enter" type="object" value="50" />
+      </properties>
+    </object>
+    <object id="50" type="Script Node: Area Transition" x="96" y="96">
+      <properties>
+        <property name="Direction" value="Down Left" />
+        <property name="Next" type="object" value="51" />
+        <property name="Walk Distance" type="float" value="1" />
+      </properties>
+      <point />
+    </object>
+    <object id="51" type="Script Node: Transfer To Area" x="96" y="64">
+      <properties>
+        <property name="Area" value="ACDC 4" />
+        <property name="Target" type="int" value="84" />
+        <property name="Warp" type="bool" value="false" />
+      </properties>
+      <point />
+    </object>
+    <object id="52" x="159.5" y="144.5">
+      <properties>
+        <property name="Direction" value="Down Right" />
+        <property name="Walk Distance" type="float" value="0.2" />
+      </properties>
+      <point />
+    </object>
+  </objectgroup>
+  <layer id="5" name="Tile Layer 2" width="24" height="28" offsetx="0" offsety="-16">
+    <data encoding="csv">
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
- </layer>
- <objectgroup id="7" name="Object Layer 2" offsetx="0" offsety="-16"/>
- <layer id="6" name="Tile Layer 3" width="24" height="28" offsetx="0" offsety="-32">
-  <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+  </layer>
+  <objectgroup id="7" name="Object Layer 2" offsetx="0" offsety="-16" />
+  <layer id="6" name="Tile Layer 3" width="24" height="28" offsetx="0" offsety="-32">
+    <data encoding="csv">
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
- </layer>
- <objectgroup id="8" name="Object Layer 3" offsetx="0" offsety="-32"/>
- <layer id="10" name="Tile Layer 4" width="24" height="28" offsetx="0" offsety="-48">
-  <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+  </layer>
+  <objectgroup id="8" name="Object Layer 3" offsetx="0" offsety="-32" />
+  <layer id="10" name="Tile Layer 4" width="24" height="28" offsetx="0" offsety="-48">
+    <data encoding="csv">
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
- </layer>
- <objectgroup id="9" name="Object Layer 4" offsetx="0" offsety="-48"/>
- <layer id="3" name="Tile Layer 5" width="24" height="28" offsetx="0" offsety="-64">
-  <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,66,67,77,0,66,67,77,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,65,76,87,115,65,76,87,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,75,85,86,0,75,85,86,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,116,0,0,0,116,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-66,67,77,0,70,99,0,0,66,67,77,0,0,0,0,0,0,0,0,0,0,88,73,91,
-65,76,87,115,99,0,0,0,65,76,87,0,0,0,0,0,0,0,0,0,0,0,0,112,
-75,85,86,0,0,0,70,115,65,76,87,115,103,93,103,93,103,93,103,73,91,0,0,92,
-0,0,0,0,0,0,112,0,75,85,86,0,0,0,0,0,0,0,0,0,112,0,0,102,
-0,0,0,0,0,0,116,0,0,0,0,0,0,0,0,0,0,0,0,0,116,0,0,92,
-0,0,0,0,0,66,67,77,0,0,0,0,0,0,0,0,0,0,0,66,67,77,0,102,
-0,0,0,0,0,65,76,87,115,83,103,73,91,0,0,0,0,0,0,65,76,87,0,92,
-0,0,0,0,0,75,85,86,0,0,0,0,112,0,0,0,0,0,0,65,76,87,115,99,
-0,0,0,0,0,0,0,0,0,0,0,0,92,0,0,0,0,0,0,75,85,86,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,102,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,92,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,116,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,338,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+  </layer>
+  <objectgroup id="9" name="Object Layer 4" offsetx="0" offsety="-48" />
+  <layer id="3" name="Tile Layer 5" width="24" height="28" offsetx="0" offsety="-64">
+    <data encoding="csv">
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,66,67,77,0,66,67,77,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,65,76,87,115,65,76,87,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,75,85,86,0,75,85,86,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,116,0,0,0,116,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      66,67,77,0,70,99,0,0,66,67,77,0,0,0,0,0,0,0,0,0,0,88,73,91,
+      65,76,87,115,99,0,0,0,65,76,87,0,0,0,0,0,0,0,0,0,0,0,0,112,
+      75,85,86,0,0,0,70,115,65,76,87,115,103,93,103,93,103,93,103,73,91,0,0,92,
+      0,0,0,0,0,0,112,0,75,85,86,0,0,0,0,0,0,0,0,0,112,0,0,102,
+      0,0,0,0,0,0,116,0,0,0,0,0,0,0,0,0,0,0,0,0,116,0,0,92,
+      0,0,0,0,0,66,67,77,0,0,0,0,0,0,0,0,0,0,0,66,67,77,0,102,
+      0,0,0,0,0,65,76,87,115,83,103,73,91,0,0,0,0,0,0,65,76,87,0,92,
+      0,0,0,0,0,75,85,86,0,0,0,0,112,0,0,0,0,0,0,65,76,87,115,99,
+      0,0,0,0,0,0,0,0,0,0,0,0,92,0,0,0,0,0,0,75,85,86,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,102,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,92,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,116,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,338,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
- </layer>
- <objectgroup id="4" name="Object Layer 5" offsetx="0" offsety="-64">
-  <object id="3" name="BN2 Hub" type="Custom Warp" gid="257" x="640" y="608" width="64" height="39">
-   <properties>
-    <property name="On Warp" type="object" value="39"/>
-   </properties>
-  </object>
-  <object id="5" name="Squirrel" gid="293" x="696" y="560" width="26" height="25">
-   <properties>
-    <property name="Flavor" value="You feel like this doesn't belong here..."/>
-   </properties>
-  </object>
-  <object id="24" name="To ACDC 3 Lower" type="Custom Warp" gid="331" x="31" y="416" width="61" height="32">
-   <properties>
-    <property name="On Warp" type="object" value="45"/>
-   </properties>
-  </object>
-  <object id="28" type="Mystery Datum" gid="366" x="688" y="400" width="14" height="43">
-   <properties>
-    <property name="Amount" type="int" value="1"/>
-    <property name="Description" value="An HPMemory. MaxHP+20 for this server!"/>
-    <property name="Item 1" type="object" value="30"/>
-    <property name="Name" value="HPMem"/>
-    <property name="Once" type="bool" value="true"/>
-    <property name="Type" value="item"/>
-   </properties>
-  </object>
-  <object id="30" name="HPMem" type="Item" x="656" y="400">
-   <properties>
-    <property name="Amount" type="int" value="1"/>
-    <property name="Description" value="An HPMemory. MaxHP+20 for this server!"/>
-    <property name="Name" value="HPMem"/>
-    <property name="Type" value="item"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="39" type="Script Node: Transfer To Area" x="768" y="736">
-   <properties>
-    <property name="Area" value="BN2 Hub"/>
-    <property name="Target" type="int" value="36"/>
-    <property name="Warp" type="bool" value="true"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="40" x="659.5" y="628.5">
-   <properties>
-    <property name="Direction" value="Up Right"/>
-    <property name="Walk Distance" type="float" value="1"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="41" type="Script Entry: Collision" x="363" y="749.5" width="78.9729" height="63.469">
-   <properties>
-    <property name="On Enter" type="object" value="42"/>
-   </properties>
-  </object>
-  <object id="42" type="Script Node: Area Transition" x="349" y="797.5">
-   <properties>
-    <property name="Direction" value="Down Left"/>
-    <property name="Fade" type="color" value="#ff000000"/>
-    <property name="Next" type="object" value="43"/>
-    <property name="Walk Distance" type="float" value="1"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="43" type="Script Node: Transfer To Area" x="317" y="797.5">
-   <properties>
-    <property name="Area" value="ACDC 2"/>
-    <property name="Target" type="int" value="72"/>
-    <property name="Warp" type="bool" value="false"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="44" x="398.5" y="749">
-   <properties>
-    <property name="Direction" value="Up Right"/>
-    <property name="Walk Distance" type="float" value="0.2"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="45" type="Script Node: Teleport" x="0" y="384">
-   <properties>
-    <property name="Target" type="object" value="48"/>
-    <property name="Warp" type="bool" value="true"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="46" x="47" y="431">
-   <properties>
-    <property name="Direction" value="Down Right"/>
-    <property name="Walk Distance" type="float" value="0.7"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="53" type="Script Node: Give Item" x="666" y="430">
-   <properties>
-    <property name="Item" value="MiniEnrg"/>
-    <property name="Next" type="object" value="142"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="54" type="Script Node: Message" x="644" y="430">
-   <properties>
-    <property name="Mug" value="Player"/>
-    <property name="Text" value="Got HPMem! MaxHP increased by 20."/>
-   </properties>
-   <point/>
-  </object>
- </objectgroup>
+  </layer>
+  <objectgroup id="4" name="Object Layer 5" offsetx="0" offsety="-64">
+    <object id="3" name="BN2 Hub" type="Custom Warp" gid="257" x="640" y="608" width="64"
+      height="39">
+      <properties>
+        <property name="On Warp" type="object" value="39" />
+      </properties>
+    </object>
+    <object id="5" name="Squirrel" gid="293" x="696" y="560" width="26" height="25">
+      <properties>
+        <property name="Flavor" value="You feel like this doesn't belong here..." />
+      </properties>
+    </object>
+    <object id="24" name="To ACDC 3 Lower" type="Custom Warp" gid="331" x="31" y="416" width="61"
+      height="32">
+      <properties>
+        <property name="On Warp" type="object" value="45" />
+      </properties>
+    </object>
+    <object id="28" type="Mystery Datum" gid="366" x="688" y="400" width="14" height="43">
+      <properties>
+        <property name="Amount" type="int" value="1" />
+        <property name="Description" value="An HPMemory. MaxHP+20 for this server!" />
+        <property name="Item 1" type="object" value="30" />
+        <property name="Name" value="HPMem" />
+        <property name="Once" type="bool" value="true" />
+        <property name="Type" value="item" />
+      </properties>
+    </object>
+    <object id="30" name="HPMem" type="Item" x="656" y="400">
+      <properties>
+        <property name="Amount" type="int" value="1" />
+        <property name="Description" value="An HPMemory. MaxHP+20 for this server!" />
+        <property name="Name" value="HPMem" />
+        <property name="Type" value="item" />
+      </properties>
+      <point />
+    </object>
+    <object id="39" type="Script Node: Transfer To Area" x="768" y="736">
+      <properties>
+        <property name="Area" value="BN2 Hub" />
+        <property name="Target" type="int" value="36" />
+        <property name="Warp" type="bool" value="true" />
+      </properties>
+      <point />
+    </object>
+    <object id="40" x="659.5" y="628.5">
+      <properties>
+        <property name="Direction" value="Up Right" />
+        <property name="Walk Distance" type="float" value="1" />
+      </properties>
+      <point />
+    </object>
+    <object id="41" type="Script Entry: Collision" x="363" y="749.5" width="78.9729" height="63.469">
+      <properties>
+        <property name="On Enter" type="object" value="42" />
+      </properties>
+    </object>
+    <object id="42" type="Script Node: Area Transition" x="349" y="797.5">
+      <properties>
+        <property name="Direction" value="Down Left" />
+        <property name="Fade" type="color" value="#ff000000" />
+        <property name="Next" type="object" value="43" />
+        <property name="Walk Distance" type="float" value="1" />
+      </properties>
+      <point />
+    </object>
+    <object id="43" type="Script Node: Transfer To Area" x="317" y="797.5">
+      <properties>
+        <property name="Area" value="ACDC 2" />
+        <property name="Target" type="int" value="72" />
+        <property name="Warp" type="bool" value="false" />
+      </properties>
+      <point />
+    </object>
+    <object id="44" x="398.5" y="749">
+      <properties>
+        <property name="Direction" value="Up Right" />
+        <property name="Walk Distance" type="float" value="0.2" />
+      </properties>
+      <point />
+    </object>
+    <object id="45" type="Script Node: Teleport" x="0" y="384">
+      <properties>
+        <property name="Target" type="object" value="48" />
+        <property name="Warp" type="bool" value="true" />
+      </properties>
+      <point />
+    </object>
+    <object id="46" x="47" y="431">
+      <properties>
+        <property name="Direction" value="Down Right" />
+        <property name="Walk Distance" type="float" value="0.7" />
+      </properties>
+      <point />
+    </object>
+    <object id="53" type="Script Node: Give Item" x="666" y="430">
+      <properties>
+        <property name="Item" value="MiniEnrg" />
+        <property name="Next" type="object" value="142" />
+      </properties>
+      <point />
+    </object>
+    <object id="54" type="Script Node: Message" x="644" y="430">
+      <properties>
+        <property name="Mug" value="Player" />
+        <property name="Text" value="Got HPMem! MaxHP increased by 20." />
+      </properties>
+      <point />
+    </object>
+  </objectgroup>
 </map>

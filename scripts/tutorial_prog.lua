@@ -2,10 +2,10 @@ local Emotes = require("scripts/libs/emotes")
 local Direction = require("scripts/libs/direction")
 
 local bot_list = {}
-local texture_path = "/server/assets/NebuLibsAssets/bots/prog.png"
-local animation_path = "/server/assets/NebuLibsAssets/bots/prog.animation"
-local mug_texture_path = "/server/assets/NebuLibsAssets/mugs/prog.png"
-local mug_animation_path = "/server/assets/NebuLibsAssets/mugs/prog.animation"
+local texture_path = "/server/assets/bots/prog.png"
+local animation_path = "/server/assets/bots/prog.animation"
+local mug_texture_path = "/server/assets/mugs/prog.png"
+local mug_animation_path = "/server/assets/mugs/shared_mug.animation"
 local player_states = {}
 local explanation_timers = {}
 
