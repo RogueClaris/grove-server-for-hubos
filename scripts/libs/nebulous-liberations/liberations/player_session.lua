@@ -199,10 +199,8 @@ function PlayerSession:complete_turn()
 
   self.completed_turn = true
   self.selection:clear()
-  Net.lock_player_input(self.player.id)
 
   self:emote_state()
-
 
   if self.instance.ready_count < #self.instance.players then
     Net.unlock_player_camera(self.player.id)
