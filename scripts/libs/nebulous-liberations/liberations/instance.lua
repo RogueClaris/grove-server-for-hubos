@@ -254,28 +254,20 @@ local function take_enemy_turn(self)
 
     if down_count == #self.players then
       for _, player in ipairs(self.players) do
-        player:message_with_mug("We're all down?\nRetreat!\nRetreat!!").and_then(function()
-          local boss_point_found = false
-          local point = nil
+        Async.create_scope(function()
+          Async.await(player:message_with_mug("We're all down?\nRetreat!\nRetreat!!"))
 
-          for p = 1, #self.points_of_interest, 1 do
-            point = self.points_of_interest[p]
-            boss_point_found = point.custom_properties["isBoss"] == "true"
-            if boss_point_found then break end
-          end
+          Net.slide_player_camera(player.id, self.boss.x + .5, self.boss.y + .5, self.boss.z, slide_time)
 
-          -- todo: pan to boss and display taunt text?
-          if boss_point_found then
-            Net.slide_player_camera(player.id, point.x + .5, point.y + .5, point.z, slide_time)
-            Async.sleep(slide_time).and_then(function()
-              player:message_with_mug("Is this the power of " ..
-                self:get_panel_at(point.x, point.y, point.z).custom_properties["Boss"] .. "...?").and_then(function()
-                boot_player(player, false, self.area_name)
-                Net.unlock_player_camera(player.id)
-                Net.unlock_player_input(player.id)
-              end)
-            end)
-          end
+          Async.await(Async.sleep(slide_time))
+
+
+          Async.await(player:message_with_mug("Is this the power of " .. self.boss.name .. "...?"))
+
+          boot_player(player, false, self.area_name)
+
+          Net.unlock_player_camera(player.id)
+          Net.unlock_player_input(player.id)
         end)
       end
 
