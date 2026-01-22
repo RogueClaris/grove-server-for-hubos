@@ -1,5 +1,4 @@
 local PanelEncounters = require("scripts/libs/nebulous-liberations/liberations/panel_encounters")
-local player_data = require('scripts/custom-scripts/player_data')
 
 local function static_shape_generator(offset_x, offset_y, shape)
   return function()
@@ -151,37 +150,11 @@ local Ability = {
   },
 }
 
-local navi_ability_map = {}
+---@type Liberation.Ability[]
+Ability.ALL = {}
 
--- LongSwrd = Ability.LongSwrd,
--- WideSwrd = Ability.WideSwrd,
--- OldSaber = Ability.ScrenDiv,
--- HevyShld = Ability.Guard,
--- HexScyth = Ability.HexSickle,
--- NumGadgt = Ability.NumberSearch,
--- GutsHamr = Ability.GutsWave,
--- ShdwShoe = Ability.Shadowstep
-
-local function build_ability_map()
-  for index, value in ipairs(Ability) do
-    table.insert(navi_ability_map, { name = value.name, ability = value })
-  end
-end
-
-build_ability_map()
-
----@param id Net.ActorId
-function Ability.resolve_for_player(id)
-  local ability = Ability.LongSwrd
-
-  for key, value in pairs(navi_ability_map) do
-    if player_data.count_player_item(id, value[2].name) > 0 and navi_ability_map[value[2].ability] ~= nil then
-      ability = navi_ability_map[value[2].ability]
-      break
-    end
-  end
-
-  return ability
+for _, ability in pairs(Ability) do
+  Ability.ALL[#Ability.ALL + 1] = ability
 end
 
 return Ability

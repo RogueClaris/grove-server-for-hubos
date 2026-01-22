@@ -1,18 +1,34 @@
-local Liberations = {}
-
+local player_data = require('scripts/custom-scripts/player_data')
 local Instance = require("scripts/libs/nebulous-liberations/liberations/instance")
+local Ability = require("scripts/libs/nebulous-liberations/liberations/ability")
 local Parties = require("scripts/libs/nebulous-liberations/utils/parties")
 
-local waiting_area_map = {}
+local Liberations = {}
 
+local waiting_area_map = {}
 local gate_to_area_map = {}
 
 local function transfer_players_to_new_instance(base_area, player_ids)
   local instance = Instance:new(base_area, "test")
 
   for _, player_id in ipairs(player_ids) do
-    instance:transfer_player(player_id)
+    -- resolve ability
+    local ability = Ability.LongSwrd
+
+    for _, ability_value in ipairs(Ability.ALL) do
+      if player_data.count_player_item(player_id, ability_value.name) > 0 then
+        ability = ability_value
+        break
+      end
+    end
+
+    -- transfer player
+    instance:transfer_player(player_id, ability)
   end
+
+  instance.events:on("money", function(event)
+    player_data.update_player_money(event.player_id, event.money)
+  end)
 end
 
 function Liberations.start_game_for_player(player_id, liberation_id)

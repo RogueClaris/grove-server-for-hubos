@@ -1,5 +1,3 @@
-local player_data = require('scripts/custom-scripts/player_data')
-
 local Ability = require("scripts/libs/nebulous-liberations/liberations/ability")
 local PlayerSelection = require("scripts/libs/nebulous-liberations/liberations/player_selection")
 local Loot = require("scripts/libs/nebulous-liberations/liberations/loot")
@@ -39,10 +37,9 @@ function Player:new(instance, player_id)
     invincible = false,
     completed_turn = false,
     selection = PlayerSelection:new(instance, player_id),
-    ability = Ability.resolve_for_player(player_id),
+    ability = nil,
     disconnected = false,
-    is_trapped = false,
-    get_monies = false
+    is_trapped = false
   }
 
   setmetatable(player, self)
@@ -393,31 +390,6 @@ function Player:liberate_panels(panels, results)
   end)
 end
 
-function Player:get_cash(panel, destroy_items)
-  return Async.create_promise(function(resolve) -- Only obtain money if we did not destroy the item grids.
-    if self.get_monies and not destroy_items then
-      print("attempting to get cash")
-      local cash = Net.get_player_money(self.id)
-
-      -- Default value is 100.
-      local bonus = tonumber(100)
-
-      -- If panel has a custom-assigned value, use it.
-      if panel.custom_properties["Money"] ~= nil then
-        bonus = tonumber(panel.custom_properties["Money"])
-      end
-
-      -- Tell the player about the cash earned.
-      Async.await(self:message("Obtained $" .. tostring(bonus) .. "!"))
-
-      player_data.update_player_money(self.id, bonus)
-    end
-
-    self.get_monies = false
-    resolve(self.get_monies)
-  end)
-end
-
 -- returns a promise that resolves after looting
 function Player:loot_panels(panels, remove_traps, destroy_items)
   return Async.create_scope(function()
@@ -425,7 +397,6 @@ function Player:loot_panels(panels, remove_traps, destroy_items)
       if panel.loot then
         -- loot the panel if it has loot
         Async.await(Loot.loot_item_panel(self.instance, self, panel, destroy_items))
-        Async.await(self:get_cash(panel, destroy_items))
       elseif panel.type == "Trap Panel" then
         local slide_time = .1
         local spawn_x = math.floor(panel.x) + .5

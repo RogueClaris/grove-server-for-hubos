@@ -5,7 +5,7 @@ local ITEM_ANIMATION_PATH = "/server/assets/NebuLibsAssets/bots/item.animation"
 ---@class Liberation._Loot
 ---@field animation string
 ---@field breakable boolean
----@field activate fun(instance: Liberation.MissionInstance, player: Liberation.Player): Net.Promise
+---@field activate fun(instance: Liberation.MissionInstance, player: Liberation.Player, panel: Liberation._PanelObject): Net.Promise
 
 local Loot = {}
 
@@ -39,11 +39,17 @@ Loot.CHIP = {
 Loot.MONEY = {
   animation = "MONEY",
   breakable = true,
-  activate = function(instance, player)
+  activate = function(instance, player, panel)
     return Async.create_scope(function()
-      player:message_with_mug("I found some\nMonies!").and_then(function()
-        player.get_monies = true
-      end)
+      local money = tonumber(panel.custom_properties["Money"]) or 100
+
+      Async.await(player:message_with_mug("I found some\nZenny!"))
+      Async.await(player:message("Obtained " .. tostring(money) .. "z!"))
+
+      instance.events:emit("money", {
+        player_id = player.id,
+        money = money
+      })
     end)
   end
 }
@@ -359,7 +365,7 @@ function Loot.loot_item_panel(instance, player, panel, destroy_items)
     if breakable and destroy_items then
       Async.await(player:message_with_mug("Ah!! The item was destroyed!"))
     else
-      Async.await(loot.activate(instance, player))
+      Async.await(loot.activate(instance, player, panel))
     end
 
     remove_item_bot()
@@ -390,8 +396,7 @@ function Loot.loot_bonus_panel(instance, player, panel)
     )
 
     local loot = Loot.BONUS_POOL[loot_index]
-    Async.await(loot.activate(instance, player))
-    player:get_cash(panel, false)
+    Async.await(loot.activate(instance, player, panel))
     remove_item_bot()
   end)
 end

@@ -437,6 +437,7 @@ end
 ---@field indestructible_panels Liberation._PanelObject[]
 ---@field gate_panels Liberation._PanelObject[]
 ---@field panel_gid_map table<string, number>
+---@field events Net.EventEmitter "money" { player_id, money }
 ---@field package spawn_positions Net.Object[]
 ---@field package net_listeners [string, fun()][]
 ---@field package updating boolean
@@ -469,6 +470,7 @@ function MissionInstance:new(base_area_id, new_area_id)
     panel_gid_map = {},
     spawn_positions = {},
     net_listeners = {},
+    events = Net.EventEmitter.new(),
     updating = false,
     needs_disposal = false,
     disposal_promise = nil
@@ -628,10 +630,14 @@ function MissionInstance:new(base_area_id, new_area_id)
   return mission
 end
 
-function MissionInstance:transfer_player(player_id)
+---@param player_id Net.ActorId
+---@param ability Liberation.Ability?
+function MissionInstance:transfer_player(player_id, ability)
   local spawn_position = self.spawn_positions[#self.players % #self.spawn_positions + 1]
 
   local player = Player:new(self, player_id)
+  player.ability = ability
+
   self.players[#self.players + 1] = player
   self.player_map[player_id] = player
   self.target_phase.players_joined = self.target_phase.players_joined + 1
