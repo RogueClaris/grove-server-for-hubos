@@ -115,7 +115,9 @@ local function convert_indestructible_panels(self)
 
   -- convert panels
   for _, panel in ipairs(self.indestructible_panels) do
-    panel.data.gid = self.BASIC_PANEL_GID
+    local dark_gids = self.panel_gid_map[PanelTypes.DARK]
+
+    panel.data.gid = dark_gids[math.random(#dark_gids)]
     Net.set_object_data(self.area_id, panel.id, panel.data)
   end
 
@@ -437,6 +439,7 @@ end
 ---@field dark_holes Net.Object[]
 ---@field indestructible_panels Net.Object[]
 ---@field gate_panels Net.Object[]
+---@field panel_gid_map table<string, number>
 ---@field package spawn_positions Net.Object[]
 ---@field package net_listeners [string, fun()][]
 ---@field package updating boolean
@@ -466,6 +469,7 @@ function MissionInstance:new(base_area_id, new_area_id)
     dark_holes = {},
     indestructible_panels = {},
     gate_panels = {},
+    panel_gid_map = {},
     spawn_positions = {},
     net_listeners = {},
     updating = false,
@@ -509,66 +513,7 @@ function MissionInstance:new(base_area_id, new_area_id)
 
   -- resolve panels and enemies
   local object_ids = Net.list_objects(mission.area_id)
-
-  ---@param object Net.Object
-  ---@return Liberation._PanelObject
-  local function create_panel(object)
-    --Create the actual panel we'll be using with collisions
-    local new_panel = {
-      name = "",
-      type = object.type,
-      visible = true,
-      x = object.x,
-      y = object.y,
-      z = object.z,
-      width = object.width,
-      height = object.height,
-      data = { type = "tile", gid = Net.get_tileset(base_area_id, "/server/assets/tiles/Liberation Collision.tsx").first_gid },
-      custom_properties = object.custom_properties
-    }
-
-    new_panel.id = Net.create_object(new_area_id, new_panel)
-    new_panel.visual_object_id = object.id
-
-    -- insert the panel before spawning enemies
-    local x = math.floor(object.x) + 1
-    local y = math.floor(object.y) + 1
-    local z = math.floor(object.z) + 1
-    mission.panels[z][y][x] = new_panel
-
-    -- spawning bosses
-    if object.custom_properties.Boss then
-      local name = object.custom_properties.Boss
-      local direction = object.custom_properties.Direction
-      local rank = tonumber(object.custom_properties.Rank) or 1
-      local enemy = Enemy.from(mission, object, direction, name, rank)
-      enemy.is_boss = true
-
-      mission.boss = enemy
-      table.insert(mission.enemies, 1, enemy) -- make the boss the first enemy in the list
-    end
-
-    -- spawning enemies
-    if object.custom_properties.Spawns then
-      local name = object.custom_properties.Spawns
-      local direction = object.custom_properties.Direction
-      local rank = tonumber(object.custom_properties.Rank) or 1
-      local position = {
-        x = object.x,
-        y = object.y,
-        z = object.z
-      }
-
-      position = EnemyHelpers.offset_position_with_direction(position, direction)
-
-      local enemy = Enemy.from(mission, position, direction, name, rank)
-      new_panel.enemy = enemy
-
-      table.insert(mission.enemies, enemy)
-    end
-
-    return new_panel
-  end
+  local type_gid_seen_map = {}
 
   for _, object_id in ipairs(object_ids) do
     local object = Net.get_object_by_id(mission.area_id, object_id)
@@ -579,33 +524,54 @@ function MissionInstance:new(base_area_id, new_area_id)
       -- delete to reduce map size
       Net.remove_object(mission.area_id, object_id)
     elseif PanelTypes.ALL[object.type] then
-      local panel = create_panel(object)
+      -- track gid
+      local type_map = mission.panel_gid_map[object.type]
 
-      if object.type == PanelTypes.ITEM then
-        --if it has a set drop, try to apply it.
-        if object.custom_properties["Specific Loot"] ~= nil then
-          local check_loot = object.custom_properties["Specific Loot"]
+      if not type_map then
+        type_map = {}
+        mission.panel_gid_map[object.type] = type_map
+        type_gid_seen_map[object.type] = {}
+      end
 
-          for i = 1, #Loot.FULL_POOL, 1 do
-            local potential_loot = Loot.FULL_POOL[i]
+      local gid_seen_map = type_gid_seen_map[object.type]
 
-            if potential_loot.animation == check_loot then
-              panel.loot = potential_loot
-              break
-            end
-          end
-        else
-          --otherwise, give it random loot from the basic pool.
-          panel.loot = Loot.DEFAULT_POOL[math.random(#Loot.DEFAULT_POOL)]
-        end
-      elseif object.type == PanelTypes.DARK_HOLE then
-        -- track dark holes for converting indestructible panels
-        table.insert(mission.dark_holes, panel)
-      elseif object.type == PanelTypes.INDESTRUCTIBLE then
-        -- track indestructible panels for conversion
-        table.insert(mission.indestructible_panels, panel)
-      elseif object.type == PanelTypes.GATE then
-        table.insert(mission.gate_panels, panel)
+      if not gid_seen_map[object.data.gid] then
+        gid_seen_map[object.data.gid] = true
+        type_map[#type_map + 1] = object.data.gid
+      end
+
+      -- create panel
+      local panel = mission:create_panel(object)
+
+      -- spawning bosses
+      if object.custom_properties.Boss then
+        local name = object.custom_properties.Boss
+        local direction = object.custom_properties.Direction
+        local rank = tonumber(object.custom_properties.Rank) or 1
+        local enemy = Enemy.from(mission, object, direction, name, rank)
+        enemy.is_boss = true
+
+        self.boss = enemy
+        table.insert(mission.enemies, 1, enemy) -- make the boss the first enemy in the list
+      end
+
+      -- spawning enemies
+      if object.custom_properties.Spawns then
+        local name = object.custom_properties.Spawns
+        local direction = object.custom_properties.Direction
+        local rank = tonumber(object.custom_properties.Rank) or 1
+        local position = {
+          x = object.x,
+          y = object.y,
+          z = object.z
+        }
+
+        position = EnemyHelpers.offset_position_with_direction(position, direction)
+
+        local enemy = Enemy.from(mission, position, direction, name, rank)
+        panel.enemy = enemy
+
+        table.insert(mission.enemies, enemy)
       end
     end
   end
@@ -984,6 +950,62 @@ function MissionInstance:get_enemy_at(x, y, z)
   end
 
   return nil
+end
+
+---@param object Net.Object
+---@return Liberation._PanelObject
+function MissionInstance:create_panel(object)
+  --Create the actual panel we'll be using with collisions
+  local new_panel = {
+    name = "",
+    type = object.type,
+    visible = true,
+    x = object.x,
+    y = object.y,
+    z = object.z,
+    width = object.width,
+    height = object.height,
+    data = { type = "tile", gid = Net.get_tileset(self.area_id, "/server/assets/tiles/Liberation Collision.tsx").first_gid },
+    custom_properties = object.custom_properties
+  }
+
+  new_panel.id = Net.create_object(self.area_id, new_panel)
+  new_panel.visual_object_id = object.id
+
+  -- insert the panel before spawning enemies
+  local x = math.floor(object.x) + 1
+  local y = math.floor(object.y) + 1
+  local z = math.floor(object.z) + 1
+  self.panels[z][y][x] = new_panel
+
+  if object.type == PanelTypes.ITEM then
+    --if it has a set drop, try to apply it.
+    if object.custom_properties["Specific Loot"] ~= nil then
+      local check_loot = object.custom_properties["Specific Loot"]
+
+      for i = 1, #Loot.FULL_POOL, 1 do
+        local potential_loot = Loot.FULL_POOL[i]
+
+        if potential_loot.animation == check_loot then
+          new_panel.loot = potential_loot
+          break
+        end
+      end
+    else
+      --otherwise, give it random loot from the basic pool.
+      new_panel.loot = Loot.DEFAULT_POOL[math.random(#Loot.DEFAULT_POOL)]
+    end
+  elseif object.type == PanelTypes.DARK_HOLE then
+    -- track dark holes for converting indestructible panels
+    table.insert(self.dark_holes, new_panel)
+  elseif object.type == PanelTypes.INDESTRUCTIBLE then
+    -- track indestructible panels for conversion
+    table.insert(self.indestructible_panels, new_panel)
+  elseif object.type == PanelTypes.GATE then
+    table.insert(self.gate_panels, new_panel)
+  end
+
+  return new_panel
 end
 
 -- exporting

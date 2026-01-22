@@ -1,5 +1,6 @@
 local EnemySelection = require("scripts/libs/nebulous-liberations/liberations/enemy_selection")
 local EnemyHelpers = require("scripts/libs/nebulous-liberations/liberations/enemy_helpers")
+local PanelTypes = require("scripts/libs/nebulous-liberations/liberations/panel_types")
 local Direction = require("scripts/libs/direction")
 
 ---@class Liberation.Enemies.Bladia: Liberation.Enemy
@@ -163,24 +164,9 @@ function Bladia:take_turn()
       local y = math.floor(targety) + 1
       local z = math.floor(player_z) + 1
 
-      --Generate the data for the Collision
-      local new_panel = {
-        name = "",
-        type = "Dark Panel",
-        visible = true,
-        x = x - 1,
-        y = y - 1,
-        z = z - 1,
-        width = example_collision.width,
-        height = example_collision.height,
-        data = { type = "tile", gid = Net.get_tileset(self.instance.area_id, "/server/assets/tiles/Liberation Collision.tsx").first_gid },
-        custom_properties = {}
-      }
+      local dark_gids = self.instance.panel_gid_map[PanelTypes.DARK]
+      local gid = dark_gids[math.random(#dark_gids)]
 
-      --Generate an ID for the Collision
-      new_panel.id = Net.create_object(self.instance.area_id, new_panel)
-
-      --Generate the data for the visual panel
       local visual_panel = {
         name = "",
         type = "Dark Panel",
@@ -190,16 +176,11 @@ function Bladia:take_turn()
         z = z - 1,
         width = example_panel.width,
         height = example_panel.height,
-        data = { type = "tile", gid = self.instance.BASIC_PANEL_GID_LIST[math.random(#self.instance.BASIC_PANEL_GID_LIST)] },
+        data = { type = "tile", gid = gid },
         custom_properties = {}
       }
 
-      --Generate an ID for the visual panel
-      visual_panel.id = Net.create_object(self.instance.area_id, visual_panel)
-
-      --Insert the data and the Collision
-      new_panel.visual_object_id = visual_panel.id
-      self.instance.panels[z][y][x] = new_panel
+      self.instance:create_panel(visual_panel)
 
       --Hold for half a second to spawn the tile.
       Async.await(Async.sleep(.5))
