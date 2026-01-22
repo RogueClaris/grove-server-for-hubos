@@ -506,14 +506,19 @@ function Mission:new(base_area_id, new_area_id, players)
     is_liberated = false,
     honor_hp_mem = Net.get_area_custom_property(base_area_id, "Honor HPMem") == "true"
   }
+
   for i = 1, Net.get_layer_count(base_area_id), 1 do
     -- create a layer of panels
-    mission.panels[i] = {}
+    local panel_layer = {}
+
     for j = 1, Net.get_layer_height(base_area_id), 1 do
       --Now we need to create the actual row of panels we'll be using within that layer.
-      mission.panels[i][j] = {}
+      panel_layer[j] = {}
     end
+
+    mission.panels[i] = panel_layer
   end
+
   setmetatable(mission, self)
   self.__index = self
   --Clone the area in to an instance with that nice randomized ID.
@@ -536,12 +541,15 @@ function Mission:new(base_area_id, new_area_id, players)
 
   Preloader.update(new_area_id)
 
+  -- resolve panels and enemies
   local object_ids = Net.list_objects(mission.area_id)
+
   for _, object_id in ipairs(object_ids) do
     local object = Net.get_object_by_id(mission.area_id, object_id)
-    if object.type == "Point of Interest" then
+
+    if object.name == "Point of Interest" then
       -- track points of interest for the camera
-      table.insert(mission.points_of_interest, object)
+      mission.points_of_interest[#mission.points_of_interest + 1] = object
       -- delete to reduce map size
       Net.remove_object(mission.area_id, object_id)
     elseif is_panel(mission, object) then
@@ -558,80 +566,49 @@ function Mission:new(base_area_id, new_area_id, players)
         data = { type = "tile", gid = Net.get_tileset(base_area_id, "/server/assets/tiles/Liberation Collision.tsx").first_gid },
         custom_properties = object.custom_properties
       }
+
       if object.type == "Item Panel" then
-        -- set the loot for the panel
-        if not includes(mission.ITEM_PANEL_GID_LIST, object.data.gid) then
-          table.insert(mission.ITEM_PANEL_GID_LIST, object.data.gid)
-          TOTAL_PANEL_GIDS = TOTAL_PANEL_GIDS + 1
-        end
-        --If it has a set drop, try to apply it.
+        --if it has a set drop, try to apply it.
         if object.custom_properties["Specific Loot"] ~= nil then
           local check_loot = object.custom_properties["Specific Loot"]
+
           for i = 1, #Loot.FULL_POOL, 1 do
             local potential_loot = Loot.FULL_POOL[i]
+
             if potential_loot.animation == check_loot then
               new_panel.loot = potential_loot
               break
             end
           end
         else
-          --If not, give it random loot from the basic pool.
+          --otherwise, give it random loot from the basic pool.
           new_panel.loot = Loot.DEFAULT_POOL[math.random(#Loot.DEFAULT_POOL)]
         end
       elseif object.type == "Dark Hole" then
         -- track dark holes for converting indestructible panels
-        if not includes(mission.DARK_HOLE_GID_LIST, object.data.gid) then
-          table.insert(mission.DARK_HOLE_GID_LIST, object.data.gid)
-          TOTAL_PANEL_GIDS = TOTAL_PANEL_GIDS + 1
-        end
-
-        table.insert(mission.dark_holes, new_panel)
+        mission.dark_holes[#mission.dark_holes + 1] = new_panel
       elseif object.type == "Indestructible Panel" then
         -- track indestructible panels for conversion
-        if not includes(mission.INDESTRUCTIBLE_PANEL_GID_LIST, object.data.gid) then
-          table.insert(mission.INDESTRUCTIBLE_PANEL_GID_LIST, object.data.gid)
-          TOTAL_PANEL_GIDS = TOTAL_PANEL_GIDS + 1
-        end
-
         table.insert(mission.indestructible_panels, new_panel)
-      end
-      if object.type == "Dark Panel" then
-        if not includes(mission.BASIC_PANEL_GID_LIST, object.data.gid) then
-          table.insert(mission.BASIC_PANEL_GID_LIST, object.data.gid)
-          TOTAL_PANEL_GIDS = TOTAL_PANEL_GIDS + 1
-        end
-      elseif object.type == "Bonus Panel" then
-        if not includes(mission.BONUS_PANEL_GID_LIST, object.data.gid) then
-          table.insert(mission.BONUS_PANEL_GID_LIST, object.data.gid)
-          TOTAL_PANEL_GIDS = TOTAL_PANEL_GIDS + 1
-        end
-      elseif object.type == "Trap Panel" then
-        if not includes(mission.TRAP_PANEL_GID_LIST, object.data.gid) then
-          table.insert(mission.TRAP_PANEL_GID_LIST, object.data.gid)
-          TOTAL_PANEL_GIDS = TOTAL_PANEL_GIDS + 1
-        end
-      elseif object.type == "Panel Gate" then
-        if not includes(mission.PANEL_GATE_GID_LIST, object.data.gid) then
-          table.insert(mission.PANEL_GATE_GID_LIST, object.data.gid)
-          TOTAL_PANEL_GIDS = TOTAL_PANEL_GIDS + 1
-        end
+      elseif object.type == "Gate Panel" then
         table.insert(mission.panel_gates, new_panel)
       end
+
       new_panel.id = Net.create_object(new_area_id, new_panel)
       new_panel.visual_object_id = object.id
       new_panel.visual_gid = object.data.gid
+
       -- insert the panel before spawning enemies
       local x = math.floor(object.x) + 1
       local y = math.floor(object.y) + 1
       local z = math.floor(object.z) + 1
-      --Panel is at [layer][x coordinate][y coordinate] basically. It's easier to read it back in code that way.
       mission.panels[z][y][x] = new_panel
 
       -- spawning bosses
       if object.custom_properties.Boss then
         local name = object.custom_properties.Boss
         local direction = object.custom_properties.Direction
-        local rank = object.custom_properties.Rank or 1
+        local rank = tonumber(object.custom_properties.Rank) or 1
         local enemy = Enemy.from(mission, object, direction, name, rank)
         enemy.is_boss = true
 
@@ -643,7 +620,7 @@ function Mission:new(base_area_id, new_area_id, players)
       if object.custom_properties.Spawns then
         local name = object.custom_properties.Spawns
         local direction = object.custom_properties.Direction
-        local rank = object.custom_properties.Rank or 1
+        local rank = tonumber(object.custom_properties.Rank) or 1
         local position = {
           x = object.x,
           y = object.y,
@@ -655,13 +632,10 @@ function Mission:new(base_area_id, new_area_id, players)
         local enemy = Enemy.from(mission, position, direction, name, rank)
         new_panel.enemy = enemy
 
-        table.insert(mission.enemies, enemy) --Append the enemy to the list
+        table.insert(mission.enemies, enemy)
       end
     end
   end
-
-  -- print("mission start!")
-  -- mission starts, so...
 
   return mission
 end
