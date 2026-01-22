@@ -11,21 +11,31 @@ local Direction = require("scripts/libs/direction")
 local Bladia = {}
 
 --Setup ranked health and damage
+local rank_to_index = {
+  V1 = 1,
+  V2 = 2,
+  V3 = 3,
+  SP = 4,
+  Alpha = 2,
+  Beta = 3,
+  Omega = 4,
+}
+
 local mob_health = { 200, 230, 230, 300, 340, 400 }
 local mob_damage = { 50, 80, 120, 160, 200, 250 }
 local mob_ranks = { 1, 2, 3, 4, 5, 6 }
 
 ---@return Liberation.Enemies.Bladia
 function Bladia:new(instance, position, direction, rank)
-  rank = rank or 1
+  local rank_index = rank_to_index[rank]
 
   local bladia = {
     instance = instance,
     id = nil,
-    health = mob_health[rank],
-    max_health = mob_health[rank],
-    damage = mob_damage[rank],
-    rank = mob_ranks[rank],
+    health = mob_health[rank_index],
+    max_health = mob_health[rank_index],
+    damage = mob_damage[rank_index],
+    rank = mob_ranks[rank_index],
     x = math.floor(position.x),
     y = math.floor(position.y),
     z = math.floor(position.z),

@@ -10,21 +10,31 @@ local Direction = require("scripts/libs/direction")
 local ShadeMan = {}
 
 --Setup ranked health and damage
+local rank_to_index = {
+  V1 = 1,
+  V2 = 2,
+  V3 = 3,
+  SP = 4,
+  Alpha = 2,
+  Beta = 3,
+  Omega = 4,
+}
+
 local mob_health = { 600, 1000, 1200, 1500 }
 local mob_damage = { 60, 90, 120, 200 }
 local mob_ranks = { 0, 4, 3, 0 }
 
 ---@return Liberation.Enemies.ShadeMan
 function ShadeMan:new(instance, position, direction, rank)
-  rank = rank or 1
+  local rank_index = rank_to_index[rank]
 
   local shademan = {
     instance = instance,
     id = nil,
-    health = mob_health[rank],
-    max_health = mob_health[rank],
-    damage = mob_damage[rank],
-    rank = mob_ranks[rank],
+    health = mob_health[rank_index],
+    max_health = mob_health[rank_index],
+    damage = mob_damage[rank_index],
+    rank = mob_ranks[rank_index],
     x = math.floor(position.x),
     y = math.floor(position.y),
     z = math.floor(position.z),

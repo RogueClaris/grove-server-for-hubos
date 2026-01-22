@@ -4,6 +4,7 @@
 ---@field id Net.ActorId
 ---@field battle_name string
 ---@field name string? reserved, will automatically be set on creation
+---@field rank string the character rank for the encounter
 ---@field is_boss boolean? reserved, will automatically be set on creation
 ---@field health number
 ---@field max_health number
@@ -35,7 +36,7 @@ local name_to_enemy = {
 
 ---@return Liberation.Enemy
 function Enemy.from(instance, position, direction, name, rank)
-  local enemy = name_to_enemy[name]:new(instance, position, direction, rank)
+  local enemy = name_to_enemy[name]:new(instance, position, direction, rank or "V1")
   enemy.name = enemy.name or name
 
   Net.set_bot_name(enemy.id, enemy.name .. ": " .. enemy.health)

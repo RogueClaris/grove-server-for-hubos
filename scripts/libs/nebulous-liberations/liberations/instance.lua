@@ -363,7 +363,7 @@ local function take_enemy_turn(self)
       -- spawn a new enemy
       local name = dark_hole.custom_properties.Spawns
       local direction = dark_hole.custom_properties.Direction
-      local rank = tonumber(dark_hole.custom_properties.Rank) or 1
+      local rank = dark_hole.custom_properties.Rank
 
       dark_hole.enemy = Enemy.from(self, dark_hole, direction, name, rank)
       self.enemies[#self.enemies + 1] = dark_hole.enemy
@@ -547,7 +547,7 @@ function MissionInstance:new(base_area_id, new_area_id)
       if object.custom_properties.Boss then
         local name = object.custom_properties.Boss
         local direction = object.custom_properties.Direction
-        local rank = tonumber(object.custom_properties.Rank) or 1
+        local rank = object.custom_properties.Rank
         local enemy = Enemy.from(mission, object, direction, name, rank)
         enemy.is_boss = true
 
@@ -559,7 +559,7 @@ function MissionInstance:new(base_area_id, new_area_id)
       if object.custom_properties.Spawns then
         local name = object.custom_properties.Spawns
         local direction = object.custom_properties.Direction
-        local rank = tonumber(object.custom_properties.Rank) or 1
+        local rank = object.custom_properties.Rank
         local position = {
           x = object.x,
           y = object.y,
