@@ -3,8 +3,8 @@ local EnemySelection = require("scripts/libs/liberations/selections/enemy_select
 local Preloader = require("scripts/libs/liberations/preloader")
 local Direction = require("scripts/libs/direction")
 
-Preloader.add_asset("/server/assets/liberations/bots/beast breath.png")
-Preloader.add_asset("/server/assets/liberations/bots/beast breath.animation")
+Preloader.add_asset("/server/assets/liberations/bots/beast_breath.png")
+Preloader.add_asset("/server/assets/liberations/bots/beast_breath.animation")
 
 ---@class Liberation.Enemies.BigBrute: Liberation.Enemy
 ---@field package instance Liberation.MissionInstance
@@ -208,8 +208,8 @@ local function attempt_attack(self)
       local player_x, player_y, player_z = player:position_multi()
 
       table.insert(spawned_bots, Net.create_bot({
-        texture_path = "/server/assets/liberations/bots/beast breath.png",
-        animation_path = "/server/assets/liberations/bots/beast breath.animation",
+        texture_path = "/server/assets/liberations/bots/beast_breath.png",
+        animation_path = "/server/assets/liberations/bots/beast_breath.animation",
         animation = "ANIMATE",
         area_id = self.instance.area_id,
         warp_in = false,

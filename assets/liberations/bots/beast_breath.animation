@@ -1,5 +1,3 @@
-imagePath="beast breath.png"
-
 animation state="ANIMATE"
 frame duration="0.083" x="0" y="29" w="32" h="25" originx="16" originy="18"
 frame duration="0.083" x="65" y="7" w="32" h="47" originx="16" originy="40"
