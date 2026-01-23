@@ -8,7 +8,7 @@ local Preloader = require("scripts/libs/liberations/preloader")
 
 local compression = require('scripts/custom-scripts/compression')
 
-local DEBUG_AUTO_WIN = false
+local DEBUG_AUTO_WIN = true
 
 -- private functions
 
@@ -38,7 +38,7 @@ local function liberate(self)
       for _, panel in pairs(row) do
         if panel then
           Net.remove_object(self.area_id, panel.id)
-          Net.remove_object(self.area_id, panel.visual_object_id)
+          Net.remove_object(self.area_id, panel.collision_id)
         end
       end
     end
@@ -407,7 +407,7 @@ local function take_enemy_turn(self)
 end
 
 ---@class Liberation.PanelObject: Net.Object
----@field visual_object_id number
+---@field collision_id number
 ---@field enemy Liberation.Enemy
 ---@field loot Liberation._Loot?
 
@@ -433,6 +433,7 @@ end
 ---@field indestructible_panels Liberation.PanelObject[]
 ---@field gate_panels Liberation.PanelObject[]
 ---@field panel_gid_map table<string, number>
+---@field collision_template Net.ObjectOptions
 ---@field events Net.EventEmitter "money" { player_id, money }
 ---@field package spawn_positions Net.Object[]
 ---@field package net_listeners [string, fun()][]
@@ -464,6 +465,17 @@ function MissionInstance:new(base_area_id, new_area_id)
     indestructible_panels = {},
     gate_panels = {},
     panel_gid_map = {},
+    collision_template = {
+      x = 0,
+      y = 0,
+      z = 0,
+      width = 2,
+      height = 1,
+      data = {
+        type = "tile",
+        gid = Net.get_tileset(base_area_id, "/server/assets/liberations/tiles/collision.tsx").first_gid
+      },
+    },
     spawn_positions = {},
     net_listeners = {},
     events = Net.EventEmitter.new(),
@@ -699,15 +711,7 @@ end
 function MissionInstance:handle_tile_interaction(player_id, x, y, z, button)
   local player = self.player_map[player_id]
 
-  if not player then return end
-
-  local player_x, player_y, player_z = player:position_multi()
-  local panel_under_player = self:get_panel_at(player_x, player_y, player_z)
-
-  if panel_under_player then return end
-
-  if button == 1 then
-    -- Shoulder L
+  if not player then
     return
   end
 
@@ -715,82 +719,41 @@ function MissionInstance:handle_tile_interaction(player_id, x, y, z, button)
     -- ignore selection as it's not our turn or waiting for a response
     return
   end
-
-  Net.lock_player_input(player_id)
-
-  local quiz_promise = player:quiz_with_points("Pass", "Cancel")
-
-  quiz_promise.and_then(function(response)
-    if response == 0 then
-      -- Pass
-      player:get_pass_turn_permission()
-    elseif response == 1 then
-      -- Cancel
-      Net.unlock_player_input(player_id)
-    end
-  end)
-end
-
----@package
-function MissionInstance:handle_object_interaction(player_id, object_id, button)
-  local player = self.player_map[player_id]
-
-  if not player then return end
 
   local player_position = player:position()
   local panel_under_player = self:get_panel_at(player_position.x, player_position.y, player_position.z)
 
-  -- Player is moving over dark panels with an ability and thus cannot interact.
-  if panel_under_player then return end
+  if panel_under_player then
+    -- Player is moving over dark panels with an ability and thus cannot interact.
+    return
+  end
 
   if button == 1 then
     -- Shoulder L
     return
   end
 
-  if player.completed_turn or Net.is_player_in_widget(player_id) then
-    -- ignore selection as it's not our turn or waiting for a response
-    return
-  end
-
-  -- panel selection detection
-
-  local object = Net.get_object_by_id(self.area_id, object_id)
-
-  if not object then
-    -- must have been liberated
-    local x, y, z = player_position.x, player_position.y, player_position.z
-    self:handle_tile_interaction(player_id, x, y, z, button)
-    return
-  end
-
-  if not is_adjacent(player_position, object) then
+  if not is_adjacent(player_position, { x = x, y = y, z = z }) then
     -- can't select panels diagonally
     return
   end
 
-  local panel = self:get_panel_at(object.x, object.y, object.z)
+  local panel = self:get_panel_at(x, y, z)
+  local panel_already_selected = false
 
-  if not panel then
-    -- no data associated with this object
-    return
+  if panel then
+    for _, p in ipairs(self.players) do
+      if p.selection.root_panel == panel then
+        panel_already_selected = true
+        break
+      end
+    end
   end
 
   Net.lock_player_input(player_id)
 
-  local panel_already_selected = false
-
-  for _, player in ipairs(self.players) do
-    if player.selection.root_panel == panel then
-      panel_already_selected = true
-      break
-    end
-  end
-
-  local can_liberate = not panel_already_selected and PanelTypes.LIBERATABLE[panel.type]
-
-  if not can_liberate then
-    -- indestructible panels
+  if not panel or (panel_already_selected or not PanelTypes.LIBERATABLE[panel.type]) then
+    -- not interactable
     local quiz_promise = player:quiz_with_points("Pass", "Cancel")
 
     quiz_promise.and_then(function(response)
@@ -867,6 +830,18 @@ function MissionInstance:handle_object_interaction(player_id, object_id, button)
 end
 
 ---@package
+function MissionInstance:handle_object_interaction(player_id, object_id, button)
+  local object = Net.get_object_by_id(self.area_id, object_id)
+
+  if not object then
+    -- must have been liberated
+    return
+  end
+
+  self:handle_tile_interaction(player_id, object.x, object.y, object.z, button)
+end
+
+---@package
 function MissionInstance:handle_player_disconnect(player_id)
   local player = self.player_map[player_id]
 
@@ -890,7 +865,6 @@ end
 
 -- helper functions
 function MissionInstance:get_panel_at(x, y, z)
-  y = math.floor(y) + 1
   z = math.floor(z) + 1
 
   local layer = self.panels[z]
@@ -899,6 +873,7 @@ function MissionInstance:get_panel_at(x, y, z)
     return nil
   end
 
+  y = math.floor(y) + 1
   local row = layer[y]
 
   if row == nil then
@@ -924,7 +899,7 @@ function MissionInstance:remove_panel(panel)
     return
   end
 
-  Net.remove_object(self.area_id, panel.visual_object_id)
+  Net.remove_object(self.area_id, panel.collision_id)
   Net.remove_object(self.area_id, panel.id)
   row[x] = nil
 
@@ -954,22 +929,13 @@ end
 ---@param object Net.Object
 ---@return Liberation.PanelObject
 function MissionInstance:create_panel(object)
-  --Create the actual panel we'll be using with collisions
-  local new_panel = {
-    name = "",
-    type = object.type,
-    visible = true,
-    x = object.x,
-    y = object.y,
-    z = object.z,
-    width = object.width,
-    height = object.height,
-    data = { type = "tile", gid = Net.get_tileset(self.area_id, "/server/assets/tiles/Liberation Collision.tsx").first_gid },
-    custom_properties = object.custom_properties
-  }
+  local new_panel = object --[[@as Liberation.PanelObject]]
 
-  new_panel.id = Net.create_object(self.area_id, new_panel)
-  new_panel.visual_object_id = object.id
+  self.collision_template.x = object.x
+  self.collision_template.y = object.y
+  self.collision_template.z = object.z
+
+  new_panel.collision_id = Net.create_object(self.area_id, self.collision_template)
 
   -- insert the panel before spawning enemies
   local x = math.floor(object.x) + 1

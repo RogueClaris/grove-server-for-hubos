@@ -162,9 +162,7 @@ function Bladia:take_turn()
       return
     end
 
-    local example_collision = Net.get_object_by_id(self.instance.area_id, example_panel.visual_object_id)
-
-    if not example_panel or not example_collision then return end --If they don't exist (SOMEHOW) then return.
+    if not example_panel then return end --If they don't exist (SOMEHOW) then return.
 
     Async.await(EnemyHelpers.move(self.instance, self, targetx, targety, player_z, target_direction))
     if not self.instance:get_panel_at(targetx, targety, player_z) then
@@ -175,7 +173,7 @@ function Bladia:take_turn()
       local dark_gids = self.instance.panel_gid_map[PanelTypes.DARK]
       local gid = dark_gids[math.random(#dark_gids)]
 
-      local visual_panel = {
+      local new_panel = {
         name = "",
         type = "Dark Panel",
         visible = true,
@@ -188,7 +186,7 @@ function Bladia:take_turn()
         custom_properties = {}
       }
 
-      self.instance:create_panel(visual_panel)
+      self.instance:create_panel(new_panel)
 
       --Hold for half a second to spawn the tile.
       Async.await(Async.sleep(.5))
