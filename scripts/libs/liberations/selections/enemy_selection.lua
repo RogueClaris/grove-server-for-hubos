@@ -1,5 +1,8 @@
 local Selection = require("scripts/libs/liberations/selections/selection")
 
+local TEXTURE_PATH = "/server/assets/liberations/bots/selection.png"
+local ANIMATION_PATH = "/server/assets/liberations/bots/selection.animation"
+
 ---@class Liberation.EnemySelection
 ---@field instance Liberation.MissionInstance
 ---@field package selection Liberation._Selection
@@ -15,20 +18,17 @@ function EnemySelection:new(instance)
   setmetatable(enemy_selection, self)
   self.__index = self
 
-  local INDICATOR_GID = Net.get_tileset(instance.area_id, "/server/assets/tiles/attack indicator.tsx").first_gid
-
-  local function filter(x, y, z)
+  enemy_selection.selection:set_filter(function(x, y, z)
     local tile = Net.get_tile(instance.area_id, x, y, z)
 
     return tile.gid > 0
-  end
+  end)
 
-  enemy_selection.selection:set_filter(filter)
   --set indicator may need offset_y to adjust with a z input
   enemy_selection.selection:set_indicator({
-    gid = INDICATOR_GID,
-    width = 48,
-    height = 24,
+    texture_path = TEXTURE_PATH,
+    animation_path = ANIMATION_PATH,
+    state = "ENEMY_ATTACK",
     offset_x = 1,
     offset_y = 1,
   })

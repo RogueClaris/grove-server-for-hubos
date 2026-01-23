@@ -1,30 +1,14 @@
 local Direction = require("scripts/libs/direction")
 
--- private functions
-
-local function generate_selection_object(self)
-  return {
-    x = self.position.x + self.indicator.offset_x / 32,
-    y = self.position.y + self.indicator.offset_y / 32,
-    z = self.position.z,
-    width = self.indicator.width / 32,
-    height = self.indicator.height / 32,
-    data = {
-      type = "tile",
-      gid = self.indicator.gid,
-    }
-  }
-end
-
--- public
 ---@class Liberation._Selection
 ---@field private area_id string
 ---@field private position Net.Position
 ---@field private shape_offset_x number
 ---@field private shape_offset_y number
 ---@field private direction string?
----@field objects Net.Object[]
+---@field private bots Net.ActorId[]
 ---@field private filter? fun(x: number, y: number, z: number): boolean
+---@field private indicator? Liberation._Selection.IndicatorOptions
 local Selection = {}
 
 ---@param instance Liberation.MissionInstance
@@ -38,7 +22,7 @@ function Selection:new(instance)
     shape_offset_y = 0,
     direction = nil,
     filter = nil,
-    objects = {},
+    bots = {},
     indicator = nil
   }
 
@@ -53,15 +37,14 @@ function Selection:set_filter(filter)
   self.filter = filter
 end
 
---[[
-  indicator = {
-    gid,
-    width,
-    height,
-    offset_x,
-    offset_y,
-  }
-]]
+---@class Liberation._Selection.IndicatorOptions
+---@field texture_path string
+---@field animation_path string
+---@field state string
+---@field offset_x number
+---@field offset_y number
+
+---@param indicator Liberation._Selection.IndicatorOptions
 function Selection:set_indicator(indicator)
   self.indicator = indicator
 end
@@ -134,7 +117,8 @@ function Selection:is_within(x, y, z)
   return self.filter(x, y, z)
 end
 
-function Selection:indicate()
+---@param callback fun(x: number, y: number, z: number)
+function Selection:for_each_tile(callback)
   -- generating objects
   for m, row in ipairs(self.shape) do
     local center_x = (#row - 1) / 2
@@ -171,24 +155,34 @@ function Selection:indicate()
         goto continue
       end
 
-      -- actually generating the object
-      local object = generate_selection_object(self)
-      object.x = object.x + offset_x
-      object.y = object.y + offset_y
-      object.layer = z
-      object.z = z
-
-      object.id = Net.create_object(self.area_id, object)
-      self.objects[#self.objects + 1] = object
+      callback(x, y, z)
 
       ::continue::
     end
   end
 end
 
+function Selection:indicate()
+  self:for_each_tile(function(x, y, z)
+    local bot_id = Net.create_bot({
+      area_id = self.area_id,
+      x = x + self.indicator.offset_x / 32,
+      y = y + self.indicator.offset_y / 32,
+      z = z,
+      texture_path = self.indicator.texture_path,
+      animation_path = self.indicator.animation_path,
+      animation = self.indicator.state,
+      loop_animation = true,
+      warp_in = false
+    })
+
+    self.bots[#self.bots + 1] = bot_id
+  end)
+end
+
 function Selection:remove_indicators()
-  for _, object in pairs(self.objects) do
-    Net.remove_object(self.area_id, object.id)
+  for _, bot_id in ipairs(self.bots) do
+    Net.remove_bot(bot_id, false)
   end
 
   self.objects = {}

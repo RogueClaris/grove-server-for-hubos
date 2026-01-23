@@ -22,8 +22,6 @@
  <tileset firstgid="4" source="../assets/tiles/DarkLiberationTileset.tsx"/>
  <tileset firstgid="49" source="../assets/tiles/Invisible Tile.tsx"/>
  <tileset firstgid="50" source="../assets/tiles/panels.tsx"/>
- <tileset firstgid="120" source="../assets/tiles/selected tile.tsx"/>
- <tileset firstgid="126" source="../assets/tiles/attack indicator.tsx"/>
  <layer id="1" name="Tile Layer 1" width="23" height="25">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,32,37,37,37,37,37,37,0,0,0,0,0,0,0,0,

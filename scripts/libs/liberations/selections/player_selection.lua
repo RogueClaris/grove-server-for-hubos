@@ -2,6 +2,9 @@ local Selection = require("scripts/libs/liberations/selections/selection")
 local Direction = require("scripts/libs/direction")
 local PanelTypes = require("scripts/libs/liberations/panel_types")
 
+local TEXTURE_PATH = "/server/assets/liberations/bots/selection.png"
+local ANIMATION_PATH = "/server/assets/liberations/bots/selection.animation"
+
 -- private functions
 local function resolve_selection_direction(player_pos, panel_object)
   local x_diff = panel_object.x + panel_object.height / 2 - player_pos.x
@@ -18,15 +21,11 @@ local PlayerSelection = {}
 
 ---@return Liberation._PlayerSelection
 function PlayerSelection:new(instance, player_id)
-  local LIBERATING_PANEL_GID = Net.get_tileset(instance.area_id, "/server/assets/tiles/selected tile.tsx").first_gid
-
   local player_selection = {
     player_id = player_id,
     instance = instance,
     root_panel = nil,
     selection = Selection:new(instance),
-    LIBERATING_PANEL_GID = LIBERATING_PANEL_GID,
-    SELECTED_PANEL_GID = LIBERATING_PANEL_GID + 1
   }
 
   setmetatable(player_selection, self)
@@ -59,9 +58,9 @@ function PlayerSelection:new(instance, player_id)
 
   player_selection.selection:set_filter(filter)
   player_selection.selection:set_indicator({
-    gid = player_selection.SELECTED_PANEL_GID,
-    width = 64,
-    height = 32,
+    texture_path = TEXTURE_PATH,
+    animation_path = ANIMATION_PATH,
+    state = "SELECTED",
     offset_x = 1,
     offset_y = 1,
   })
@@ -90,9 +89,9 @@ end
 function PlayerSelection:get_panels()
   local panels = {}
 
-  for _, object in pairs(self.selection.objects) do
-    panels[#panels + 1] = self.instance:get_panel_at(object.x, object.y, object.z)
-  end
+  self.selection:for_each_tile(function(x, y, z)
+    panels[#panels + 1] = self.instance:get_panel_at(x, y, z)
+  end)
 
   return panels
 end
@@ -100,10 +99,6 @@ end
 function PlayerSelection:clear()
   self.selection:remove_indicators()
   self.root_panel = nil
-end
-
-function PlayerSelection:count_panels()
-  return #self.selection.objects
 end
 
 -- todo: add an update function that is called when a player liberates a panel? may fix issues with overlapped panels
