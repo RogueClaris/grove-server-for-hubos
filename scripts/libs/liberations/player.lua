@@ -364,6 +364,10 @@ function Player:liberate_panels(panels, results)
     -- Allow time for the player to see the liberation range
     Async.await(Async.sleep(2))
 
+    for _, panel in ipairs(panels) do
+      self.instance:remove_panel(panel)
+    end
+
     -- If the results do not exist, notify the player of the issue to start a bug report.
     if results == nil then
       Async.await(self:message_with_mug("Something's wrong!\nThere's no results!")).and_then(function()
@@ -423,8 +427,6 @@ function Player:loot_panels(panels, remove_traps, destroy_items)
           self:paralyze()
         end
       end
-      -- Remove that panel.
-      self.instance:remove_panel(panel)
     end
 
     -- Clear the selection so that it can be used again later.

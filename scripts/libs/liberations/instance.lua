@@ -212,6 +212,18 @@ local function liberate_panel(self, player)
         selection:set_shape(DARK_HOLE_SHAPE, 0, -1)
       end
 
+      if not results.won then
+        selection:clear()
+      elseif results.turns == 1 then
+        local shape = {
+          { 1, 1, 1 },
+          { 1, 0, 1 },
+          { 1, 1, 1 }
+        }
+
+        selection:merge_shape(shape, 0, -2)
+      end
+
       local panels = selection:get_panels()
 
       Async.await(player:liberate_panels(panels, results))
