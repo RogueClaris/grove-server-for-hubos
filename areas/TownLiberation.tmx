@@ -9,11 +9,10 @@
   <property name="Forced Base HP" type="int" value="100"/>
   <property name="Honor HPMem" type="bool" value="true"/>
   <property name="Liberation Encounter" value="/server/assets/encounters/NebulousEncounters/TownLiberation.zip"/>
-  <property name="Liberation Tileset" value="/server/assets/tiles/panels.tsx"/>
   <property name="Name" value="Town 4"/>
   <property name="Respawn Area" value="Town 3"/>
   <property name="Song" value="/server/assets/songs/15 Liberate Mission.mid"/>
-  <property name="Target Phase Count" type="int" value="20"/>
+  <property name="Target Phase" type="int" value="20"/>
   <property name="Target Player Count" type="int" value="3"/>
   <property name="Waiting Area" value="Town 3"/>
  </properties>
