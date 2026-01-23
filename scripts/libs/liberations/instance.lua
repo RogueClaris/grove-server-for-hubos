@@ -137,7 +137,6 @@ end
 ---@param player Liberation.Player
 local function liberate_panel(self, player)
   return Async.create_scope(function()
-    local player = player
     local selection = player.selection
     local panel = selection.root_panel
 
@@ -623,7 +622,7 @@ function MissionInstance:new(base_area_id, new_area_id)
   end)
 
   add_event_listener("object_interaction", function(event)
-    mission:handle_object_interaction(event.player_id, event.object_id)
+    mission:handle_object_interaction(event.player_id, event.object_id, event.button)
   end)
 
   add_event_listener("player_area_transfer", function(event)
@@ -753,11 +752,6 @@ function MissionInstance:handle_tile_interaction(player_id, x, y, z, button)
     return
   end
 
-  if not is_adjacent(player_position, { x = x, y = y, z = z }) then
-    -- can't select panels diagonally
-    return
-  end
-
   local panel = self:get_panel_at(x, y, z)
   local panel_already_selected = false
 
@@ -772,7 +766,11 @@ function MissionInstance:handle_tile_interaction(player_id, x, y, z, button)
 
   Net.lock_player_input(player_id)
 
-  if not panel or (panel_already_selected or not PanelTypes.LIBERATABLE[panel.type]) then
+  if
+      not panel or
+      (panel_already_selected or not PanelTypes.LIBERATABLE[panel.type]) or
+      not is_adjacent(player_position, { x = x, y = y, z = z })
+  then
     -- not interactable
     local quiz_promise = player:quiz_with_points("Pass", "Cancel")
 
