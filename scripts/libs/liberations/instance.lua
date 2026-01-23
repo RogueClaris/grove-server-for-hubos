@@ -36,8 +36,9 @@ local function liberate(self)
   for _, layer in pairs(self.panels) do
     for _, row in pairs(layer) do
       for _, panel in pairs(row) do
-        if panel then
-          Net.remove_object(self.area_id, panel.id)
+        Net.remove_object(self.area_id, panel.id)
+
+        if panel.collision_id then
           Net.remove_object(self.area_id, panel.collision_id)
         end
       end
@@ -407,7 +408,7 @@ local function take_enemy_turn(self)
 end
 
 ---@class Liberation.PanelObject: Net.Object
----@field collision_id number
+---@field collision_id number?
 ---@field enemy Liberation.Enemy
 ---@field loot Liberation._Loot?
 
@@ -899,8 +900,12 @@ function MissionInstance:remove_panel(panel)
     return
   end
 
-  Net.remove_object(self.area_id, panel.collision_id)
+  if panel.collision_id then
+    Net.remove_object(self.area_id, panel.collision_id)
+  end
+
   Net.remove_object(self.area_id, panel.id)
+
   row[x] = nil
 
   if panel.type == PanelTypes.DARK_HOLE then
@@ -931,11 +936,14 @@ end
 function MissionInstance:create_panel(object)
   local new_panel = object --[[@as Liberation.PanelObject]]
 
-  self.collision_template.x = object.x
-  self.collision_template.y = object.y
-  self.collision_template.z = object.z
+  if PanelTypes.OPTIONAL_COLLISION[object.type] then
+    -- we can disable the collision on this panel, so we need to generate one for when it's enabled
+    self.collision_template.x = object.x
+    self.collision_template.y = object.y
+    self.collision_template.z = object.z
 
-  new_panel.collision_id = Net.create_object(self.area_id, self.collision_template)
+    new_panel.collision_id = Net.create_object(self.area_id, self.collision_template)
+  end
 
   -- insert the panel before spawning enemies
   local x = math.floor(object.x) + 1

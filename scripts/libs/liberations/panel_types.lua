@@ -55,4 +55,10 @@ PanelTypes.TERRAIN = add_values_as_keys({
   PanelTypes.TRAP,
 })
 
+PanelTypes.OPTIONAL_COLLISION = add_values_as_keys({
+  PanelTypes.DARK,
+  PanelTypes.ITEM,
+  PanelTypes.TRAP,
+})
+
 return PanelTypes

@@ -8,6 +8,15 @@ Assets are found in `assets/liberations`, it must always have this path as the L
 
 You can find the Lua library in `scripts/libs/liberations`, it must always be at this path.
 
+### Minimal Map
+
+- At least 1 [Spawn Point](#spawn-point) placed on the map for spawning players.
+- A single [Dark Panel](#dark-panel) with a `Boss` set to allow players to complete the mission.
+- The map custom property `Liberation Encounter` should be set to decide the default encounter for dark panels.
+- `assets/liberations/tiles/collision.tsx` should be included as a tileset, even if it is unused in the map.
+  - This tile set is used to toggle collision on panels for shadow step.
+  - You can include this tileset by applying it to a tile or new object in the map, then deleting it.
+
 ### Encounters
 
 The `data` param in `encounter_init(encounter, data)` is used by the server to pass relevant state into your encounter.
@@ -58,9 +67,13 @@ You should have one point object named `Spawn Point` somewhere on the map to dec
 
 You can chain multiple spawn points for the library to cycle through by adding a `Next Point` custom property with type object, pointing to another point (which may also have this property).
 
-## Dark Panels
+## Panels
 
-Dark Panels are Tile Objects.
+Panels are Tile Objects, identified by the library using the `Type` field.
+
+Every panel aside from `Dark Panel`, `Item Panel`, and `Trap Panel` should have a collision slightly larger than a tile defined. You can copy the collision from `assets/liberations/tiles/collision.tsx`.
+
+The panels in `assets/liberations/tiles/panels.tsx` already have collisions properly set.
 
 Supported panel `Type`s and custom properties can be found below.
 
@@ -95,7 +108,7 @@ Supported panel `Type`s and custom properties can be found below.
 
 ### `Indestructible Panel`
 
-Custom Properties for panels with an encounter:
+Converts into a Dark Panel when every `Dark Hole` is destroyed
 
 ## Specific Loot
 
@@ -110,4 +123,4 @@ Additional custom properties are supported by loot.
 - `INVINCIBILITY` - Grants the player on-map invincibility, stopping Guardian and Darkloid attacks from harming them.
 - `MAJOR_HIT` - Destroys a nearby Guardian. Won’t destroy bosses.
 - `KEY`
-  - `Gate Key` unlocks `Gate Panel`s with a matching property
+  - `Gate Key` unlocks every `Gate Panel` with a matching value in the `Gate Key` property
