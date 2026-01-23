@@ -83,21 +83,21 @@
     <property name="Stun Trap" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="33" name="Spawn" type="Spawn Point" x="528" y="656">
+  <object id="33" name="Spawn Point" x="528" y="656">
    <properties>
-    <property name="Next Spawn" type="int" value="36"/>
+    <property name="Next Spawn" type="object" value="36"/>
    </properties>
    <point/>
   </object>
-  <object id="36" type="Spawn Point" x="528" y="688">
+  <object id="36" x="528" y="688">
    <properties>
-    <property name="Next Spawn" type="int" value="37"/>
+    <property name="Next Spawn" type="object" value="37"/>
    </properties>
    <point/>
   </object>
-  <object id="37" type="Spawn Point" x="528" y="624">
+  <object id="37" x="528" y="624">
    <properties>
-    <property name="Next Spawn" type="int" value="33"/>
+    <property name="Next Spawn" type="object" value="33"/>
    </properties>
    <point/>
   </object>

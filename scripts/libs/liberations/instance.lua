@@ -572,7 +572,7 @@ function MissionInstance:new(base_area_id, new_area_id)
   end
 
   -- resolve spawn positions
-  local current_spawn = Net.get_object_by_name(new_area_id, "Spawn")
+  local current_spawn = Net.get_object_by_name(new_area_id, "Spawn Point")
   mission.spawn_positions = { current_spawn }
   local spawns_loaded = {}
 

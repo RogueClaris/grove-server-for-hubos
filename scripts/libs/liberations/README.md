@@ -9,6 +9,12 @@
 - `Minimum Target Phase` number, optional. Defaults to 1
   - Used to resolve a reasonable target phase based on the player count
 
+## Spawn Point
+
+You should have one point object named `Spawn Point` somewhere on the map to decide where players spawn in.
+
+You can chain multiple spawn points for the library to cycle through by adding a `Next Point` custom property with type object, pointing to another point (which may also have this property).
+
 ## Dark Panels
 
 Dark Panels are Tile Objects.

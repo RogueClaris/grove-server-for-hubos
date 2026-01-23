@@ -81,9 +81,9 @@
     <property name="Direction" value="Down Left"/>
    </properties>
   </object>
-  <object id="57" name="Spawn" type="Spawn Point" x="784" y="560">
+  <object id="57" name="Spawn Point" x="784" y="560">
    <properties>
-    <property name="Next Spawn" type="int" value="110"/>
+    <property name="Next Spawn" type="object" value="110"/>
    </properties>
    <point/>
   </object>
@@ -108,15 +108,15 @@
    </properties>
   </object>
   <object id="81" type="Indestructible Panel" gid="4" x="384" y="128" width="50" height="30"/>
-  <object id="110" name="Spawn 2" type="Spawn Point" x="816" y="592">
+  <object id="110" x="816" y="592">
    <properties>
-    <property name="Next Spawn" type="int" value="111"/>
+    <property name="Next Spawn" type="object" value="111"/>
    </properties>
    <point/>
   </object>
-  <object id="111" name="Spawn 3" type="Spawn Point" x="816" y="528">
+  <object id="111" x="816" y="528">
    <properties>
-    <property name="Next Spawn" type="int" value="57"/>
+    <property name="Next Spawn" type="object" value="57"/>
    </properties>
    <point/>
   </object>
