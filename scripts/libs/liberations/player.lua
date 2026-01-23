@@ -11,7 +11,6 @@ local Emotes = require("scripts/libs/emotes")
 ---@field id Net.ActorId
 ---@field health number
 ---@field max_health number
----@field shadowsteps number
 ---@field paralysis_effect Liberation.ParalysisEffect?
 ---@field paralysis_counter number
 ---@field invincible boolean
@@ -31,7 +30,6 @@ function Player:new(instance, player_id)
     id = player_id,
     health = 100,
     max_health = 100,
-    shadowsteps = {},
     paralysis_effect = nil,
     paralysis_counter = 0,
     invincible = false,
