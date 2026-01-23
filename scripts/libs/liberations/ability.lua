@@ -56,16 +56,22 @@ end
 
 ---@class Liberation.ActiveAbility
 ---@field name string
----@field question string missing a question turns this ability into a passive
----@field cost number,
+---@field question string Missing a question turns this ability into a passive
+---@field cost number
+---@field shadow_step? boolean
 ---@field remove_traps? boolean
 ---@field destroy_items? boolean
 ---@field generate_shape fun(instance: Liberation.MissionInstance, player: Liberation.Player): boolean[][], number, number
 ---@field activate fun(instance: Liberation.MissionInstance, player: Liberation.Player)
 
 local Ability = {
-  Guard = { name = "Guard" },           -- passive, knightman's ability
-  Shadowstep = { name = "Shadowstep" }, --passive, Shadowman's ability
+  -- passive, knightman's ability:
+  Guard = { name = "Guard" },
+  -- passive, Shadowman's ability:
+  ShadowStep = {
+    name = "ShadowStep",
+    shadow_step = true
+  },
   LongSwrd = {
     name = "LongSwrd",
     question = "Use LongSwrd?",

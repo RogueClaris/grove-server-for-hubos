@@ -629,6 +629,25 @@ function MissionInstance:new(base_area_id, new_area_id)
   add_event_listener("player_area_transfer", function(event)
     if Net.get_player_area(event.player_id) ~= new_area_id then
       mission:handle_player_disconnect(event.player_id)
+      return
+    end
+
+    local player = mission.player_map[event.player_id]
+
+    if not player or not player.ability or not player.ability.shadow_step then
+      -- must be a player with shadow step to continue
+      return
+    end
+
+    -- exclude optional collisions for shadow step players
+    for _, layer in pairs(mission.panels) do
+      for _, row in pairs(layer) do
+        for _, panel in pairs(row) do
+          if panel.collision_id then
+            Net.exclude_object_for_player(player.id, panel.collision_id)
+          end
+        end
+      end
     end
   end)
 
@@ -943,6 +962,12 @@ function MissionInstance:create_panel(object)
     self.collision_template.z = object.z
 
     new_panel.collision_id = Net.create_object(self.area_id, self.collision_template)
+
+    for _, player in ipairs(self.players) do
+      if player.ability and player.ability.shadow_step then
+        Net.exclude_object_for_player(player.id, new_panel.collision_id)
+      end
+    end
   end
 
   -- insert the panel before spawning enemies
