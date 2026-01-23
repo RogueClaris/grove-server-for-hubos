@@ -1,3 +1,46 @@
+# Hub OS Nebulous Liberations Lib
+
+## Setting Up
+
+The library comes in two pieces, assets and scripts.
+
+Assets are found in `assets/liberations`, it must always have this path as the Lua library references files in this location.
+
+You can find the Lua library in `scripts/libs/liberations`, it must always be at this path.
+
+### Encounters
+
+The `data` param in `encounter_init(encounter, data)` is used by the server to pass relevant state into your encounter.
+
+Keys on the `data` table and how you should handle them:
+
+- `terrain`
+  - `even`
+    - The default field layout should be used.
+  - `advantage`
+    - The red team should have an extra column.
+  - `disadvantage`
+    - The blue team should have an extra column.
+  - `surrounded`
+    - The encounter should set two blue columns on each side of the field, with the red team stuck in the middle.
+- `rank`
+  - Only appears when the player is fighting a boss / miniboss.
+  - It should be possible to use `Rank[data.rank]` to resolve the rank to pass for spawning this enemy.
+- `health`
+  - Only appears when the player is fighting a boss / miniboss. Used to restore the enemy's health from a previous battle.
+  - The [:mutate()](https://docs.hubos.dev/client/lua-api/field-api/encounter#mutatormutatefunctionentity) function can be chained with `encounter:spawn_at()` to modify enemies spawned by `encounter`.
+
+There's a type definition file at `scripts/libs/liberations/liberations.client.d.lua`. When this file is included, similar to the client type definitions in the [Getting Started guide](https://docs.hubos.dev/client/getting-started), your editor will have auto complete and error information for the data param when properly tagged.
+
+Example of tagging the type for the data param:
+
+```lua
+---@param encounter Encounter
+---@param data Liberation.EncounterData
+function encounter_init(encounter, data)
+end
+```
+
 ## Map Custom Properties
 
 - `Liberation Encounter` a server path to the default encounter

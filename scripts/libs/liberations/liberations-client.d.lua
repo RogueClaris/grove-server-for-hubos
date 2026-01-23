@@ -1,0 +1,4 @@
+---@class Liberation.EncounterData
+---@field terrain "even" | "advantage" | "disadvantage" | "surrounded"
+---@field rank string
+---@field health? number
