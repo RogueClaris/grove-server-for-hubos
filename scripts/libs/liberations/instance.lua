@@ -385,7 +385,7 @@ local function take_enemy_turn(self)
       Net.unlock_player_camera(player.id)
 
       -- If they aren't paralyzed or otherwise unable to move, return input
-      if player.is_trapped ~= true then Net.unlock_player_input(player.id) end
+      if not player.paralysis_effect then Net.unlock_player_input(player.id) end
     end
 
     -- wait for the camera

@@ -18,7 +18,6 @@ local Emotes = require("scripts/libs/emotes")
 ---@field selection Liberation._PlayerSelection
 ---@field ability Liberation.Ability?
 ---@field disconnected boolean
----@field is_trapped boolean
 local Player = {}
 
 ---@param instance Liberation.MissionInstance
@@ -36,8 +35,7 @@ function Player:new(instance, player_id)
     completed_turn = false,
     selection = PlayerSelection:new(instance, player_id),
     ability = nil,
-    disconnected = false,
-    is_trapped = false
+    disconnected = false
   }
 
   setmetatable(player, self)
@@ -280,7 +278,6 @@ end
 function Player:paralyze()
   self.paralysis_counter = 2
   self.paralysis_effect = ParalysisEffect:new(self.id)
-  self.is_trapped = true
 end
 
 function Player:pass_turn()
@@ -324,10 +321,8 @@ function Player:give_turn()
     self.paralysis_effect = nil
 
     -- heal 50% so we don't just start battles with 0 lol
-    if not self.is_trapped then
+    if self.health == 0 then
       self:heal(self.max_health / 2)
-    else
-      self.is_trapped = false
     end
   end
 
