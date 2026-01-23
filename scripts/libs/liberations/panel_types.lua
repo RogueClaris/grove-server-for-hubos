@@ -28,7 +28,7 @@ end
 PanelTypes.ALL = add_values_as_keys(ALL)
 
 PanelTypes.ENEMY_WALKABLE = add_values_as_keys({
-  PanelTypes.BONUS,
+  PanelTypes.DARK,
   PanelTypes.ITEM,
   PanelTypes.TRAP,
 })
