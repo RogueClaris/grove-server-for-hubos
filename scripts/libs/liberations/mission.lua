@@ -112,6 +112,9 @@ local function convert_indestructible_panels(self)
 
   -- convert panels
   for _, panel in ipairs(self.indestructible_panels) do
+    panel.type = PanelTypes.DARK
+
+    -- update visual
     local dark_gids = self.panel_gid_map[PanelTypes.DARK]
 
     panel.data.gid = dark_gids[math.random(#dark_gids)]
