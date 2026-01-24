@@ -1,5 +1,3 @@
-imagePath="item.png"
-
 animation state="HEART"
 frame duration="0.1" x="1" y="1" w="19" h="19" originx="9" originy="10"
 
@@ -28,15 +26,3 @@ frame duration="0.1" x="56" y="22" w="23" h="22" originx="11" originy="11"
 
 animation state="SHADOW"
 frame duration="0.1" x="80" y="32" w="16" h="6" originx="8" originy="3"
-
-animation state="IDLE_U"
-frame duration="0.01" x="0" y="0" w="1" h="1" originx="0" originy="0"
-
-animation state="IDLE_D"
-frame duration="0.01" x="0" y="0" w="1" h="1" originx="0" originy="0"
-
-animation state="IDLE_L"
-frame duration="0.01" x="0" y="0" w="1" h="1" originx="0" originy="0"
-
-animation state="IDLE_R"
-frame duration="0.01" x="0" y="0" w="1" h="1" originx="0" originy="0"
