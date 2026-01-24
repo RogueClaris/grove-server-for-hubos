@@ -16,14 +16,17 @@ local direction_suffix_map = {
 function EnemyHelpers.play_attack_animation(enemy)
   local direction = Net.get_bot_direction(enemy.id)
   local suffix = direction_suffix_map[direction]
-
-  -- print("[EnemyHelpers] attack suffix is " .. suffix)
-
   local animation = "ATTACK_" .. suffix
 
-  -- print("[EnemyHelpers] attack animation is thus " .. animation)
-
   Net.animate_bot(enemy.id, animation)
+end
+
+function EnemyHelpers.play_idle_animation(enemy)
+  local direction = Net.get_bot_direction(enemy.id)
+  local suffix = direction_suffix_map[direction]
+  local animation = "IDLE_" .. suffix
+
+  Net.animate_bot(enemy.id, animation, true)
 end
 
 function EnemyHelpers.update_name(enemy)

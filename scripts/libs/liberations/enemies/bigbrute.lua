@@ -134,63 +134,49 @@ local function attempt_axis_move(self, player, diff, xfilter, yfilter)
 end
 
 local function attempt_move(self)
-  return Async.create_promise(function(resolve)
+  return Async.create_scope(function()
     local player = EnemyHelpers.find_closest_player(self.instance, self, 4)
-
-    local success = false
 
     if player == nil then
       -- all players left
-      return resolve(success)
+      return false
     end
 
-    local player_x, player_y, player_z = player:position_multi()
-
-    -- local distance = EnemyHelpers.chebyshev_tile_distance(self, player_x, player_y, player_z)
-
-    -- if distance > 4 then
-    --   -- too far to target
-    --   resolve(false)
-    --   return
-    -- end
+    local player_x, player_y = player:position_multi()
 
     local xdiff = math.floor(player_x) - self.x
     local ydiff = math.floor(player_y) - self.y
 
     if (ydiff == 0 or math.abs(xdiff) < math.abs(ydiff)) and xdiff ~= 0 then
-      -- travel along the x axis
-      success = Async.await(attempt_axis_move(self, player, xdiff, 1, 0))
-      if not success then
-        -- failed, try the other axis
-        success = Async.await(attempt_axis_move(self, player, ydiff, 0, 1))
-      end
+      -- travel along the x axis, falling back to the y axis
+      return
+          Async.await(attempt_axis_move(self, player, xdiff, 1, 0)) or
+          Async.await(attempt_axis_move(self, player, ydiff, 0, 1))
     elseif ydiff ~= 0 then
-      -- travel along the y axis
-      success = Async.await(attempt_axis_move(self, player, ydiff, 0, 1))
-      if not success then
-        -- failed, try the other axis
-        success = Async.await(attempt_axis_move(self, player, xdiff, 1, 0))
-      end
+      -- travel along the y axis, falling back to the x axis
+      return
+          Async.await(attempt_axis_move(self, player, ydiff, 0, 1)) or
+          Async.await(attempt_axis_move(self, player, xdiff, 1, 0))
     end
 
-    return resolve(success)
+    return false
   end)
 end
 
 ---@param self Liberation.Enemies.BigBrute
 local function attempt_attack(self)
-  return Async.create_promise(function(resolve)
+  return Async.create_scope(function()
     self.selection:move(self, Net.get_bot_direction(self.id))
 
     local caught_players = self.selection:detect_players()
 
     if #caught_players == 0 then
-      return resolve(false)
+      return
     end
 
     local closest_player = EnemyHelpers.find_closest_player(self.instance, self)
 
-    if closest_player ~= nil then
+    if closest_player then
       local x, y = closest_player:position_multi()
       EnemyHelpers.face_position(self, x, y)
     end
@@ -212,8 +198,8 @@ local function attempt_attack(self)
         animation = "ANIMATE",
         area_id = self.instance.area_id,
         warp_in = false,
-        x = player_x + (1 / 32),
-        y = player_y + (1 / 32),
+        x = player_x + 1 / 32,
+        y = player_y + 1 / 32,
         z = player_z
       }))
     end
@@ -230,6 +216,8 @@ local function attempt_attack(self)
 
     Async.await(Async.sleep(.5))
 
+    EnemyHelpers.play_idle_animation(self)
+
     for _, bot_id in ipairs(spawned_bots) do
       Net.remove_bot(bot_id, false)
     end
@@ -237,17 +225,13 @@ local function attempt_attack(self)
     Async.await(Async.sleep(1))
 
     self.selection:remove_indicators()
-
-    return resolve(true)
   end)
 end
 
 function BigBrute:take_turn()
   return Async.create_scope(function()
-    local success = Async.await(attempt_move(self))
-    if success == true then
-      Async.await(attempt_attack(self))
-    end
+    Async.await(attempt_move(self))
+    Async.await(attempt_attack(self))
   end)
 end
 
