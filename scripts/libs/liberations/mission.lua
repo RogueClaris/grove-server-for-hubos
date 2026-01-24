@@ -22,7 +22,7 @@ local function is_adjacent(position_a, position_b)
 end
 
 local function boot_player(player, is_victory, map_name)
-  Net.unlock_player_input(player.id)
+  player:unlock_input()
   player:boot_to_lobby(is_victory, map_name)
 end
 
@@ -96,7 +96,7 @@ local function convert_indestructible_panels(self)
     player:message("No more DarkHoles! Nothing will save the Darkloids now!")
     local player_x, player_y, player_z = player:position_multi()
 
-    Net.lock_player_input(player.id)
+    player:lock_input()
 
     Net.slide_player_camera(player.id, self.boss.x, self.boss.y, self.boss.z, slide_time)
 
@@ -125,7 +125,7 @@ local function convert_indestructible_panels(self)
   -- returning control
   for _, player in ipairs(self.players) do
     if not player.completed_turn then
-      Net.unlock_player_input(player.id)
+      player:unlock_input()
     end
   end
 end
@@ -150,7 +150,7 @@ local function liberate_panel(self, player)
 
       Async.await(Loot.loot_bonus_panel(self, player, panel))
 
-      Net.unlock_player_input(player.id)
+      player:unlock_input()
     else
       if panel.custom_properties["Message"] ~= nil then
         Async.await(player:message_with_mug(panel.custom_properties["Message"]))
@@ -298,7 +298,7 @@ local function take_enemy_turn(self)
           boot_player(player, false, self.area_name)
 
           Net.unlock_player_camera(player.id)
-          Net.unlock_player_input(player.id)
+          player:unlock_input()
         end)
       end
 
@@ -412,7 +412,9 @@ local function take_enemy_turn(self)
       Net.unlock_player_camera(player.id)
 
       -- If they aren't paralyzed or otherwise unable to move, return input
-      if not player.paralysis_effect then Net.unlock_player_input(player.id) end
+      if not player.paralysis_effect then
+        player:unlock_input()
+      end
     end
 
     -- wait for the camera
@@ -781,7 +783,7 @@ function MissionInstance:handle_tile_interaction(player_id, x, y, z, button)
     end
   end
 
-  Net.lock_player_input(player_id)
+  player:lock_input()
 
   if
       not panel or
@@ -797,7 +799,7 @@ function MissionInstance:handle_tile_interaction(player_id, x, y, z, button)
         player:get_pass_turn_permission()
       elseif response == 1 then
         -- Cancel
-        Net.unlock_player_input(player_id)
+        player:unlock_input()
       end
     end)
 
@@ -859,7 +861,7 @@ function MissionInstance:handle_tile_interaction(player_id, x, y, z, button)
     elseif response == 2 then
       -- Cancel
       player.selection:clear()
-      Net.unlock_player_input(player_id)
+      player:unlock_input()
     end
   end)
 end

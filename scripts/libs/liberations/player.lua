@@ -19,6 +19,7 @@ local Emotes = require("scripts/libs/emotes")
 ---@field completed_turn boolean
 ---@field selection Liberation._PlayerSelection
 ---@field ability Liberation.Ability?
+---@field input_locked boolean
 ---@field disconnected boolean
 local Player = {}
 
@@ -39,6 +40,7 @@ function Player:new(instance, player_id)
     completed_turn = false,
     selection = PlayerSelection:new(instance, player_id),
     ability = nil,
+    input_locked = false,
     disconnected = false,
   }
 
@@ -81,6 +83,20 @@ end
 
 function Player:position_multi()
   return Net.get_player_position_multi(self.id)
+end
+
+function Player:lock_input()
+  if not self.input_locked then
+    Net.lock_player_input(self.id)
+    self.input_locked = true
+  end
+end
+
+function Player:unlock_input()
+  if self.input_locked then
+    Net.unlock_player_input(self.id)
+    self.input_locked = false
+  end
 end
 
 ---@param message string
@@ -133,7 +149,7 @@ function Player:get_ability_permission()
     if response == 0 then
       -- No
       self.selection:clear()
-      Net.unlock_player_input(self.id)
+      self:unlock_input()
       return
     end
 
@@ -166,7 +182,7 @@ function Player:get_pass_turn_permission()
   question_promise.and_then(function(response)
     if response == 0 then
       -- No
-      Net.unlock_player_input(self.id)
+      self:unlock_input()
     elseif response == 1 then
       -- Yes
       self:pass_turn()
@@ -379,7 +395,7 @@ function Player:give_turn()
   end
 
   self.completed_turn = false
-  Net.unlock_player_input(self.id)
+  self:unlock_input()
 end
 
 function Player:find_closest_guardian()

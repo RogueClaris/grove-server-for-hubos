@@ -78,7 +78,7 @@ function Enemy.destroy(instance, enemy)
     local extra_explosion_time = .5
 
     for _, player in ipairs(instance.players) do
-      Net.lock_player_input(player.id)
+      player:lock_input()
 
       Net.slide_player_camera(player.id, enemy.x + .5, enemy.y + .5, enemy.z, slide_time)
       Net.move_player_camera(player.id, enemy.x + .5, enemy.y + .5, enemy.z, hold_time)
@@ -118,7 +118,7 @@ function Enemy.destroy(instance, enemy)
 
     -- unlock players who were not locked
     for _, player in ipairs(instance.players) do
-      Net.unlock_player_input(player.id)
+      player:unlock_input()
     end
 
     success = true
