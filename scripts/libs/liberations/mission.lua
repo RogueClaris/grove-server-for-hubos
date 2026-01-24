@@ -506,6 +506,7 @@ function MissionInstance:new(area_id)
     gate_panels = {},
     panel_gid_map = {},
     collision_template = {
+      visible = false,
       x = 0,
       y = 0,
       z = 0,
