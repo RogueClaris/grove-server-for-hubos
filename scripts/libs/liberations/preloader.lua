@@ -15,6 +15,8 @@ local asset_paths = {
   "/server/assets/liberations/sound effects/explode.ogg",
   "/server/assets/liberations/sound effects/paralyze.ogg",
   "/server/assets/liberations/sound effects/recover.ogg",
+  "/server/assets/liberations/ui/order_points.png",
+  "/server/assets/liberations/ui/order_points.animation",
 }
 
 function Preloader.add_asset(asset_path)

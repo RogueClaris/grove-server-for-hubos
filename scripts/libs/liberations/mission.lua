@@ -651,6 +651,8 @@ function MissionInstance:new(area_id)
 
     local player = mission.player_map[event.player_id]
 
+    player:update_order_points_hud()
+
     if not player or not player.ability or not player.ability.shadow_step then
       -- must be a player with shadow step to continue
       return
@@ -787,7 +789,7 @@ function MissionInstance:handle_tile_interaction(player_id, x, y, z, button)
       not is_adjacent(player_position, { x = x, y = y, z = z })
   then
     -- not interactable
-    local quiz_promise = player:quiz_with_points("Pass", "Cancel")
+    local quiz_promise = player:quiz("Pass", "Cancel")
 
     quiz_promise.and_then(function(response)
       if response == 0 then
@@ -814,7 +816,7 @@ function MissionInstance:handle_tile_interaction(player_id, x, y, z, button)
   player.selection:select_panel(panel)
 
   if ability and can_use_ability then
-    local quiz_promise = player:quiz_with_points(
+    local quiz_promise = player:quiz(
       "Liberation",
       ability.name,
       "Pass"
@@ -840,7 +842,7 @@ function MissionInstance:handle_tile_interaction(player_id, x, y, z, button)
     return
   end
 
-  local quiz_promise = player:quiz_with_points(
+  local quiz_promise = player:quiz(
     "Liberation",
     "Pass",
     "Cancel"

@@ -73,8 +73,12 @@ Loot.ORDER_POINT = {
       local previous_points = instance.order_points
       instance.order_points = math.min(instance.order_points + 3, instance.MAX_ORDER_POINTS)
 
+      for _, p in ipairs(instance.players) do
+        p:update_order_points_hud()
+      end
+
       local recovered_points = instance.order_points - previous_points
-      Async.await(player:message_with_points(recovered_points .. "\nOrder Pts Recovered!"))
+      Async.await(player:message(recovered_points .. "\nOrder Pts Recovered!"))
     end)
   end
 }

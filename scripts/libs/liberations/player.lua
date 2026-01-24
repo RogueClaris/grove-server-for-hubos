@@ -14,6 +14,7 @@ local Emotes = require("scripts/libs/emotes")
 ---@field paralysis_effect Liberation.ParalysisEffect?
 ---@field paralysis_counter number
 ---@field emote_delay number
+---@field order_points_sprite_id Net.SpriteId?
 ---@field invincible boolean
 ---@field completed_turn boolean
 ---@field selection Liberation._PlayerSelection
@@ -33,11 +34,12 @@ function Player:new(instance, player_id)
     paralysis_effect = nil,
     paralysis_counter = 0,
     emote_delay = 0,
+    order_points_sprite_id = nil,
     invincible = false,
     completed_turn = false,
     selection = PlayerSelection:new(instance, player_id),
     ability = nil,
-    disconnected = false
+    disconnected = false,
   }
 
   setmetatable(player, self)
@@ -60,18 +62,18 @@ function Player:emote_state()
   self.emote_delay = 1
 end
 
-local order_points_mug_texture = "/server/assets/liberations/mugs/order pts.png"
-local order_points_mug_animations = {
-  "/server/assets/liberations/mugs/order pts 0.animation",
-  "/server/assets/liberations/mugs/order pts 1.animation",
-  "/server/assets/liberations/mugs/order pts 2.animation",
-  "/server/assets/liberations/mugs/order pts 3.animation",
-  "/server/assets/liberations/mugs/order pts 4.animation",
-  "/server/assets/liberations/mugs/order pts 5.animation",
-  "/server/assets/liberations/mugs/order pts 6.animation",
-  "/server/assets/liberations/mugs/order pts 7.animation",
-  "/server/assets/liberations/mugs/order pts 8.animation",
-}
+function Player:update_order_points_hud()
+  if self.order_points_sprite_id then
+    Net.animate_sprite(self.order_points_sprite_id, tostring(self.instance.order_points))
+  else
+    self.order_points_sprite_id = Net.create_sprite({
+      parent_id = "hud",
+      texture_path = "/server/assets/liberations/ui/order_points.png",
+      animation_path = "/server/assets/liberations/ui/order_points.animation",
+      animation = tostring(self.instance.order_points)
+    })
+  end
+end
 
 function Player:position()
   return Net.get_player_position(self.id)
@@ -124,26 +126,6 @@ function Player:quiz(a, b, c, texture_path, animation_path)
   return Async.quiz_player(self.id, a, b, c, texture_path, animation_path)
 end
 
----@param message string
-function Player:message_with_points(message)
-  local mug_animation = order_points_mug_animations[self.instance.order_points + 1]
-  return self:message(message, order_points_mug_texture, mug_animation)
-end
-
----@param question string
-function Player:question_with_points(question)
-  local mug_animation = order_points_mug_animations[self.instance.order_points + 1]
-  return self:question(question, order_points_mug_texture, mug_animation)
-end
-
----@param a string
----@param b? string
----@param c? string
-function Player:quiz_with_points(a, b, c)
-  local mug_animation = order_points_mug_animations[self.instance.order_points + 1]
-  return self:quiz(a, b, c, order_points_mug_texture, mug_animation)
-end
-
 function Player:get_ability_permission()
   local question_promise = self:question_with_mug(self.ability.question)
 
@@ -163,6 +145,11 @@ function Player:get_ability_permission()
     end
 
     self.instance.order_points = self.instance.order_points - self.ability.cost
+
+    for _, p in ipairs(self.instance.players) do
+      p:update_order_points_hud()
+    end
+
     self.ability.activate(self.instance, self)
   end)
 end
@@ -470,6 +457,10 @@ function Player:handle_disconnect()
   end
 
   self.disconnected = true
+
+  if self.order_points_sprite_id then
+    Net.remove_sprite(self.order_points_sprite_id)
+  end
 end
 
 -- export
