@@ -53,18 +53,22 @@ local function liberate(self)
 
   local area_properties = Net.get_area_custom_properties(self.area_id)
 
-  Net.set_background(
-    self.area_id,
-    area_properties["Background Texture"],
-    area_properties["Background Animation"],
-    tonumber(area_properties["Background Vel X"]),
-    tonumber(area_properties["Background Vel Y"])
-  )
+  if area_properties["Victory Background Texture"] then
+    Net.set_background(
+      self.area_id,
+      area_properties["Victory Background Texture"],
+      area_properties["Victory Background Animation"],
+      tonumber(area_properties["Victory Background Vel X"]),
+      tonumber(area_properties["Victory Background Vel Y"])
+    )
+  end
 
-  if area_properties["Victory Song"] ~= nil then
-    Net.set_music(self.area_id, area_properties["Victory Song"])
+  local victory_music = area_properties["Victory Music"] or area_properties["Victory Song"]
+
+  if victory_music then
+    Net.set_music(self.area_id, victory_music)
   else
-    Net.set_music(self.area_id, area_properties["Song"])
+    Net.set_music(self.area_id, area_properties["Music"] or area_properties["Song"])
   end
 
   local victory_message =
