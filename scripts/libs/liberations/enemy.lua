@@ -5,7 +5,6 @@
 ---@field battle_name string
 ---@field name string? reserved, will automatically be set on creation
 ---@field rank string the character rank for the encounter
----@field is_boss boolean? reserved, will automatically be set on creation
 ---@field health number
 ---@field max_health number
 ---@field x number should be floored, but spawned bots should be centered on tiles (x + .5)

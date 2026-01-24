@@ -405,7 +405,7 @@ function Player:find_closest_guardian()
   local x, y, z = self:position_multi()
 
   for _, enemy in ipairs(self.instance.enemies) do
-    if enemy.is_boss then
+    if self.instance.boss == enemy then
       goto continue
     end
 

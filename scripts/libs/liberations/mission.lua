@@ -268,7 +268,7 @@ local function liberate_panel(self, player)
       Async.await(player:loot_panels(panels))
 
       -- figure out if we've won
-      if destroyed_enemy and enemy and enemy.is_boss then
+      if destroyed_enemy and enemy and enemy == self.boss then
         liberate(self)
       else
         player:complete_turn()
@@ -336,7 +336,7 @@ local function take_enemy_turn(self)
       -- wait until the camera is done moving
       Async.await(Async.sleep(slide_time))
 
-      if enemy.is_boss then
+      if enemy == self.boss then
         -- darkloids heal up to 50% of health during their turn
         Async.await(EnemyHelpers.heal(enemy, enemy.max_health / 2))
       end
@@ -466,7 +466,7 @@ end
 ---@field points_of_interest Net.Object[]
 ---@field players Liberation.Player[]
 ---@field player_map table<Net.ActorId, Liberation.Player>
----@field package boss Liberation.Enemy
+---@field boss Liberation.Enemy
 ---@field enemies Liberation.Enemy[]
 ---@field panels table<number, table<number, table<number, Liberation.PanelObject>>>
 ---@field dark_holes Liberation.PanelObject[]
@@ -579,7 +579,6 @@ function MissionInstance:new(area_id)
         -- spawning bosses
         local enemy_options = Enemy.options_from(mission, panel)
         local enemy = Enemy.from(enemy_options)
-        enemy.is_boss = true
 
         mission.boss = enemy
         table.insert(mission.enemies, 1, enemy) -- make the boss the first enemy in the list
