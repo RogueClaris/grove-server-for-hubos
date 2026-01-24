@@ -457,7 +457,7 @@ end
 ---@field dark_holes Liberation.PanelObject[]
 ---@field indestructible_panels Liberation.PanelObject[]
 ---@field gate_panels Liberation.PanelObject[]
----@field panel_gid_map table<string, number>
+---@field panel_gid_map table<string, number[]>
 ---@field collision_template Net.ObjectOptions
 ---@field events Net.EventEmitter "money" { player_id, money }
 ---@field package spawn_positions Net.Object[]
