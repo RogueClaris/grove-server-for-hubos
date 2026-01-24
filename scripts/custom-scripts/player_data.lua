@@ -365,7 +365,7 @@ Net:on("player_connect", function(event)
         end
 
         if type(loaded_data.money) == "number" then
-          PlayerData.update_player_money(event.player_id, loaded_data.money)
+          Net.set_player_money(event.player_id, loaded_data.money)
         end
       end)
 end)
