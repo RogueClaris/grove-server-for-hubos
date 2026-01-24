@@ -178,26 +178,36 @@ Loot.KEY = {
       if #points > 0 then
         local hold_time = .4
         local slide_time = .4
-        local total_camera_time = 0
+        local camera_time = 0
 
         for j = 1, #points, 1 do
           local point = points[j]
           Net.slide_player_camera(player.id, point.x, point.y, point.z, slide_time)
           Net.move_player_camera(player.id, point.x, point.y, point.z, hold_time)
-          total_camera_time = total_camera_time + slide_time + hold_time
+
+          camera_time = camera_time + slide_time + hold_time
+
           if point == points[1] then
-            Async.await(player:message_with_mug("The gate opened!"))
-            Net.move_player_camera(player.id, point.x, point.y, point.z, hold_time)
-            total_camera_time = total_camera_time + hold_time
+            Async.await(Async.sleep(camera_time + 0.5))
+
             unlock_gates()
+
+            Async.await(Async.sleep(1))
+
+            Async.await(player:message_with_mug("The gate opened!"))
+
+            Net.move_player_camera(player.id, point.x, point.y, point.z, hold_time)
+
+            -- intentionally resetting here
+            camera_time = hold_time
           end
         end
 
-        total_camera_time = total_camera_time + slide_time
+        camera_time = camera_time + slide_time
 
         Net.slide_player_camera(player.id, player_x, player_y, player_z, slide_time)
 
-        Async.await(Async.sleep(total_camera_time))
+        Async.await(Async.sleep(camera_time))
       else
         unlock_gates()
       end
