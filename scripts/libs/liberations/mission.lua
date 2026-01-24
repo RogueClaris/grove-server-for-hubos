@@ -185,6 +185,7 @@ local function liberate_panel(self, player)
         local hidden_enemy = panel.enemy
         -- spawn fully healed
         data.health = hidden_enemy.max_health
+        data.rank = hidden_enemy.rank
         -- override encounter
         encounter_path = hidden_enemy.encounter
       end
