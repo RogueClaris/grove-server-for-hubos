@@ -22,6 +22,17 @@ for _, init in ipairs(custom_nodes) do
   init(scripts)
 end
 
+-- Glue compression roads before loading areas
+local compression = require('scripts/custom-scripts/compression')
+
+scripts:on_load(function(area_id)
+  compression.load_area(area_id)
+end)
+
+scripts:on_unload(function(area_id)
+  compression.unload_area(area_id)
+end)
+
 -- Custom whitelist behavior
 -- local whitelist_manager = require("scripts/custom-scripts/whitelist_manager")
 

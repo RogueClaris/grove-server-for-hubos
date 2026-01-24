@@ -6,8 +6,6 @@ local PanelTypes = require("scripts/libs/liberations/panel_types")
 local TargetPhase = require("scripts/libs/liberations/target_phase")
 local Preloader = require("scripts/libs/liberations/preloader")
 
-local compression = require('scripts/custom-scripts/compression')
-
 local DEBUG_AUTO_WIN = false
 
 -- private functions
@@ -25,7 +23,6 @@ end
 
 local function boot_player(player, is_victory, map_name)
   Net.unlock_player_input(player.id)
-  compression.decompress(player.id)
   player:boot_to_lobby(is_victory, map_name)
 end
 
@@ -472,14 +469,15 @@ end
 ---@field package disposal_promise Net.Promise?
 local MissionInstance = {}
 
+---@param area_id string
 ---@return Liberation.MissionInstance
-function MissionInstance:new(base_area_id, new_area_id)
+function MissionInstance:new(area_id)
   local mission = {
-    area_id = new_area_id,
-    area_name = Net.get_area_name(base_area_id),
-    default_encounter = Net.get_area_custom_property(base_area_id, "Liberation Encounter"),
+    area_id = area_id,
+    area_name = Net.get_area_name(area_id),
+    default_encounter = Net.get_area_custom_property(area_id, "Liberation Encounter"),
     emote_timer = 0,
-    target_phase = TargetPhase:new(base_area_id),
+    target_phase = TargetPhase:new(area_id),
     liberated = false,
     phase = 1,
     ready_count = 0,
@@ -503,7 +501,7 @@ function MissionInstance:new(base_area_id, new_area_id)
       height = 1,
       data = {
         type = "tile",
-        gid = Net.get_tileset(base_area_id, "/server/assets/liberations/tiles/collision.tsx").first_gid
+        gid = Net.get_tileset(area_id, "/server/assets/liberations/tiles/collision.tsx").first_gid
       },
     },
     spawn_positions = {},
@@ -514,11 +512,11 @@ function MissionInstance:new(base_area_id, new_area_id)
     disposal_promise = nil
   }
 
-  for i = 1, Net.get_layer_count(base_area_id), 1 do
+  for i = 1, Net.get_layer_count(area_id), 1 do
     -- create a layer of panels
     local panel_layer = {}
 
-    for j = 1, Net.get_layer_height(base_area_id), 1 do
+    for j = 1, Net.get_layer_height(area_id), 1 do
       --Now we need to create the actual row of panels we'll be using within that layer.
       panel_layer[j] = {}
     end
@@ -529,24 +527,7 @@ function MissionInstance:new(base_area_id, new_area_id)
   setmetatable(mission, self)
   self.__index = self
 
-  Net.clone_area(base_area_id, new_area_id)
-
-  --Code for handling addition of compression rodes to Liberation Missions.
-  --Basically searches and adds compression objects in the instance to the list.
-  --They get cleaned up later.
-
-  --Add the instance to the list of collider areas.
-  compression.colliders[new_area_id] = {}
-  for _, object_id in ipairs(Net.list_objects(new_area_id)) do
-    local object = Net.get_object_by_id(new_area_id, object_id)
-    --Find a way to detect if object is already added somehow. Shouldn't be an issue since instances, but...
-    --Could be cleaner.
-    if object.custom_properties.Compress or object.custom_properties.Decompress then
-      table.insert(compression.colliders[new_area_id], object)
-    end
-  end
-
-  Preloader.update(new_area_id)
+  Preloader.update(area_id)
 
   -- resolve panels and enemies
   local object_ids = Net.list_objects(mission.area_id)
@@ -614,7 +595,7 @@ function MissionInstance:new(base_area_id, new_area_id)
   end
 
   -- resolve spawn positions
-  local current_spawn = Net.get_object_by_name(new_area_id, "Spawn Point")
+  local current_spawn = Net.get_object_by_name(area_id, "Spawn Point")
   mission.spawn_positions = { current_spawn }
   local spawns_loaded = {}
 
@@ -656,7 +637,7 @@ function MissionInstance:new(base_area_id, new_area_id)
   end)
 
   add_event_listener("player_area_transfer", function(event)
-    if Net.get_player_area(event.player_id) ~= new_area_id then
+    if Net.get_player_area(event.player_id) ~= area_id then
       mission:handle_player_disconnect(event.player_id)
       return
     end
@@ -719,15 +700,14 @@ function MissionInstance:destroy()
     Net.remove_bot(id)
   end
 
-  Net.remove_area(self.area_id)
-  self.resolve_disposal(nil)
-
   for i = #self.net_listeners, 1, -1 do
     local name, callback = table.unpack(self.net_listeners[i])
     self.net_listeners[i] = nil
 
     Net:remove_listener(name, callback)
   end
+
+  self.resolve_disposal(nil)
 
   return self.disposal_promise
 end

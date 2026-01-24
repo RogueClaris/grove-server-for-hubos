@@ -1,4 +1,4 @@
-local LibPlugin = require('scripts/custom-scripts/liberations')
+local LiberationDoors = require('scripts/custom-scripts/liberation_doors')
 local player_data = require('scripts/custom-scripts/player_data')
 
 ---@param scripts ScriptNodes
@@ -12,6 +12,6 @@ return function(scripts)
   end)
 
   scripts:implement_node("Refight Liberation", function(context, node_object)
-    LibPlugin.start_game_for_player(context.player_id, node_object.custom_properties["Liberation Map"])
+    LiberationDoors.start_game_for_player(scripts, context.player_id, node_object.custom_properties["Liberation Map"])
   end)
 end
