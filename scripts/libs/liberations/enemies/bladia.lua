@@ -25,22 +25,23 @@ local mob_health = { 200, 230, 230, 300, 340, 400 }
 local mob_damage = { 50, 80, 120, 160, 200, 250 }
 local mob_ranks = { "V1", "V2", "V3", "V4", "V5", "SP" }
 
+---@param options Liberation.EnemyOptions
 ---@return Liberation.Enemies.Bladia
-function Bladia:new(instance, position, direction, rank)
-  local rank_index = rank_to_index[rank]
+function Bladia:new(options)
+  local rank_index = rank_to_index[options.rank]
 
   local bladia = {
-    instance = instance,
+    instance = options.instance,
     id = nil,
     health = mob_health[rank_index],
     max_health = mob_health[rank_index],
     damage = mob_damage[rank_index],
     rank = mob_ranks[rank_index],
-    x = math.floor(position.x),
-    y = math.floor(position.y),
-    z = math.floor(position.z),
-    encounter = "/server/assets/liberations/encounters/Bladia.zip",
-    selection = EnemySelection:new(instance),
+    x = math.floor(options.position.x),
+    y = math.floor(options.position.y),
+    z = math.floor(options.position.z),
+    encounter = options.encounter,
+    selection = EnemySelection:new(options.instance),
     is_engaged = false
   }
 
@@ -52,7 +53,7 @@ function Bladia:new(instance, position, direction, rank)
   }
 
   bladia.selection:set_shape(shape, 0, -1)
-  bladia:spawn(direction)
+  bladia:spawn(options.direction)
 
   return bladia
 end

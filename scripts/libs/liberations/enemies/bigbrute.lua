@@ -26,22 +26,23 @@ local rank_to_index = {
 local mob_health = { 120, 180, 220, 250, 300, 360 }
 local mob_damage = { 30, 60, 90, 130, 170, 200 }
 
-function BigBrute:new(instance, position, direction, rank)
-  local rank_index = rank_to_index[rank]
+---@param options Liberation.EnemyOptions
+function BigBrute:new(options)
+  local rank_index = rank_to_index[options.rank]
 
   local bigbrute = {
-    instance = instance,
+    instance = options.instance,
     id = nil,
     battle_name = "BigBrute",
     health = mob_health[rank_index],
     max_health = mob_health[rank_index],
     damage = mob_damage[rank_index],
     rank = "V1",
-    x = math.floor(position.x),
-    y = math.floor(position.y),
-    z = math.floor(position.z),
-    selection = EnemySelection:new(instance),
-    encounter = "/server/mods/BigBrute",
+    x = math.floor(options.position.x),
+    y = math.floor(options.position.y),
+    z = math.floor(options.position.z),
+    selection = EnemySelection:new(options.instance),
+    encounter = options.encounter,
     is_engaged = false
   }
 
@@ -55,7 +56,7 @@ function BigBrute:new(instance, position, direction, rank)
   }
 
   bigbrute.selection:set_shape(shape, 0, -2)
-  bigbrute:spawn(direction)
+  bigbrute:spawn(options.direction)
 
   return bigbrute
 end

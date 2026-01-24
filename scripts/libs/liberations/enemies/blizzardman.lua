@@ -28,26 +28,27 @@ local mob_health = { 400, 1200, 1600, 2000 }
 local mob_damage = { 40, 80, 120, 160 }
 local mob_ranks = { 0, 1, 2, 3 }
 
+---@param options Liberation.EnemyOptions
 ---@return Liberation.Enemies.BlizzardMan
-function BlizzardMan:new(instance, position, direction, rank)
-  local rank_index = rank_to_index[rank]
+function BlizzardMan:new(options)
+  local rank_index = rank_to_index[options.rank]
 
   local blizzardman = {
-    instance = instance,
+    instance = options.instance,
     id = nil,
     health = mob_health[rank_index],
     max_health = mob_health[rank_index],
     damage = mob_damage[rank_index],
     rank = mob_ranks[rank_index],
-    x = math.floor(position.x),
-    y = math.floor(position.y),
-    z = math.floor(position.z),
+    x = math.floor(options.position.x),
+    y = math.floor(options.position.y),
+    z = math.floor(options.position.z),
     mug = {
       texture_path = "/server/assets/liberations/mugs/blizzardman.png",
       animation_path = "/server/assets/liberations/mugs/blizzardman.animation",
     },
-    encounter = "/server/assets/liberations/encounters/BigBrute.zip",
-    selection = EnemySelection:new(instance),
+    encounter = options.encounter,
+    selection = EnemySelection:new(options.instance),
     is_engaged = false
   }
 
@@ -62,7 +63,7 @@ function BlizzardMan:new(instance, position, direction, rank)
   }
 
   blizzardman.selection:set_shape(shape, 0, -2)
-  blizzardman:spawn(direction)
+  blizzardman:spawn(options.direction)
 
   return blizzardman
 end

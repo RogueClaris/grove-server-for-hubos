@@ -25,27 +25,28 @@ local mob_health = { 600, 1000, 1200, 1500 }
 local mob_damage = { 60, 90, 120, 200 }
 local mob_ranks = { "V1", "Alpha", "Beta", "V1" }
 
+---@param options Liberation.EnemyOptions
 ---@return Liberation.Enemies.ShadeMan
-function ShadeMan:new(instance, position, direction, rank)
-  local rank_index = rank_to_index[rank]
+function ShadeMan:new(options)
+  local rank_index = rank_to_index[options.rank]
 
   local shademan = {
-    instance = instance,
+    instance = options.instance,
     id = nil,
     health = mob_health[rank_index],
     max_health = mob_health[rank_index],
     damage = mob_damage[rank_index],
     rank = mob_ranks[rank_index],
-    x = math.floor(position.x),
-    y = math.floor(position.y),
-    z = math.floor(position.z),
-    direction = direction,
+    x = math.floor(options.position.x),
+    y = math.floor(options.position.y),
+    z = math.floor(options.position.z),
+    direction = options.direction,
     mug = {
       texture_path = "/server/assets/liberations/mugs/shademan.png",
       animation_path = "/server/assets/liberations/mugs/shademan.animation",
     },
-    encounter = "/server/assets/liberations/encounters/Shademan.zip",
-    selection = EnemySelection:new(instance),
+    encounter = options.encounter,
+    selection = EnemySelection:new(options.instance),
     is_engaged = false
   }
 
@@ -57,7 +58,7 @@ function ShadeMan:new(instance, position, direction, rank)
   }
 
   shademan.selection:set_shape(shape, 0, -1)
-  shademan:spawn(direction)
+  shademan:spawn(options.direction)
 
   return shademan
 end

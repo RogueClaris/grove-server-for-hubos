@@ -13,7 +13,7 @@
 ---@field z number should be floored
 ---@field mug Net.TextureAnimationPair?
 ---@field encounter string
----@field new fun(self: Liberation.Enemy, mission: Liberation.MissionInstance, position: Net.Position): Liberation.Enemy
+---@field new fun(self: Liberation.Enemy, options: Liberation.EnemyOptions): Liberation.Enemy
 ---@field take_turn fun(self: Liberation.Enemy): Net.Promise
 ---@field get_death_message fun(self: Liberation.Enemy): string
 ---@field banter fun(self: Liberation.Enemy, player_id: Net.ActorId): Net.Promise
@@ -33,10 +33,33 @@ local name_to_enemy = {
   Bladia = Bladia
 }
 
+---@class Liberation.EnemyOptions
+---@field instance Liberation.MissionInstance
+---@field name string
+---@field position Net.Position
+---@field direction string
+---@field rank string
+---@field encounter string
+
+---@param instance Liberation.MissionInstance
+---@param panel Liberation.PanelObject
+function Enemy.options_from(instance, panel)
+  ---@type Liberation.EnemyOptions
+  return {
+    instance = instance,
+    name = panel.custom_properties.Boss or panel.custom_properties.Spawns,
+    position = { x = panel.x, y = panel.y, z = panel.z },
+    direction = panel.custom_properties.Direction:upper(),
+    rank = panel.custom_properties.Rank or "V1",
+    encounter = panel.custom_properties.Encounter or instance.default_encounter,
+  }
+end
+
+---@param options Liberation.EnemyOptions
 ---@return Liberation.Enemy
-function Enemy.from(instance, position, direction, name, rank)
-  local enemy = name_to_enemy[name]:new(instance, position, direction, rank or "V1")
-  enemy.name = enemy.name or name
+function Enemy.from(options)
+  local enemy = name_to_enemy[options.name]:new(options)
+  enemy.name = enemy.name or options.name
 
   Net.set_bot_name(enemy.id, enemy.name .. ": " .. enemy.health)
 

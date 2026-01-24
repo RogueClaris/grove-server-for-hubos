@@ -63,6 +63,7 @@
   <object id="10" type="Dark Hole" gid="51" x="128" y="608" width="50" height="30">
    <properties>
     <property name="Direction" value="Down Right"/>
+    <property name="Encounter" value="/server/mods/BigBrute"/>
     <property name="Spawns" value="BigBrute"/>
    </properties>
   </object>
@@ -106,6 +107,7 @@
   <object id="46" type="Dark Hole" gid="51" x="352" y="608" width="50" height="30">
    <properties>
     <property name="Direction" value="Down Right"/>
+    <property name="Encounter" value="/server/mods/BigBrute"/>
     <property name="Spawns" value="BigBrute"/>
    </properties>
   </object>
@@ -202,6 +204,7 @@
   <object id="101" type="Dark Hole" gid="51" x="288" y="288" width="50" height="30">
    <properties>
     <property name="Direction" value="Down Left"/>
+    <property name="Encounter" value="/server/mods/BigBrute"/>
     <property name="Spawns" value="BigBrute"/>
    </properties>
   </object>

@@ -398,11 +398,7 @@ local function take_enemy_turn(self)
       Async.await(Async.sleep(slide_time))
 
       -- spawn a new enemy
-      local name = dark_hole.custom_properties.Spawns
-      local direction = dark_hole.custom_properties.Direction
-      local rank = dark_hole.custom_properties.Rank
-
-      dark_hole.enemy = Enemy.from(self, dark_hole, direction, name, rank)
+      dark_hole.enemy = Enemy.from(Enemy.options_from(self, dark_hole))
       self.enemies[#self.enemies + 1] = dark_hole.enemy
 
       -- Let people admire the enemy
@@ -579,34 +575,27 @@ function MissionInstance:new(area_id)
       -- create panel
       local panel = mission:create_panel(object)
 
-      -- spawning bosses
       if object.custom_properties.Boss then
-        local name = object.custom_properties.Boss
-        local direction = object.custom_properties.Direction:upper()
-        local rank = object.custom_properties.Rank
-        local enemy = Enemy.from(mission, object, direction, name, rank)
+        -- spawning bosses
+        local enemy_options = Enemy.options_from(mission, panel)
+        local enemy = Enemy.from(enemy_options)
         enemy.is_boss = true
 
-        self.boss = enemy
+        mission.boss = enemy
         table.insert(mission.enemies, 1, enemy) -- make the boss the first enemy in the list
-      end
+      elseif object.custom_properties.Spawns then
+        -- spawning enemies
+        local enemy_options = Enemy.options_from(mission, panel)
 
-      -- spawning enemies
-      if object.custom_properties.Spawns then
-        local name = object.custom_properties.Spawns
-        local direction = object.custom_properties.Direction:upper()
-        local rank = object.custom_properties.Rank
-        local position = {
-          x = object.x,
-          y = object.y,
-          z = object.z
-        }
+        -- we're not allowed to block the dark hole with an enemy
+        enemy_options.position = EnemyHelpers.offset_position_with_direction(
+          enemy_options.position,
+          enemy_options.direction
+        )
 
-        position = EnemyHelpers.offset_position_with_direction(position, direction)
+        local enemy = Enemy.from(enemy_options)
 
-        local enemy = Enemy.from(mission, position, direction, name, rank)
         panel.enemy = enemy
-
         table.insert(mission.enemies, enemy)
       end
     end
