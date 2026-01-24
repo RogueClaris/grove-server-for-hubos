@@ -1,5 +1,5 @@
 local player_data = require('scripts/custom-scripts/player_data')
-local Instance = require("scripts/libs/liberations/instance")
+local Mission = require("scripts/libs/liberations/mission")
 local Ability = require("scripts/libs/liberations/ability")
 local Parties = require("scripts/libs/parties")
 
@@ -9,7 +9,7 @@ local waiting_area_map = {}
 local gate_to_area_map = {}
 
 local function transfer_players_to_new_instance(base_area, player_ids)
-  local instance = Instance:new(base_area, "test")
+  local mission = Mission:new(base_area, "test")
 
   for _, player_id in ipairs(player_ids) do
     -- resolve ability
@@ -23,10 +23,10 @@ local function transfer_players_to_new_instance(base_area, player_ids)
     end
 
     -- transfer player
-    instance:transfer_player(player_id, ability)
+    mission:transfer_player(player_id, ability)
   end
 
-  instance.events:on("money", function(event)
+  mission.events:on("money", function(event)
     player_data.update_player_money(event.player_id, event.money)
   end)
 end
