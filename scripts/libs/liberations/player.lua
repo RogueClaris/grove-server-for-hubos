@@ -3,7 +3,7 @@ local Loot = require("scripts/libs/liberations/loot")
 local EnemyHelpers = require("scripts/libs/liberations/enemy_helpers")
 local ParalysisEffect = require("scripts/libs/liberations/effects/paralysis_effect")
 local RecoverEffect = require("scripts/libs/liberations/effects/recover_effect")
-local PanelTypes = require("scripts/libs/liberations/panel_types")
+local PanelType = require("scripts/libs/liberations/panel_type")
 local Emotes = require("scripts/libs/emotes")
 
 ---@class Liberation.Player
@@ -201,7 +201,7 @@ function Player:resolve_terrain()
   local function has_dark_panel(x, y, z)
     local panel = self.instance:get_panel_at(x, y, z)
 
-    return panel and PanelTypes.TERRAIN[panel.type]
+    return panel and PanelType.TERRAIN[panel.type]
   end
 
   local x, y, z = self:position_multi()

@@ -1,6 +1,6 @@
 local EnemySelection = require("scripts/libs/liberations/selections/enemy_selection")
 local EnemyHelpers = require("scripts/libs/liberations/enemy_helpers")
-local PanelTypes = require("scripts/libs/liberations/panel_types")
+local PanelType = require("scripts/libs/liberations/panel_type")
 local Direction = require("scripts/libs/direction")
 
 ---@class Liberation.Enemies.Bladia: Liberation.Enemy
@@ -171,7 +171,7 @@ function Bladia:take_turn()
       local y = math.floor(targety) + 1
       local z = math.floor(player_z) + 1
 
-      local dark_gids = self.instance.panel_gid_map[PanelTypes.DARK]
+      local dark_gids = self.instance.panel_gid_map[PanelType.DARK]
       local gid = dark_gids[math.random(#dark_gids)]
 
       local new_panel = {

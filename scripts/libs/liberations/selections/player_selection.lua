@@ -1,6 +1,6 @@
 local Selection = require("scripts/libs/liberations/selections/selection")
 local Direction = require("scripts/libs/direction")
-local PanelTypes = require("scripts/libs/liberations/panel_types")
+local PanelType = require("scripts/libs/liberations/panel_type")
 
 local TEXTURE_PATH = "/server/assets/liberations/bots/selection.png"
 local ANIMATION_PATH = "/server/assets/liberations/bots/selection.animation"
@@ -51,8 +51,8 @@ function PlayerSelection:new(instance, player_id)
     end
 
     return (
-      panel.type == PanelTypes.DARK or
-      panel.type == PanelTypes.ITEM
+      panel.type == PanelType.DARK or
+      panel.type == PanelType.ITEM
     )
   end
 

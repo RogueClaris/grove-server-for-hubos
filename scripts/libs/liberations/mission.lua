@@ -2,7 +2,7 @@ local Player = require("scripts/libs/liberations/player")
 local Enemy = require("scripts/libs/liberations/enemy")
 local EnemyHelpers = require("scripts/libs/liberations/enemy_helpers")
 local Loot = require("scripts/libs/liberations/loot")
-local PanelTypes = require("scripts/libs/liberations/panel_types")
+local PanelType = require("scripts/libs/liberations/panel_type")
 local TargetPhase = require("scripts/libs/liberations/target_phase")
 local Preloader = require("scripts/libs/liberations/preloader")
 
@@ -115,10 +115,10 @@ local function convert_indestructible_panels(self)
 
   -- convert panels
   for _, panel in ipairs(self.indestructible_panels) do
-    panel.type = PanelTypes.DARK
+    panel.type = PanelType.DARK
 
     -- update visual
-    local dark_gids = self.panel_gid_map[PanelTypes.DARK]
+    local dark_gids = self.panel_gid_map[PanelType.DARK]
 
     panel.data.gid = dark_gids[math.random(#dark_gids)]
     Net.set_object_data(self.area_id, panel.id, panel.data)
@@ -150,7 +150,7 @@ local function liberate_panel(self, player)
     local selection = player.selection
     local panel = selection.root_panel
 
-    if panel.type == PanelTypes.BONUS then
+    if panel.type == PanelType.BONUS then
       if panel.custom_properties["Message"] ~= nil then
         Async.await(player:message_with_mug(panel.custom_properties["Message"]))
       else
@@ -167,7 +167,7 @@ local function liberate_panel(self, player)
     else
       if panel.custom_properties["Message"] ~= nil then
         Async.await(player:message_with_mug(panel.custom_properties["Message"]))
-      elseif panel.type == PanelTypes.DARK_HOLE then
+      elseif panel.type == PanelType.DARK_HOLE then
         Async.await(player:message_with_mug("A Dark Hole! Begin liberation!"))
       else
         Async.await(player:message_with_mug("Let's do it! Liberate panels!"))
@@ -237,7 +237,7 @@ local function liberate_panel(self, player)
         return
       end
 
-      if panel.type == PanelTypes.DARK_HOLE then
+      if panel.type == PanelType.DARK_HOLE then
         selection:set_shape(DARK_HOLE_SHAPE, 0, -1)
       end
 
@@ -260,7 +260,7 @@ local function liberate_panel(self, player)
       -- destroy enemy
       local destroyed_enemy = Async.await(Enemy.destroy(self, enemy or panel.enemy))
 
-      if destroyed_enemy and panel.type == PanelTypes.DARK_HOLE and #self.dark_holes == 0 then
+      if destroyed_enemy and panel.type == PanelType.DARK_HOLE and #self.dark_holes == 0 then
         convert_indestructible_panels(self)
       end
 
@@ -376,7 +376,7 @@ local function take_enemy_turn(self)
 
         local panel = self:get_panel_at(x, y, z)
 
-        if panel and PanelTypes.ENEMY_WALKABLE[panel.type] and not self:get_enemy_at(x, y, z) then
+        if panel and PanelType.ENEMY_WALKABLE[panel.type] and not self:get_enemy_at(x, y, z) then
           neighbors[#neighbors + 1] = panel
         end
       end
@@ -555,7 +555,7 @@ function MissionInstance:new(area_id)
       mission.points_of_interest[#mission.points_of_interest + 1] = object
       -- delete to reduce map size
       Net.remove_object(mission.area_id, object_id)
-    elseif PanelTypes.ALL[object.type] then
+    elseif PanelType.ALL[object.type] then
       -- track gid
       local type_map = mission.panel_gid_map[object.type]
 
@@ -792,7 +792,7 @@ function MissionInstance:handle_tile_interaction(player_id, x, y, z, button)
 
   if
       not panel or
-      (panel_already_selected or not PanelTypes.LIBERATABLE[panel.type]) or
+      (panel_already_selected or not PanelType.LIBERATABLE[panel.type]) or
       not is_adjacent(player_position, { x = x, y = y, z = z })
   then
     -- not interactable
@@ -817,7 +817,7 @@ function MissionInstance:handle_tile_interaction(player_id, x, y, z, button)
     ability.question and                                 -- no question = passive ability
     not self:get_enemy_at(panel.x, panel.y, panel.z) and -- cant have an enemy standing on this tile
     self.order_points >= ability.cost and
-    PanelTypes.ABILITY_ACTIONABLE[panel.type]
+    PanelType.ABILITY_ACTIONABLE[panel.type]
   )
 
   player.selection:select_panel(panel)
@@ -949,7 +949,7 @@ function MissionInstance:remove_panel(panel)
 
   row[x] = nil
 
-  if panel.type == PanelTypes.DARK_HOLE then
+  if panel.type == PanelType.DARK_HOLE then
     for i, dark_hole in ipairs(self.dark_holes) do
       if panel == dark_hole then
         table.remove(self.dark_holes, i)
@@ -977,7 +977,7 @@ end
 function MissionInstance:create_panel(object)
   local new_panel = object --[[@as Liberation.PanelObject]]
 
-  if PanelTypes.OPTIONAL_COLLISION[object.type] then
+  if PanelType.OPTIONAL_COLLISION[object.type] then
     -- we can disable the collision on this panel, so we need to generate one for when it's enabled
     self.collision_template.x = object.x
     self.collision_template.y = object.y
@@ -998,7 +998,7 @@ function MissionInstance:create_panel(object)
   local z = math.floor(object.z) + 1
   self.panels[z][y][x] = new_panel
 
-  if object.type == PanelTypes.ITEM then
+  if object.type == PanelType.ITEM then
     --if it has a set drop, try to apply it.
     if object.custom_properties["Specific Loot"] ~= nil then
       local check_loot = object.custom_properties["Specific Loot"]
@@ -1015,13 +1015,13 @@ function MissionInstance:create_panel(object)
       --otherwise, give it random loot from the basic pool.
       new_panel.loot = Loot.DEFAULT_POOL[math.random(#Loot.DEFAULT_POOL)]
     end
-  elseif object.type == PanelTypes.DARK_HOLE then
+  elseif object.type == PanelType.DARK_HOLE then
     -- track dark holes for converting indestructible panels
     table.insert(self.dark_holes, new_panel)
-  elseif object.type == PanelTypes.INDESTRUCTIBLE then
+  elseif object.type == PanelType.INDESTRUCTIBLE then
     -- track indestructible panels for conversion
     table.insert(self.indestructible_panels, new_panel)
-  elseif object.type == PanelTypes.GATE then
+  elseif object.type == PanelType.GATE then
     table.insert(self.gate_panels, new_panel)
   end
 
