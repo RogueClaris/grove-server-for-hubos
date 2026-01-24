@@ -38,6 +38,42 @@ local function transfer_players_to_new_instance(scripts, base_area, player_ids)
     player_data.update_player_money(event.player_id, event.money)
   end)
 
+  mission.events:on("player_kicked", function(event)
+    local respawn_area = Net.get_area_custom_property(base_area, "Respawn Area")
+
+    local spawn = nil
+
+    if respawn_area ~= nil then
+      spawn = Net.get_object_by_name(respawn_area, "Liberation Respawn")
+    else
+      respawn_area = "default"
+      spawn = Net.get_spawn_position(respawn_area)
+    end
+
+    local player_id = event.player_id
+
+    Net.transfer_player(player_id, respawn_area, true, spawn.x, spawn.y, spawn.z)
+
+    if event.success then
+      local gate_to_remove = nil
+
+      for _, value in ipairs(Net.list_objects(respawn_area)) do
+        local prospective_gate = Net.get_object_by_id(respawn_area, value)
+
+        if prospective_gate.custom_properties["Liberation Map Name"] == base_area then
+          gate_to_remove = prospective_gate
+          break
+        end
+      end
+
+      if gate_to_remove ~= nil then
+        player_data.hide_target_from_player(player_id, respawn_area, gate_to_remove.id, "OBJECT", true)
+      end
+    end
+
+    player_data.update_player_current_health(player_id, player_data.get_player_max_health(player_id))
+  end)
+
   -- instance cleanup
   local function cleanup_tick()
     if #mission:get_players() > 0 or mission:destroying() then

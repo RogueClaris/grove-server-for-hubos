@@ -21,11 +21,6 @@ local function is_adjacent(position_a, position_b)
   return x_diff + y_diff == 1
 end
 
-local function boot_player(player, is_victory, map_name)
-  player:unlock_input()
-  player:boot_to_lobby(is_victory, map_name)
-end
-
 ---@param self Liberation.MissionInstance
 local function liberate(self)
   self.liberated = true
@@ -78,7 +73,11 @@ local function liberate(self)
 
   for _, player in ipairs(self.players) do
     player:message(victory_message).and_then(function()
-      boot_player(player)
+      self:handle_player_disconnect(player.id)
+      self.events:emit("player_kicked", {
+        player_id = player.id,
+        success = true
+      })
     end)
   end
 end
@@ -307,13 +306,16 @@ local function take_enemy_turn(self)
 
           Async.await(Async.sleep(slide_time))
 
-
           Async.await(player:message_with_mug("Is this the power of " .. self.boss.name .. "...?"))
 
-          boot_player(player, false, self.area_name)
-
           Net.unlock_player_camera(player.id)
-          player:unlock_input()
+
+          self:handle_player_disconnect(player.id)
+
+          self.events:emit("player_kicked", {
+            player_id = player.id,
+            success = false
+          })
         end)
       end
 

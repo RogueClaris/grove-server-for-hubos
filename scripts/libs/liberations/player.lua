@@ -529,6 +529,8 @@ function Player:handle_disconnect()
   if self.order_points_sprite_id then
     Net.remove_sprite(self.order_points_sprite_id)
   end
+
+  self:unlock_input()
 end
 
 -- export
