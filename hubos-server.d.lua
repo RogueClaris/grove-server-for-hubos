@@ -4,6 +4,7 @@
 
 --- Similar to print, but for errors.
 function printerr(...) end
+
 ---@class Net.ActorId
 
 ---@class Net.SpriteId
@@ -14,6 +15,7 @@ function printerr(...) end
 Net.EventEmitter = {}
 
 ---@class Net.Promise<T>: { and_then: fun(callback: fun(value: T)) }
+---@class Net.Promise: { and_then: fun(callback: fun()) }
 
 ---@class Net.Position
 ---@field x number
@@ -74,6 +76,7 @@ Net.EventEmitter = {}
 ---@field texture_path? string
 ---@field animation_path? string
 ---@field animation? string
+---@field loop_animation? string
 ---@field x? number
 ---@field y? number
 ---@field z? number
@@ -149,6 +152,7 @@ Net.EventEmitter = {}
 ---@field texture_path string
 ---@field animation_path? string
 ---@field animation? string Animation state, this state will be looped.
+---@field loop_animation? boolean
 
 ---@class Net.TextSpriteOptions
 ---@field player_id? Net.ActorId Restricts visibility to this specific player if set.
@@ -231,14 +235,14 @@ Net = {}
 function Net.EventEmitter.new() end
 
 --- Parameters after `event_name` are custom and passed to event listeners.
---- 
+---
 --- ```lua
 --- local emitter = Net.EventEmitter.new()
---- 
+---
 --- emitter:on("example_event", function(a, b)
 ---   print(a .. b) -- will output `cd`
 --- end)
---- 
+---
 --- emitter:emit("example_event", "c", "d")
 --- ```
 ---@param event_name string
@@ -255,14 +259,14 @@ function Net.EventEmitter:on(event_name, callback) end
 function Net.EventEmitter:once(event_name, callback) end
 
 --- Calls the provided function when any event is emitted. Useful for debugging.
---- 
+---
 --- ```lua
 --- local emitter = Net.EventEmitter.new()
---- 
+---
 --- emitter:on_any(function(...)
 ---   print(...) -- will output `example_event c d`
 --- end)
---- 
+---
 --- emitter:emit("example_event", "c", "d")
 --- ```
 ---@param callback fun(event_name: string, ...)
@@ -274,17 +278,17 @@ function Net.EventEmitter:on_any_once(callback) end
 
 --- Removes the listener to prevent future calls from the emitter.
 --- `callback` must be a reference to the same instance of the function.
---- 
+---
 --- ```lua
 --- local emitter = Net.EventEmitter.new()
---- 
+---
 --- local listener = function(a, b)
 ---   print(a .. b)
 --- end
---- 
+---
 --- emitter:on("example_event", listener)
 --- emitter:emit("example_event", "c", "d")  -- will output `c d` from the listener
---- 
+---
 --- emitter:remove_listener("example_event", listener)
 --- emitter:emit("example_event", "c", "d")  -- no output
 --- ```
@@ -294,17 +298,17 @@ function Net.EventEmitter:remove_listener(event_name, callback) end
 
 --- Removes the listener to prevent future calls from the emitter.
 --- `callback` must be a reference to the same instance of the function.
---- 
+---
 --- ```lua
 --- local emitter = Net.EventEmitter.new()
---- 
+---
 --- local listener = function(...)
 ---   print(...)
 --- end
---- 
+---
 --- emitter:on_any(listener)
 --- emitter:emit("example_event", "c", "d")  -- will output `example_name c d` from the listener
---- 
+---
 --- emitter:remove_on_any_listener(listener)
 --- emitter:emit("example_event", "c", "d")  -- no output
 --- ```
@@ -312,17 +316,17 @@ function Net.EventEmitter:remove_listener(event_name, callback) end
 function Net.EventEmitter:remove_on_any_listener(callback) end
 
 --- Returns an iterator that returns promises with the value set to `...` (Event custom parameters).
---- 
+---
 --- ```lua
 --- local emitter = Net.EventEmitter.new()
---- 
+---
 --- Async.create_scope(function()
 ---   -- Async.await can transform async iterators into iterators that return values directly
 ---   for a, b in Async.await(emitter:async_iter("example_event")) do
 ---     print(a .. b) -- will output "cd"
 ---   end
 --- end)
---- 
+---
 --- emitter:emit("example_event", "c", "d")
 --- emitter:destroy()
 --- ```
@@ -331,16 +335,16 @@ function Net.EventEmitter:remove_on_any_listener(callback) end
 function Net.EventEmitter:async_iter(event_name) end
 
 --- Returns an iterator that returns promises with the value set to `event_name, ...`.
---- 
+---
 --- ```lua
 --- local emitter = Net.EventEmitter.new()
---- 
+---
 --- Async.create_scope(function()
 ---   for event_name, a, b in Async.await(emitter:async_iter_all()) do
 ---     print(event_name .. " " .. a .. b) -- will output "example_event cd"
 ---   end
 --- end)
---- 
+---
 --- emitter:emit("example_event", "c", "d")
 --- emitter:destroy()
 --- ```
@@ -348,17 +352,17 @@ function Net.EventEmitter:async_iter(event_name) end
 function Net.EventEmitter:async_iter_all() end
 
 --- Allows async iterators to complete. Otherwise iterators will wait until the program ends.
---- 
+---
 --- ```lua
 --- local emitter = Net.EventEmitter.new()
---- 
+---
 --- Async.create_scope(function()
 ---   for _ in Async.await(emitter:async_iter("example_event")) do
 ---   end
---- 
+---
 ---   print("complete!") -- will only output "complete!" if emitter:destroy() is called
 --- end)
---- 
+---
 --- emitter:emit("example_event", "c", "d")
 --- emitter:destroy()
 --- ```
@@ -418,7 +422,7 @@ function Net.get_tile_width(area_id) end
 function Net.get_tile_height(area_id) end
 
 --- Returns the screen position using multi-values.
---- 
+---
 --- ```lua
 --- local x, y = Net.world_to_screen_multi(area_id, x, y)
 --- ```
@@ -430,7 +434,7 @@ function Net.get_tile_height(area_id) end
 function Net.world_to_screen_multi(area_id, x, y, z) end
 
 --- Returns the world position using multi-values.
---- 
+---
 --- ```lua
 --- local x, y = Net.screen_to_world_multi(area_id, x, y)
 --- ```
@@ -526,16 +530,16 @@ function Net.get_foreground_parallax(area_id) end
 function Net.set_foreground(area_id, texture_path, animation_path, vel_x, vel_y, parallax) end
 
 --- Returns [Net.Position](https://docs.hubos.dev/server/lua-api/misc#netposition)
---- 
+---
 --- Defaults to either the Home Warp or (0, 0, 0)
 ---@param area_id string
 ---@return Net.Position
 function Net.get_spawn_position(area_id) end
 
 --- Returns the spawn position using multi-values.
---- 
+---
 --- Defaults to either the Home Warp or (0, 0, 0)
---- 
+---
 --- ```lua
 --- local x, y, z = Net.get_spawn_position_multi(area_id)
 --- ```
@@ -551,7 +555,7 @@ function Net.get_spawn_position_multi(area_id) end
 function Net.set_spawn_position(area_id, x, y, z) end
 
 --- Returns a string representing the spawn direction.
---- 
+---
 --- Defaults the Home Warp's `Direction` custom property.
 ---@param area_id string
 ---@return string
@@ -574,7 +578,7 @@ function Net.list_tilesets(area_id) end
 function Net.get_tileset(area_id, tileset_path) end
 
 --- Returns [Net.TilesetData](https://docs.hubos.dev/server/lua-api/areas#nettilesetdata) or `nil`.
---- 
+---
 --- Note: The same `tile_gid` can return different values for different areas.
 ---@param area_id string
 ---@param tile_gid number
@@ -601,7 +605,7 @@ function Net.get_tile(area_id, x, y, z) end
 function Net.set_tile(area_id, x, y, z, tile_gid, flip_h, flip_v, rotate) end
 
 --- Marks the asset as a dependency for the area, forcing joining players to download the asset before being able to play.
---- 
+---
 --- Useful for avoiding lag spikes during gameplay with dynamically loaded large assets. (Playing sound effects)
 ---@param area_id string
 ---@param path string
@@ -630,7 +634,7 @@ function Net.get_object_by_id(area_id, object_id) end
 function Net.get_object_by_name(area_id, name) end
 
 --- - `object_options`: [Net.ObjectOptions](https://docs.hubos.dev/server/lua-api/objects#netobjectoptions)
---- 
+---
 --- Returns an `object_id`
 ---@param area_id string
 ---@param object_options Net.ObjectOptions
@@ -701,7 +705,7 @@ function Net.set_object_privacy(area_id, object_id, private) end
 function Net.move_object(area_id, object_id, x, y, layer) end
 
 --- - `object_data`: [Net.ObjectData](https://docs.hubos.dev/server/lua-api/objects#netobjectdata)
---- 
+---
 --- Allows for the type and shape of the object to be adjusted. Clients will be updated at the end of the tick.
 ---@param area_id string
 ---@param object_id number|string
@@ -709,7 +713,7 @@ function Net.move_object(area_id, object_id, x, y, layer) end
 function Net.set_object_data(area_id, object_id, object_data) end
 
 --- Returns true if the point is inside of the object.
---- 
+---
 --- Supports rectangle, ellipse, and polygon shape objects. Any other objects, such as tile objects, will always return false.
 ---@param area_id string
 ---@param object_id number|string
@@ -742,9 +746,9 @@ function Net.hide_hud(player_id) end
 function Net.show_hud(player_id) end
 
 --- - `message`: `string`
---- 
+---
 --- Displays a textbox with the message and mug.
---- 
+---
 --- See [textbox_response](https://docs.hubos.dev/server/lua-api/events#textbox_response) or the [async](https://docs.hubos.dev/server/lua-api/async#asyncmessage_playerplayer_id-message-mug_texture_path-mug_animation_path) version of this function for handling responses.
 ---@param player_id Net.ActorId
 ---@param message string
@@ -754,9 +758,9 @@ function Net.message_player(player_id, message, mug_texture_path, mug_animation_
 
 --- - `message`: `string`
 --- - `textbox_options`: [Net.TextboxOptions](https://docs.hubos.dev/server/lua-api/widgets#nettextboxoptions)
---- 
+---
 --- Displays a textbox with the message and mug.
---- 
+---
 --- See [textbox_response](https://docs.hubos.dev/server/lua-api/events#textbox_response) or the [async](https://docs.hubos.dev/server/lua-api/async#asyncmessage_playerplayer_id-message-textbox_options) version of this function for handling responses.
 ---@param player_id Net.ActorId
 ---@param message string
@@ -765,9 +769,9 @@ function Net.message_player(player_id, message, textbox_options) end
 
 --- - `message`: `string`
 --- - `close_delay`: `number` the duration to wait after the text finishes animating to automatically move on.
---- 
+---
 --- Displays a textbox with the message and mug.
---- 
+---
 --- See [textbox_response](https://docs.hubos.dev/server/lua-api/events#textbox_response) or the [async](https://docs.hubos.dev/server/lua-api/async#asyncmessage_player_autoplayer_id-message-close_delay-mug_texture_path-mug_animation_path) version of this function for handling responses.
 ---@param player_id Net.ActorId
 ---@param message string
@@ -779,9 +783,9 @@ function Net.message_player_auto(player_id, message, close_delay, mug_texture_pa
 --- - `message`: `string`
 --- - `close_delay`: `number` the duration to wait after the text finishes animating to automatically move on.
 --- - `textbox_options`: [Net.TextboxOptions](https://docs.hubos.dev/server/lua-api/widgets#nettextboxoptions)
---- 
+---
 --- Displays a textbox with the message and mug.
---- 
+---
 --- See [textbox_response](https://docs.hubos.dev/server/lua-api/events#textbox_response) or the [async](https://docs.hubos.dev/server/lua-api/async#asyncmessage_player_autoplayer_id-message-close_delay-textbox_options) version of this function for handling responses.
 ---@param player_id Net.ActorId
 ---@param message string
@@ -789,9 +793,9 @@ function Net.message_player_auto(player_id, message, close_delay, mug_texture_pa
 function Net.message_player_auto(player_id, message, textbox_options) end
 
 --- - `question`: `string`
---- 
+---
 --- Displays a textbox with a Yes / No input after the message.
---- 
+---
 --- See [textbox_response](https://docs.hubos.dev/server/lua-api/events#textbox_response) or the [async](https://docs.hubos.dev/server/lua-api/async#asyncquestion_playerplayer_id-question-mug_texture_path-mug_animation_path) version of this function for handling responses.
 ---@param player_id Net.ActorId
 ---@param question string
@@ -801,9 +805,9 @@ function Net.question_player(player_id, question, mug_texture_path, mug_animatio
 
 --- - `question`: `string`
 --- - `textbox_options`: [Net.TextboxOptions](https://docs.hubos.dev/server/lua-api/widgets#nettextboxoptions)
---- 
+---
 --- Displays a textbox with a Yes / No input after the message.
---- 
+---
 --- See [textbox_response](https://docs.hubos.dev/server/lua-api/events#textbox_response) or the [async](https://docs.hubos.dev/server/lua-api/async#asyncquestion_playerplayer_id-question-textbox_options) version of this function for handling responses.
 ---@param player_id Net.ActorId
 ---@param question string
@@ -813,9 +817,9 @@ function Net.question_player(player_id, question, textbox_options) end
 --- - `option_a`: `string`
 --- - `option_b`: `string`
 --- - `option_c`: `string`
---- 
+---
 --- Displays a textbox with selectable options.
---- 
+---
 --- See [textbox_response](https://docs.hubos.dev/server/lua-api/events#textbox_response) or the [async](https://docs.hubos.dev/server/lua-api/async#asyncquiz_playerplayer_id-option_a-option_b-option_c-mug_texture_path-mug_animation_path) version of this function for handling responses.
 ---@param player_id Net.ActorId
 ---@param option_a? string
@@ -829,9 +833,9 @@ function Net.quiz_player(player_id, option_a, option_b, option_c, mug_texture_pa
 --- - `option_b`: `string`
 --- - `option_c`: `string`
 --- - `textbox_options`: [Net.TextboxOptions](https://docs.hubos.dev/server/lua-api/widgets#nettextboxoptions)
---- 
+---
 --- Displays a textbox with selectable options.
---- 
+---
 --- See [textbox_response](https://docs.hubos.dev/server/lua-api/events#textbox_response) or the [async](https://docs.hubos.dev/server/lua-api/async#asyncquiz_playerplayer_id-option_a-option_b-option_c-textbox_options) version of this function for handling responses.
 ---@param player_id Net.ActorId
 ---@param option_a? string
@@ -841,7 +845,7 @@ function Net.quiz_player(player_id, option_a, option_b, option_c, mug_texture_pa
 function Net.quiz_player(player_id, option_a, option_b, option_c, textbox_options) end
 
 --- Displays a textbox that accepts text input.
---- 
+---
 --- See [textbox_response](https://docs.hubos.dev/server/lua-api/events#textbox_response) or the [async](https://docs.hubos.dev/server/lua-api/async#asyncprompt_playerplayer_id-character_limit-default_text) version of this function for handling responses.
 ---@param player_id Net.ActorId
 ---@param character_limit? number
@@ -850,7 +854,7 @@ function Net.prompt_player(player_id, character_limit, default_text) end
 
 --- - `color`: [Net.Color](https://docs.hubos.dev/server/lua-api/widgets#netcolor)
 --- - `posts`: [Net.BoardPost[]](https://docs.hubos.dev/server/lua-api/widgets#netboardpost)
---- 
+---
 --- Returns [Net.EventEmitter](https://docs.hubos.dev/server/lua-api/event-emitters), re-emits `post_selection`, `post_request`, and `board_close` server events.
 ---@param player_id Net.ActorId
 ---@param board_name string
@@ -883,7 +887,7 @@ function Net.close_board(player_id) end
 
 --- - `shop_items`: [Net.ShopItem[]](https://docs.hubos.dev/server/lua-api/widgets#netshopitem)
 ---   - If the `id` is unset, the `name` is used as the `id` instead.
---- 
+---
 --- Returns [Net.EventEmitter](https://docs.hubos.dev/server/lua-api/event-emitters), re-emits `shop_purchase`, `shop_description_request`, `shop_leave`, and `shop_close` server events.
 ---@param player_id Net.ActorId
 ---@param shop_items Net.ShopItem[]
@@ -910,7 +914,7 @@ function Net.prepend_shop_items(player_id, shop_items, item_id) end
 function Net.append_shop_items(player_id, shop_items, item_id) end
 
 --- - `shop_item`: [Net.ShopItem](https://docs.hubos.dev/server/lua-api/widgets#netshopitem)
---- 
+---
 --- Replaces the `shop_item` for the item matching the `id`.
 ---@param player_id Net.ActorId
 ---@param shop_item Net.ShopItem
@@ -922,14 +926,14 @@ function Net.update_shop_item(player_id, shop_item) end
 function Net.remove_shop_item(player_id, item_id) end
 
 --- - `sprite_options` [Net.SpriteOptions](https://docs.hubos.dev/server/lua-api/widgets#netspriteoptions)
---- 
+---
 --- Returns sprite_id
 ---@param sprite_options Net.SpriteOptions
 ---@return Net.SpriteId
 function Net.create_sprite(sprite_options) end
 
 --- - `text_sprite_options` [Net.TextSpriteOptions](https://docs.hubos.dev/server/lua-api/widgets#nettextspriteoptions)
---- 
+---
 --- Returns sprite_id
 ---@param text_sprite_options Net.TextSpriteOptions
 ---@return Net.SpriteId
@@ -943,24 +947,24 @@ function Net.animate_sprite(sprite_id, state_name, loop) end
 
 --- Deletes the the sprite.
 ---@param sprite_id Net.SpriteId
-function Net.delete_sprite(sprite_id) end
+function Net.remove_sprite(sprite_id) end
 
 --- - `color`: [Net.Color](https://docs.hubos.dev/server/lua-api/widgets#netcolor)
---- 
+---
 --- Sets the color of the marker used in the map menu to represent this player. Defaults to `{ r: 0, g: 0, b: 0, a: 0 }`
 ---@param player_id Net.ActorId
 ---@param color Net.Color
 function Net.set_player_map_color(player_id, color) end
 
 --- - `color`: [Net.Color](https://docs.hubos.dev/server/lua-api/widgets#netcolor)
---- 
+---
 --- Sets the color of the marker used in the map menu to represent this bot. Defaults to `{ r: 0, g: 0, b: 0, a: 0 }`
 ---@param bot_id Net.ActorId
 ---@param color Net.Color
 function Net.set_bot_map_color(bot_id, color) end
 
 --- Sends a link to the player to open in the browser. Permission will be asked before opening.
---- 
+---
 --- Supports `http://` and `https://` protocols.
 ---@param player_id Net.ActorId
 ---@param address string
@@ -979,9 +983,9 @@ function Net.refer_server(player_id, name, address) end
 function Net.refer_package(player_id, package_id, refer_options) end
 
 --- Gets permission from the player to permanently install a package on their client, allowing for the package to be used when disconnected and while on other servers.
---- 
+---
 --- If the player accepts, the package will be installed.
---- 
+---
 --- Currently unimplemented on the client.
 ---@param player_id Net.ActorId
 ---@param package_path string
@@ -1003,7 +1007,7 @@ function Net.is_player(player_id) end
 function Net.get_player_area(player_id) end
 
 --- Returns the IP address of the player as a string. Useful for creating connection whitelists/blacklists.
---- 
+---
 --- If you want to track data use [Net.get_player_secret()](https://docs.hubos.dev/server/lua-api/player-data#netget_player_secretplayer_id). Otherwise you'll have issues when multiple players live within the same house.
 ---@param player_id Net.ActorId
 ---@return string
@@ -1030,7 +1034,7 @@ function Net.get_player_direction(player_id) end
 function Net.get_player_position(player_id) end
 
 --- Returns the player's position using multi-values.
---- 
+---
 --- ```lua
 --- local x, y, z = Net.get_player_position_multi(bot_id)
 --- ```
@@ -1060,14 +1064,14 @@ function Net.set_player_avatar(player_id, texture_path, animation_path) end
 function Net.get_player_avatar_name(player_id) end
 
 --- Displays an emote above the player. `emote_id` is the name of an animation state in the emotes animation.
---- 
+---
 --- An invalid `emote_id` will hide an existing emote.
 ---@param player_id Net.ActorId
 ---@param emote_id string
 function Net.set_player_emote(player_id, emote_id) end
 
 --- - `emoter_id`: a `bot_id` or `player_id`
---- 
+---
 --- Displays an emote exclusively to this player.
 ---@param player_id Net.ActorId
 ---@param emoter_id Net.ActorId
@@ -1107,7 +1111,7 @@ function Net.include_actor_for_player(player_id, actor_id) end
 
 --- - `range_x`: number
 --- - `range_y`: number
---- 
+---
 --- Not implemented. Subject to change.
 ---@param player_id Net.ActorId
 ---@param range_x? number
@@ -1115,7 +1119,7 @@ function Net.include_actor_for_player(player_id, actor_id) end
 function Net.enable_camera_controls(player_id, range_x, range_y) end
 
 --- Snaps the camera to a specific position.
---- 
+---
 --- Locks the camera.
 ---@param player_id Net.ActorId
 ---@param x number
@@ -1125,7 +1129,7 @@ function Net.enable_camera_controls(player_id, range_x, range_y) end
 function Net.move_player_camera(player_id, x, y, z, holdTimeInSeconds) end
 
 --- Slides the camera to a specific position.
---- 
+---
 --- Locks the camera.
 ---@param player_id Net.ActorId
 ---@param x number
@@ -1179,9 +1183,9 @@ function Net.teleport_player(player_id, warp, x, y, z, direction) end
 
 --- - `path`: `string`
 ---   - Server asset path to a toml file.
---- 
+---
 --- Expecting structure:
---- 
+---
 --- ```toml
 --- [deck]
 ---@param player_id Net.ActorId
@@ -1200,9 +1204,9 @@ function Net.is_player_battling(player_id) end
 
 --- - `encounter_data`: anything that could be represented as JSON.
 ---   - Read as second param in encounter_init for the encounter package
---- 
+---
 --- Returns an event emitter and a battle id.
---- 
+---
 --- ```lua
 --- local emitter, battle_id = Net.initiate_encounter(player_id, "/server/mods/my-encounter")
 --- ```
@@ -1214,9 +1218,9 @@ function Net.initiate_encounter(player_id, package_path, encounter_data) end
 
 --- - `encounter_data`: anything that could be represented as JSON.
 ---   - Read as second param in encounter_init for the encounter package
---- 
+---
 --- Returns an event emitter and a battle id.
---- 
+---
 --- ```lua
 --- local emitter, battle_id = Net.initiate_pvp(player_a, player_b, "/server/mods/my-encounter")
 --- ```
@@ -1229,9 +1233,9 @@ function Net.initiate_pvp(player_1_id, player_2_id, package_path, encounter_data
 
 --- - `encounter_data`: anything that could be represented as JSON.
 ---   - Read as second param in encounter_init for the encounter package
---- 
+---
 --- Returns an event emitter and a battle id.
---- 
+---
 --- ```lua
 --- local emitter, battle_id = Net.initiate_netplay(player_ids, "/server/mods/my-encounter")
 --- ```
@@ -1242,10 +1246,10 @@ function Net.initiate_pvp(player_1_id, player_2_id, package_path, encounter_data
 function Net.initiate_netplay(player_ids, package_path, encounter_data) end
 
 --- Sends data to callbacks provided to [encounter:on_server_message()](https://docs.hubos.dev/client/lua-api/field-api/encounter#encounteron_server_messagefunctiondata) in encounter mods sent to the client.
---- 
+---
 --- ```lua
 --- local emitter, battle_id = Net.initiate_encounter(player_ids, "/server/mods/my-encounter")
---- 
+---
 --- emitter:on("battle_message", function(event)
 ---   -- read and respond to encounter:send_to_server() messages
 ---   print(event.data)
@@ -1282,7 +1286,7 @@ function Net.transfer_server(player_id, address, warp_out, data) end
 ---@param data? string
 function Net.request_authorization(player_id, address, data) end
 
---- 
+---
 ---@param player_id Net.ActorId
 ---@param reason string
 ---@param warp_out? boolean
@@ -1344,9 +1348,9 @@ function Net.get_player_money(player_id) end
 function Net.set_player_money(player_id, money) end
 
 --- - `item_definition`: [Net.ItemDefinition](https://docs.hubos.dev/server/lua-api/player-data#netitemdefinition)
---- 
+---
 --- Registers an item definition to be shared with the client when the player obtains this item for the first time.
---- 
+---
 --- The item's name should be at most 8 characters for best display.
 ---@param item_id string
 ---@param item_definition Net.ItemDefinition
@@ -1368,7 +1372,7 @@ function Net.get_item_description(item_id) end
 function Net.get_player_items(player_id) end
 
 --- Gives the player items. `count` will default to 1.
---- 
+---
 --- Accepts negative amount.
 ---@param player_id Net.ActorId
 ---@param item_id string
@@ -1395,9 +1399,9 @@ function Net.player_has_item(player_id, item_id) end
 function Net.get_player_card_count(player_id, package_id, code) end
 
 --- Adds cards to the player's pack.
---- 
+---
 --- Adding any card restricts usable cards to only given cards.
---- 
+---
 --- Accepts negative amount.
 ---@param player_id Net.ActorId
 ---@param package_id string
@@ -1413,9 +1417,9 @@ function Net.give_player_card(player_id, package_id, code, amount) end
 function Net.get_player_block_count(player_id, package_id, color) end
 
 --- Adds blocks to the player's pack.
---- 
+---
 --- Adding any block restricts usable blocks to only given blocks.
---- 
+---
 --- Accepts negative amount.
 ---@param player_id Net.ActorId
 ---@param package_id string
@@ -1430,7 +1434,7 @@ function Net.give_player_block(player_id, package_id, color, amount) end
 function Net.player_character_enabled(player_id, package_id) end
 
 --- Allows the player to use the playable character's abilities.
---- 
+---
 --- Enabling any playable character locks the player out of using abilities on non enabled playable characters.
 ---@param player_id Net.ActorId
 ---@param package_id string
@@ -1442,9 +1446,9 @@ function Net.enable_player_character(player_id, package_id) end
 function Net.list_bots(area_id) end
 
 --- - `bot_options`: [Net.BotOptions](https://docs.hubos.dev/server/lua-api/bots#netbotoptions)
---- 
+---
 --- Creates a bot.
---- 
+---
 --- Returns a `bot_id`
 ---@param bot_options Net.BotOptions
 ---@return Net.ActorId
@@ -1491,7 +1495,7 @@ function Net.set_bot_direction(bot_id, direction) end
 function Net.get_bot_position(bot_id) end
 
 --- Returns the bot's position using multi-values.
---- 
+---
 --- ```lua
 --- local x, y, z = Net.get_bot_position_multi(bot_id)
 --- ```
@@ -1527,7 +1531,7 @@ function Net.set_bot_solid(bot_id, solid) end
 function Net.set_bot_avatar(bot_id, texture_path, animation_path) end
 
 --- Displays an emote above the bot. `emote_id` is the name of an animation state in the emotes animation.
---- 
+---
 --- An invalid `emote_id` will hide an existing emote.
 ---@param bot_id Net.ActorId
 ---@param emote_id string
@@ -1540,19 +1544,19 @@ function Net.set_bot_emote(bot_id, emote_id) end
 function Net.animate_bot(bot_id, state_name, loop) end
 
 --- - `keyframes`: [Net.ActorKeyframe[]](https://docs.hubos.dev/server/lua-api/actor-property-animations#netactorkeyframe)
---- 
+---
 --- Interpolated animation for fancy effects.
---- 
+---
 --- If a keyframe at duration 0 does not exist for a property, the client will default to initial values or a blank value. Ex: X/Y/Z will use the actor's current position, and "Sound Effect" would use blank / play no sounds.
---- 
+---
 --- If the position is not animated, the player can control their actor while the animations play.
---- 
+---
 --- The final state of the animation will stick to the player, excluding sounds.
---- 
+---
 --- ```lua
 --- Net:on("tile_interaction", function(event)
 ---   local position = Net.get_player_position(event.player_id)
---- 
+---
 ---   -- a stretched jump. if the player disappears, you may need to add a new tile layer
 ---   local keyframes = {
 ---     {
@@ -1570,27 +1574,27 @@ function Net.animate_bot(bot_id, state_name, loop) end
 ---       duration = 0.5
 ---     }
 ---   }
---- 
+---
 ---   Net.animate_player_properties(event.player_id, keyframes)
 --- end)
 --- ```
---- 
+---
 --- If you need something to happen when the animation ends, you should use [Async.sleep()](https://docs.hubos.dev/server/lua-api/async#asyncsleepseconds)
 ---@param player_id Net.ActorId
 ---@param keyframes Net.ActorKeyframe[]
 function Net.animate_player_properties(player_id, keyframes) end
 
 --- - `keyframes`: [Net.ActorKeyframe[]](https://docs.hubos.dev/server/lua-api/actor-property-animations#netactorkeyframe)
---- 
+---
 --- Interpolated animation for fancy effects.
---- 
+---
 --- If a keyframe at duration 0 does not exist for a property, the client will default to initial values or a blank value. Ex: X/Y/Z will use the actor's current position, and "Sound Effect" would use blank / play no sounds.
---- 
+---
 --- The final state of the animation will stick to the bot, excluding sounds.
---- 
+---
 --- ```lua
 --- local position = Net.get_bot_position(bot_id)
---- 
+---
 --- -- a stretched jump. if the bot disappears, you may need to add a new tile layer
 --- local keyframes = {
 ---   {
@@ -1608,17 +1612,17 @@ function Net.animate_player_properties(player_id, keyframes) end
 ---     duration = 0.5
 ---   }
 --- }
---- 
+---
 --- Net.animate_bot_properties(bot_id, keyframes)
 --- ```
---- 
+---
 --- If you need something to happen when the animation ends, you should use [Async.sleep()](https://docs.hubos.dev/server/lua-api/async#asyncsleepseconds)
 ---@param bot_id Net.ActorId
 ---@param keyframes Net.ActorKeyframe[]
 function Net.animate_bot_properties(bot_id, keyframes) end
 
 --- - `content`: `string`
---- 
+---
 --- Modifies the asset in memory and updates any clients that have downloaded the previous version of this asset.
 ---@param server_path string
 ---@param content string
@@ -1639,7 +1643,7 @@ function Net.has_asset(server_path) end
 function Net.get_asset_type(server_path) end
 
 --- Returns the asset's size in bytes.
---- 
+---
 --- Note some assets are compressed when loaded by the server and may differ from the size on disk.
 ---@param server_path string
 ---@return number
@@ -1651,23 +1655,23 @@ function Net.get_asset_size(server_path) end
 function Net.get_asset_hash(server_path) end
 
 --- Allows for assets to be sent ahead of time to reduce apparent server hiccups.
---- 
+---
 --- Calling in response to `player_request` will cause cached files on the client to be ignored.
 ---@param player_id Net.ActorId
 ---@param path string
 function Net.provide_asset_for_player(player_id, path) end
 
 --- Similar to [Net.provide_asset_for_player](https://docs.hubos.dev/server/lua-api/assets#netprovide_asset_for_playerplayer_id-path), but also loads the package on the client.
---- 
+---
 --- This does not "install" packages on the client. Use [Net.offer_package()](https://docs.hubos.dev/server/lua-api/widgets#netoffer_packageplayer_id-package_path) or [Net.refer_package()](https://docs.hubos.dev/server/lua-api/widgets#netrefer_packageplayer_id-package_id-refer_options) for that use case.
---- 
+---
 --- Calling in response to `player_request` will cause cached files on the client to be ignored.
 ---@param player_id Net.ActorId
 ---@param path string
 function Net.provide_package_for_player(player_id, path) end
 
 --- Packets sent by functions in the callback will wait until all packets arrive, causing every packet to be processed on the same frame and appear synchronized.
---- 
+---
 --- ```lua
 --- Net.synchronize(function()
 ---   -- Net updates here will wait to be processed on clients until every update is received
@@ -1683,14 +1687,14 @@ function Net.request_update_synchronization() end
 function Net.request_disable_update_synchronization() end
 
 --- Returns a promise from a callback. A resolve function is passed to this callback, which calls functions passed to `and_then`
---- 
+---
 --- This promise supports late calls to `and_then`
---- 
+---
 --- ```lua
 --- local promise = Async.create_promise(function(resolve)
 ---   resolve(1, 2, 3)
 --- end)
---- 
+---
 --- promise.and_then(print) -- outputs "1 2 3"
 --- ```
 ---@generic T
@@ -1699,45 +1703,45 @@ function Net.request_disable_update_synchronization() end
 function Async.create_promise(callback) end
 
 --- Can only be used within an async scope or coroutine.
---- 
+---
 --- Waits for a promise by providing a function to and_then and yielding until the function is called.
---- 
+---
 --- Returns the value passed by and_then
 ---@param promise Net.Promise<any>
 ---@return any
 function Async.await(promise) end
 
 --- Returns an iterator from an async iterator (an iterator which returns promises).
---- 
+---
 --- Can only be used within a coroutine. Use `Async.promisify()` to let the server handle resuming the coroutine.
---- 
+---
 --- ```lua
 --- -- example with Async.await(async_iterator)
 --- local shop_items = {
 ---   { name = "a", price = 0 },
 ---   { name = "b", price = 0 }
 --- }
---- 
+---
 --- Net:on("player_join", Async.create_function(function(event)
 ---   local emitter = Net.open_shop(event.player_id, )
---- 
+---
 ---   -- events are automatically awaited
 ---   for event in Async.await(emitter:async_iter("shop_purchase")) do
 ---     print(event)
 ---   end
 --- end))
 --- ```
---- 
+---
 --- ```lua
 --- -- example without Async.await(async_iterator)
 --- local shop_items = {
 ---   { name = "a", price = 0 },
 ---   { name = "b", price = 0 }
 --- }
---- 
+---
 --- Net:on("player_join", Async.create_function(function(event)
 ---   local emitter = Net.open_shop(event.player_id)
---- 
+---
 ---   for promise in emitter:async_iter("shop_purchase") do
 ---     -- each event must be awaited individually
 ---     local event = Async.await(promise)
@@ -1750,20 +1754,20 @@ function Async.await(promise) end
 function Async.await(async_iterator) end
 
 --- Can only be used within an async scope or coroutine.
---- 
+---
 --- Takes a list of promises and returns a list of values.
 ---@param promises Net.Promise<any>[]
 function Async.await_all(promises) end
 
 --- Returns a promise, resolves to the return value.
---- 
+---
 --- ```lua
 --- local promise = Async.create_scope(function()
 ---   Async.await(Async.sleep(5))
---- 
+---
 ---   return "hi"
 --- end)
---- 
+---
 --- promise.and_then(print) -- says "hi" after 5s
 --- ```
 ---@generic T
@@ -1771,22 +1775,22 @@ function Async.await_all(promises) end
 ---@return Net.Promise<T>
 function Async.create_scope(callback) end
 
---- Similar to [Async.create_scope<T>()](https://docs.hubos.dev/server/lua-api/async#asynccreate_scopetfunction-t)
---- 
+--- Similar to [`Async.create_scope<T>()`](https://docs.hubos.dev/server/lua-api/async#asynccreate_scopetfunction-t)
+---
 --- Returns a promise.
 ---@param callback fun()
 ---@return Net.Promise<nil>
 function Async.create_scope(callback) end
 
 --- Returns a function that returns a promise, which resolves to the return value.
---- 
+---
 --- ```lua
 --- local say_after = Async.create_function(function(message, delay)
 ---   Async.await(Async.sleep(delay)))
---- 
+---
 ---   return message
 --- end)
---- 
+---
 --- say_after("hello", 5).and_then(print) -- says "hello" after 5s
 --- say_after("world", 10).and_then(print) -- says "world" after 10s
 --- ```
@@ -1795,15 +1799,15 @@ function Async.create_scope(callback) end
 ---@return fun(...): Net.Promise<T>
 function Async.create_function(callback) end
 
---- Similar to [Async.create_function<T>()](https://docs.hubos.dev/server/lua-api/async#asynccreate_functiontfunction-t)
---- 
+--- Similar to [`Async.create_function<T>()`](https://docs.hubos.dev/server/lua-api/async#asynccreate_functiontfunction-t)
+---
 --- Returns a promise.
 ---@param callback fun()
 ---@return Net.Promise<nil>
 function Async.create_function(callback) end
 
 --- - `request_options`: [Net.RequestOptions](https://docs.hubos.dev/server/lua-api/async#netrequestoptions)
---- 
+---
 --- Returns a promise that resolves to `{ status, headers, body }?`
 ---@param url string
 ---@param request_options? Net.RequestOptions
@@ -1811,9 +1815,9 @@ function Async.create_function(callback) end
 function Async.request(url, request_options) end
 
 --- - `request_options`: [Net.RequestOptions](https://docs.hubos.dev/server/lua-api/async#netrequestoptions)
---- 
+---
 --- Downloads a file straight to disk.
---- 
+---
 --- Returns a promise that resolves to `true` if the file was successfully saved, or `false` if the operation failed.
 ---@param path string
 ---@param url string
@@ -1822,7 +1826,7 @@ function Async.request(url, request_options) end
 function Async.download(path, url, request_options) end
 
 --- Returns a promise that resolves to a string representing the bytes stored in the file.
---- 
+---
 --- An empty string is returned if reading failed.
 ---@param path string
 ---@return Net.Promise<string>
@@ -1835,7 +1839,7 @@ function Async.read_file(path) end
 function Async.write_file(path, content) end
 
 --- Creates a directory at `path` if it does not already exist.
---- 
+---
 --- Returns a promise.
 ---@param path string
 ---@return Net.Promise<nil>
@@ -1865,7 +1869,7 @@ function Async.sleep(seconds) end
 function Async.message_player(player_id, message, mug_texture_path, mug_animation_path) end
 
 --- - `textbox_options`: [Net.TextboxOptions](https://docs.hubos.dev/server/lua-api/widgets#nettextboxoptions)
---- 
+---
 --- Returns a promise that resolves to `0` or `nil` for disconnected.
 ---@param player_id Net.ActorId
 ---@param message string
@@ -1883,7 +1887,7 @@ function Async.message_player(player_id, message, textbox_options) end
 function Async.message_player_auto(player_id, message, close_delay, mug_texture_path, mug_animation_path) end
 
 --- - `textbox_options`: [Net.TextboxOptions](https://docs.hubos.dev/server/lua-api/widgets#nettextboxoptions)
---- 
+---
 --- Returns a promise that resolves to `0` or `nil` for disconnected.
 ---@param player_id Net.ActorId
 ---@param message string
@@ -1901,7 +1905,7 @@ function Async.message_player_auto(player_id, message, close_delay, textbox_opti
 function Async.question_player(player_id, question, mug_texture_path, mug_animation_path) end
 
 --- - `textbox_options`: [Net.TextboxOptions](https://docs.hubos.dev/server/lua-api/widgets#nettextboxoptions)
---- 
+---
 --- Returns a promise that resolves to `1` for yes, `0` for no, and `nil` for disconnected.
 ---@param player_id Net.ActorId
 ---@param question string
@@ -1920,7 +1924,7 @@ function Async.question_player(player_id, question, textbox_options) end
 function Async.quiz_player(player_id, option_a, option_b, option_c, mug_texture_path, mug_animation_path) end
 
 --- - `textbox_options`: [Net.TextboxOptions](https://docs.hubos.dev/server/lua-api/widgets#nettextboxoptions)
---- 
+---
 --- Returns a promise that resolves to 0-2 for option a-c, or `nil` for disconnected.
 ---@param player_id Net.ActorId
 ---@param option_a? string
@@ -1939,7 +1943,7 @@ function Async.prompt_player(player_id, character_limit, default_text) end
 
 --- - `encounter_data`: anything that could be represented as JSON.
 ---   - Read as second param in encounter_init for the encounter package
---- 
+---
 --- Returns `Net.Promise<Net.BattleResults?>`
 ---@param player_id Net.ActorId
 ---@param package_path string
@@ -1949,7 +1953,7 @@ function Async.initiate_encounter(player_id, package_path, encounter_data) end
 
 --- - `encounter_data`: anything that could be represented as JSON.
 ---   - Read as second param in encounter_init for the encounter package
---- 
+---
 --- Returns `Net.Promise<Net.BattleResults?>[]`
 ---@param player_1_id Net.ActorId
 ---@param player_2_id Net.ActorId
@@ -1960,7 +1964,7 @@ function Async.initiate_pvp(player_1_id, player_2_id, package_path, encounter_da
 
 --- - `encounter_data`: anything that could be represented as JSON.
 ---   - Read as second param in encounter_init for the encounter package
---- 
+---
 --- Returns `Net.Promise<Net.BattleResults?>[]`
 ---@param player_ids Net.ActorId[]
 ---@param package_path? string
@@ -1969,16 +1973,16 @@ function Async.initiate_pvp(player_1_id, player_2_id, package_path, encounter_da
 function Async.initiate_netplay(player_ids, package_path, encounter_data) end
 
 --- Encodes characters for use in a URI or within file names.
---- 
+---
 --- Alphanumeric characters, spaces, dashes, and underscores will be unmodified. Periods will also remain, unless the period is the first character in the text.
---- 
+---
 --- Returns a string.
 ---@param text string
 ---@return string
 function Net.encode_uri_component(text) end
 
 --- Decodes a string encoded for use in a URI.
---- 
+---
 --- Returns a string.
 ---@param text string
 ---@return string
