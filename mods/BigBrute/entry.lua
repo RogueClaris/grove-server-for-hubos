@@ -4,6 +4,8 @@ local LiberationLib = require("dev.konstinople.library.liberation")
 function encounter_init(encounter, data)
     LiberationLib.init(encounter, data)
 
+    encounter:set_spectate_on_delete(true)
+
     local rank = Rank[data.rank] -- utilizing rank from the server
     encounter:create_spawner("BattleNetwork5.Character.BigBrute", rank)
         :spawn_at(5, 2)

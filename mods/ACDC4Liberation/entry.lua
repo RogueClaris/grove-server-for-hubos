@@ -7,6 +7,8 @@ function encounter_init(encounter, data)
 
     LiberationLib.init(encounter, data)
 
+    encounter:set_spectate_on_delete(true)
+
     if data.terrain == "advantage" then
         local choice = math.random(8)
         if choice == 1 then

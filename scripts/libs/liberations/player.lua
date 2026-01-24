@@ -213,26 +213,80 @@ end
 
 ---@return Net.Promise<Liberation.BattleResults>, Net.EventEmitter
 function Player:initiate_encounter(encounter_path, data)
-  local emitter = Net.initiate_encounter(self.id, encounter_path, data)
+  -- rally teammates
+  local x, y, z = self:position_multi()
+  x, y, z = math.floor(x), math.floor(y), math.floor(z)
+
+  local player_ids = { self.id }
+  local spectator_map = {}
+
+  for _, player in ipairs(self.instance.players) do
+    if player == self then
+      -- already included
+      goto continue
+    end
+
+    if not Net.is_player(player.id) or Net.is_player_busy(player.id) then
+      -- disconnected and pending removal, or just busy
+      goto continue
+    end
+
+    if player.completed_turn then
+      -- include as a spectator
+      data.spectators[#player_ids] = true
+      spectator_map[player.id] = true
+      player_ids[#player_ids + 1] = player.id
+      goto continue
+    end
+
+    if Net.is_player_input_locked(player.id) then
+      goto continue
+    end
+
+    local other_x, other_y, other_z = player:position_multi()
+
+    if x == math.floor(other_x) and y == math.floor(other_y) and z == math.floor(other_z) then
+      player_ids[#player_ids + 1] = player.id
+      -- spend a turn on co-op
+      player:complete_turn()
+    end
+
+    ::continue::
+  end
+
+  -- begin encounter
+  local emitter = Net.initiate_netplay(player_ids, encounter_path, data)
+
+  local expected_result_events = #player_ids
+  local result_events = 0
 
   local promise = Async.create_promise(function(resolve)
+    local final_result = { won = false, turns = 0 }
+
     emitter:on("battle_results", function(results)
-      if results == nil then
-        resolve({ won = false, turns = 0 })
-        return
+      if results ~= nil and not spectator_map[results.player_id] then
+        -- contribute to final result
+        final_result.won = final_result.won or results.won
+        final_result.turns = math.max(final_result.turns, results.turns)
+
+        -- update player
+        local results_player = self.instance.player_map[results.player_id]
+
+        results_player.health = results.health
+        Net.set_player_health(results_player.id, results.health)
+        Net.set_player_emotion(results_player.id, results.emotion)
+
+        if results.health == 0 then
+          results_player:paralyze()
+        end
       end
 
-      self.health = results.health
+      -- resolve final result
+      result_events = result_events + 1
 
-      Net.set_player_health(self.id, self.health)
-
-      Net.set_player_emotion(self.id, results.emotion)
-
-      if self.health == 0 then
-        self:paralyze()
+      if expected_result_events == result_events then
+        resolve(final_result)
       end
-
-      resolve(results)
     end)
   end)
 
