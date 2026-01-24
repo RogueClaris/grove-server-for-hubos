@@ -116,6 +116,13 @@ local function convert_indestructible_panels(self)
 
     panel.data.gid = dark_gids[math.random(#dark_gids)]
     Net.set_object_data(self.area_id, panel.id, panel.data)
+
+    -- add collision since base dark panels don't have collision for shadow step
+    self.collision_template.x = panel.x
+    self.collision_template.y = panel.y
+    self.collision_template.z = panel.z
+
+    panel.collision_id = Net.create_object(self.area_id, self.collision_template)
   end
 
   self.indestructible_panels = {}
