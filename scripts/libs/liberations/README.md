@@ -12,14 +12,19 @@ As for client side dependencies, the following list of IDs should be added to th
 
 ```lua
 -- boss dependencies:
-"BattleNetwork5.Virus.BigBrute",
+"BattleNetwork5.Virus.BigBrute", -- defines BattleNetwork5.Character.BigBrute for use in encounters
+"BattleNetwork5.BlizzardMan", -- defines BattleNetwork5.BlizzardMan.Enemy for use in encounters
+"com.Dawn.Shademan", -- defines com.Dawn.Enemy.Shademan[Alpha/Beta] for use in encounters
 "BattleNetwork.Assets",
 "BattleNetwork.SmokePoof",
-"com.Dawn.Shademan",
+"BattleNetwork6.TileStates.Ice",
+"dev.konstinople.library.ai"
 -- custom liberation encounter dependencies:
 "dev.konstinople.library.liberation",
 "BattleNetwork6.Statuses.Invincible",
 ```
+
+Once you have this set up with a minimal map, you can tinker with the [Lua example](#example-lua-setup) at the bottom of this README to start playing.
 
 ### Minimal Map
 
@@ -143,8 +148,9 @@ Supported panel `Type`s and custom properties can be found below.
 
 ### `Dark Hole`
 
-- `Direction` the direction the character spawned should face
-- `Spawns` the name of the enemy to spawn, overrides `Encounter` when this character moves over another panel
+- `Direction` the direction the character spawned should face.
+- `Spawns` the name of the enemy to spawn, overrides `Encounter` when this character moves over another panel.
+- `Encounter` the encounter for the dark hole and enemy, uses the map's default when missing.
 - `Rank` the rank of the spawned enemy, ex: `V1`, `SP`, `Omega`. Passed as `rank` in the encounter's data param.
 
 ### `Trap Panel`
@@ -182,3 +188,66 @@ Additional custom properties are supported by loot.
 - `MAJOR_HIT` - Destroys a nearby Guardian. Won’t destroy bosses.
 - `KEY`
   - `Gate Key` unlocks every `Gate Panel` with a matching value in the `Gate Key` property
+
+## Example Lua Setup
+
+```lua
+local Mission = require("scripts/libs/liberations/mission")
+local Ability = require("scripts/libs/liberations/ability")
+
+---@param scripts ScriptNodes optional, used for instancing
+---@param base_area string
+---@param player_ids Net.ActorId[]
+local function start_mission(scripts, base_area, player_ids)
+  -- optional, create an instance with an instancer:
+  local instancer = scripts:instancer()
+  local instance_id = instancer:create_instance()
+  local area_id = instancer:clone_area_to_instance(instance_id, base_area) --[[@as string]]
+
+  -- create a new liberation mission:
+  local mission = Mission:new(area_id)
+
+  -- load players, we'll just give everyone LongSwrd
+  for _, player_id in ipairs(player_ids) do
+    mission:transfer_player(player_id, Ability.LongSwrd)
+  end
+
+  -- handling events:
+
+  mission.events:on("money", function(event)
+    -- update save data...
+
+    -- update UI:
+    local prev_money = Net.get_player_money(event.player_id)
+    Net.set_player_money(event.player_id, prev_money + event.money)
+  end)
+
+  mission.events:on("player_kicked", function(event)
+    -- send the player somewhere else
+    Net.transfer_player(event.player_id, "default", true)
+
+    if event.success then
+      -- optional, reward the player in some way
+    end
+  end)
+
+  -- instance cleanup
+  local function cleanup_tick()
+    if #mission:get_players() > 0 or mission:destroying() then
+      return
+    end
+
+    Net:remove_listener("tick", cleanup_tick)
+
+    mission:destroy().and_then(function()
+      scripts:unload(area_id)
+      instancer:remove_instance(instance_id)
+    end)
+  end
+
+  Net:on("tick", cleanup_tick)
+end
+
+-- call start_mission somewhere else...
+return start_mission
+```
