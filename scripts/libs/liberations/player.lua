@@ -248,7 +248,7 @@ function Player:heal(amount)
     Net.set_player_health(self.id, self.health)
 
     if previous_health < self.health then
-      RecoverEffect:new(self.id):remove()
+      RecoverEffect:new(self.id)
     end
 
     return resolve(Async.sleep(0.5))

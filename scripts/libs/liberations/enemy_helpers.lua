@@ -40,7 +40,7 @@ function EnemyHelpers.heal(enemy, amount)
   EnemyHelpers.update_name(enemy)
 
   if previous_health < enemy.health then
-    return RecoverEffect:new(enemy.id):remove()
+    return RecoverEffect:new(enemy.id)
   else
     return Async.create_function(function()
     end)

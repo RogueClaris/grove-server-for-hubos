@@ -38,17 +38,11 @@ function RecoverEffect:new(actor_id, area_wide_sfx)
 
   Net.animate_bot(recover_bot_id, "RECOVER")
 
-  recover_effect.promise = Async.create_function(function()
-    Async.sleep(.5).and_then(function()
-      Net.remove_bot(recover_bot_id)
-    end)
+  Async.sleep(.5).and_then(function()
+    Net.remove_bot(recover_bot_id)
   end)
 
   return recover_effect
-end
-
-function RecoverEffect:remove()
-  return self.promise
 end
 
 return RecoverEffect
