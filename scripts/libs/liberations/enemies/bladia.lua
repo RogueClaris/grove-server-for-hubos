@@ -69,7 +69,7 @@ function Bladia:spawn(direction)
     y = self.y + .5,
     z = self.z
   })
-  Net.set_bot_map_color(self.id, EnemyHelpers.boss_minimap_color)
+  Net.set_bot_map_color(self.id, EnemyHelpers.BOSS_MINIMAP_COLOR)
 end
 
 function Bladia:get_death_message()

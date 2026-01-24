@@ -2,8 +2,8 @@ local RecoverEffect = require("scripts/libs/liberations/effects/recover_effect")
 local Direction = require("scripts/libs/direction")
 
 local EnemyHelpers = {
-  guardian_minimap_marker = { r = 230, g = 50, b = 40 },
-  boss_minimap_color = { r = 170, g = 50, b = 170 }
+  GUARDIAN_MINIMAP_MARKER = { r = 230, g = 50, b = 40 },
+  BOSS_MINIMAP_COLOR = { r = 170, g = 50, b = 170 }
 }
 
 local direction_suffix_map = {
