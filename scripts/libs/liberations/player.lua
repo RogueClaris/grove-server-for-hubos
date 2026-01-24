@@ -13,6 +13,7 @@ local Emotes = require("scripts/libs/emotes")
 ---@field max_health number
 ---@field paralysis_effect Liberation.ParalysisEffect?
 ---@field paralysis_counter number
+---@field emote_delay number
 ---@field invincible boolean
 ---@field completed_turn boolean
 ---@field selection Liberation._PlayerSelection
@@ -31,6 +32,7 @@ function Player:new(instance, player_id)
     max_health = 100,
     paralysis_effect = nil,
     paralysis_counter = 0,
+    emote_delay = 0,
     invincible = false,
     completed_turn = false,
     selection = PlayerSelection:new(instance, player_id),
@@ -45,13 +47,17 @@ end
 
 function Player:emote_state()
   if Net.is_player_battling(self.id) then
-  elseif self.invincible then
-    Net.set_player_emote(self.id, Emotes.GG)
+    -- the client will send emotes for this
   elseif self.completed_turn then
-    Net.set_player_emote(self.id, Emotes.ZZZ)
+    Net.set_player_emote(self.id, Emotes.GREEN_CHECK)
+  elseif self.invincible then
+    Net.set_player_emote(self.id, "HORSE")
   else
-    Net.set_player_emote(self.id, Emotes.BLANK)
+    -- clear emote
+    Net.set_player_emote(self.id, "")
   end
+
+  self.emote_delay = 1
 end
 
 local order_points_mug_texture = "/server/assets/liberations/mugs/order pts.png"

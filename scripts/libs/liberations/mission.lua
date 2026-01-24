@@ -423,7 +423,6 @@ local function take_enemy_turn(self)
       player:give_turn()
     end
 
-    self.emote_timer = 0
     self.phase = self.phase + 1
     self.updating = false
 
@@ -443,7 +442,6 @@ end
 ---@field area_id string
 ---@field area_name string
 ---@field default_encounter string
----@field package emote_timer number
 ---@field package target_phase Liberation._TargetPhase
 ---@field package liberated boolean
 ---@field phase number
@@ -476,7 +474,6 @@ function MissionInstance:new(area_id)
     area_id = area_id,
     area_name = Net.get_area_name(area_id),
     default_encounter = Net.get_area_custom_property(area_id, "Liberation Encounter"),
-    emote_timer = 0,
     target_phase = TargetPhase:new(area_id),
     liberated = false,
     phase = 1,
@@ -526,6 +523,8 @@ function MissionInstance:new(area_id)
 
   setmetatable(mission, self)
   self.__index = self
+
+  mission = mission --[[@as Liberation.MissionInstance]]
 
   Preloader.update(area_id)
 
@@ -628,6 +627,14 @@ function MissionInstance:new(area_id)
     mission:tick(event.delta_time)
   end)
 
+  add_event_listener("player_emote", function(event)
+    local player = mission.player_map[event.player_id]
+
+    if player then
+      player.emote_delay = 3
+    end
+  end)
+
   add_event_listener("tile_interaction", function(event)
     mission:handle_tile_interaction(event.player_id, event.x, event.y, event.z, event.button)
   end)
@@ -724,15 +731,13 @@ function MissionInstance:tick(elapsed)
     take_enemy_turn(self)
   end
 
-  self.emote_timer = self.emote_timer - elapsed
 
-  if self.emote_timer <= 0 then
-    for _, player in ipairs(self.players) do
+  for _, player in ipairs(self.players) do
+    if player.emote_delay <= 0 then
       player:emote_state()
+    else
+      player.emote_delay = player.emote_delay - elapsed
     end
-
-    -- emote every second
-    self.emote_timer = 1
   end
 end
 
