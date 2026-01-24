@@ -507,11 +507,9 @@ end
 ---@param results Liberation.BattleResults
 function Player:liberate_and_loot_panels(panels, results, remove_traps, destroy_items)
   return Async.create_scope(function()
-    self:liberate_panels(panels, results).and_then(function()
-      self:loot_panels(panels, remove_traps, destroy_items).and_then(function()
-        self:complete_turn()
-      end)
-    end)
+    Async.await(self:liberate_panels(panels, results))
+    Async.await(self:loot_panels(panels, remove_traps, destroy_items))
+    self:complete_turn()
   end)
 end
 
