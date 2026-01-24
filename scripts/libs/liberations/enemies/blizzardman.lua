@@ -126,16 +126,25 @@ function BlizzardMan:take_turn()
     Async.await(Async.sleep(1))
 
     for _, player in ipairs(self.instance.players) do
-      player:message(
-        "Shiver in my\ndeep winter!\nSnowball!",
+      player:message_auto(
+        "Shiver in my\ndeep winter!",
+        1.5,
+        self.mug.texture_path,
+        self.mug.animation_path
+      )
+      player:message_auto(
+        "Snowball!",
+        1.5,
         self.mug.texture_path,
         self.mug.animation_path
       )
     end
 
-    Async.await(Async.sleep(1))
+    Async.await(Async.sleep(1.5))
 
     EnemyHelpers.play_attack_animation(self)
+
+    Async.await(Async.sleep(1.5))
 
     local spawned_bots = {}
 
@@ -185,6 +194,8 @@ function BlizzardMan:take_turn()
     end
 
     Async.await(Async.sleep(1))
+
+    EnemyHelpers.play_idle_animation(self)
 
     self.selection:remove_indicators()
   end)
