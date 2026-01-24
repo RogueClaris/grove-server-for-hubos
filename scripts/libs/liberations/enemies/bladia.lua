@@ -23,7 +23,7 @@ local rank_to_index = {
 
 local mob_health = { 200, 230, 230, 300, 340, 400 }
 local mob_damage = { 50, 80, 120, 160, 200, 250 }
-local mob_ranks = { 1, 2, 3, 4, 5, 6 }
+local mob_ranks = { "V1", "V2", "V3", "V4", "V5", "SP" }
 
 ---@return Liberation.Enemies.Bladia
 function Bladia:new(instance, position, direction, rank)

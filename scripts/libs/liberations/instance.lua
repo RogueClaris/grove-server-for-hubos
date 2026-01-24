@@ -8,7 +8,7 @@ local Preloader = require("scripts/libs/liberations/preloader")
 
 local compression = require('scripts/custom-scripts/compression')
 
-local DEBUG_AUTO_WIN = true
+local DEBUG_AUTO_WIN = false
 
 -- private functions
 
@@ -166,6 +166,8 @@ local function liberate_panel(self, player)
       local encounter_path = panel.custom_properties["Encounter"] or self.default_encounter
       local data = {
         terrain = player:resolve_terrain(),
+        start_invincible = player.invincible,
+        spectators = {}
       }
 
       -- Obtain enemy
@@ -192,16 +194,32 @@ local function liberate_panel(self, player)
 
       ---@type (Net.BattleResults | { success: boolean })?
       local results
+      local final_enemy_health = enemy and enemy.health or 0
 
       if DEBUG_AUTO_WIN then
         results = { won = true, turns = 1 }
       else
-        results = Async.await(player:initiate_encounter(encounter_path, data))
+        local promise, emitter = player:initiate_encounter(encounter_path, data)
+
+        emitter:on("battle_message", function(event)
+          -- use the latest enemy health value
+          -- might be affected by network speed, but we're just accepting this fact
+          if event.data then
+            final_enemy_health = tonumber(event.data.health) or final_enemy_health
+          end
+        end)
+
+        results = Async.await(promise)
       end
 
       if not results or not results.won then
         if enemy then
-          EnemyHelpers.sync_health(enemy, results)
+          enemy.health = final_enemy_health
+          EnemyHelpers.update_name(enemy)
+
+          if enemy.health <= 0 then
+            Async.await(Enemy.destroy(self, enemy))
+          end
         end
 
         player:complete_turn()
@@ -231,7 +249,7 @@ local function liberate_panel(self, player)
       -- destroy enemy
       local destroyed_enemy = Async.await(Enemy.destroy(self, enemy or panel.enemy))
 
-      if destroyed_enemy and #self.dark_holes == 0 then
+      if destroyed_enemy and panel.type == PanelTypes.DARK_HOLE and #self.dark_holes == 0 then
         convert_indestructible_panels(self)
       end
 

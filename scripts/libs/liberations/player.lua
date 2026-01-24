@@ -218,27 +218,32 @@ function Player:resolve_terrain()
   return "advantage"
 end
 
----@return Net.Promise<Liberation.BattleResults>
+---@return Net.Promise<Liberation.BattleResults>, Net.EventEmitter
 function Player:initiate_encounter(encounter_path, data)
-  return Async.create_scope(function()
-    local results = Async.await(Async.initiate_encounter(self.id, encounter_path, data))
+  local emitter = Net.initiate_encounter(self.id, encounter_path, data)
 
-    if results == nil then
-      return { won = false, turns = 0 }
-    end
+  local promise = Async.create_promise(function(resolve)
+    emitter:on("battle_results", function(results)
+      if results == nil then
+        resolve({ won = false, turns = 0 })
+        return
+      end
 
-    self.health = results.health
+      self.health = results.health
 
-    Net.set_player_health(self.id, self.health)
+      Net.set_player_health(self.id, self.health)
 
-    Net.set_player_emotion(self.id, results.emotion)
+      Net.set_player_emotion(self.id, results.emotion)
 
-    if self.health == 0 then
-      self:paralyze()
-    end
+      if self.health == 0 then
+        self:paralyze()
+      end
 
-    return results
+      resolve(results)
+    end)
   end)
+
+  return promise, emitter
 end
 
 function Player:heal(amount)

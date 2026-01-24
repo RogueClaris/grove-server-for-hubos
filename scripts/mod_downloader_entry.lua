@@ -24,9 +24,12 @@ local package_ids = {
   "dev.konstinople.library.iterator",
   "BattleNetwork6.Statuses.EnemyAlert",
   "BattleNetwork6.TileStates.Ice",
+  -- minimal libraries necessary for liberations:
+  "dev.konstinople.library.liberation",
+  "BattleNetwork6.Statuses.Invincible",
 }
 
-ModDownloader.download_once(package_ids)
+ModDownloader.maintain(package_ids)
 
 Net:on("player_connect", function(event)
   -- preload mods on join

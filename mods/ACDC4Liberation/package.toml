@@ -15,3 +15,4 @@ characters = [
     "BattleNetwork3.Basher.Enemy",
     "BattleNetwork3.Canodumb.Enemy",
 ]
+libraries = ["dev.konstinople.library.liberation"]

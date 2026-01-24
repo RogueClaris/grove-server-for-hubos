@@ -25,7 +25,6 @@ local rank_to_index = {
 
 local mob_health = { 120, 180, 220, 250, 300, 360 }
 local mob_damage = { 30, 60, 90, 130, 170, 200 }
-local mob_ranks = { 0, 0, 0, 0, 0, 0 }
 
 function BigBrute:new(instance, position, direction, rank)
   local rank_index = rank_to_index[rank]
@@ -37,7 +36,7 @@ function BigBrute:new(instance, position, direction, rank)
     health = mob_health[rank_index],
     max_health = mob_health[rank_index],
     damage = mob_damage[rank_index],
-    rank = mob_ranks[rank_index],
+    rank = "V1",
     x = math.floor(position.x),
     y = math.floor(position.y),
     z = math.floor(position.z),

@@ -2,11 +2,24 @@
 
 ## Setting Up
 
-The library comes in two pieces, assets and scripts.
+The server side library comes in two pieces, assets and scripts.
 
 Assets are found in `assets/liberations`, it must always have this path as the Lua library references files in this location.
 
 You can find the Lua library in `scripts/libs/liberations`, it must always be at this path.
+
+As for client side dependencies, the following list of IDs should be added to the `mod_downloader_entry.lua` file to keep dependencies up to date.
+
+```lua
+-- boss dependencies:
+"BattleNetwork5.Virus.BigBrute",
+"BattleNetwork.Assets",
+"BattleNetwork.SmokePoof",
+"com.Dawn.Shademan",
+-- custom liberation encounter dependencies:
+"dev.konstinople.library.liberation",
+"BattleNetwork6.Statuses.Invincible",
+```
 
 ### Minimal Map
 
@@ -38,15 +51,55 @@ Keys on the `data` table and how you should handle them:
 - `health`
   - Only appears when the player is fighting a boss / miniboss. Used to restore the enemy's health from a previous battle.
   - The [:mutate()](https://docs.hubos.dev/client/lua-api/field-api/encounter#mutatormutatefunctionentity) function can be chained with `encounter:spawn_at()` to modify enemies spawned by `encounter`.
+- `start_invincible`
+  - Whether to apply one turn of invincibility to players in the encounter.
+- `spectators`
+  - Table mapping player indices to booleans for deciding which players to convert into spectators.
 
-There's a type definition file at `scripts/libs/liberations/liberations.client.d.lua`. When this file is included, similar to the client type definitions in the [Getting Started guide](https://docs.hubos.dev/client/getting-started), your editor will have auto complete and error information for the data param when properly tagged.
-
-Example of tagging the type for the data param:
+Basic encounter:
 
 ```lua
+local LiberationLib = require("dev.konstinople.library.liberation")
+
 ---@param encounter Encounter
----@param data Liberation.EncounterData
 function encounter_init(encounter, data)
+  -- LiberationLib.resolve_spectators(encounter, data)
+  -- LiberationLib.apply_spawn_positions_for_terrain(encounter, data.terrain)
+  -- LiberationLib.apply_terrain(data.terrain)
+  -- LiberationLib.apply_statuses(data)
+  -- encounter:enable_automatic_turn_end(true)
+  -- encounter:set_turn_limit(3)
+
+  -- this is a faster way to call the functions commented above
+  LiberationLib.init(encounter, data)
+
+  if data.terrain == "disadvantage" or data.terrain == "surrounded" then
+    -- adapting enemies based on the terrain
+    encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1)
+      :spawn_at(5, 2)
+  else
+    encounter:create_spawner("BattleNetwork3.Canodumb.Enemy", Rank.V1)
+      :spawn_at(4, 2)
+  end
+```
+
+Boss encounter:
+
+```lua
+local LiberationLib = require("dev.konstinople.library.liberation")
+
+---@param encounter Encounter
+function encounter_init(encounter, data)
+  LiberationLib.init(data)
+
+  local rank = Rank[data.rank] -- utilizing rank from the server
+  encounter:create_spawner("BattleNetwork5.Character.BigBrute", rank)
+    :spawn_at(5, 2)
+    :mutate(function(entity)
+      -- Restores health from data,
+      -- and sends the final health back to the server when battle ends
+      LiberationLib.sync_enemy_health(entity, encounter, data)
+  end)
 end
 ```
 
@@ -120,7 +173,7 @@ Additional custom properties are supported by loot.
   - `Money` Determines how much money to give
 - `BUGFRAG` - WIP
 - `ORDER_POINT` - Grants the player 3 Order Points, the player can have at most 8 at a time.
-- `INVINCIBILITY` - Grants the player on-map invincibility, stopping Guardian and Darkloid attacks from harming them.
+- `INVINCIBILITY` - Grants the player on-map and a short in-battle invincibility, stopping Guardian and Darkloid attacks from harming them.
 - `MAJOR_HIT` - Destroys a nearby Guardian. Won’t destroy bosses.
 - `KEY`
   - `Gate Key` unlocks every `Gate Panel` with a matching value in the `Gate Key` property

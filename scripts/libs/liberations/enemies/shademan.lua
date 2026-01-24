@@ -23,7 +23,7 @@ local rank_to_index = {
 
 local mob_health = { 600, 1000, 1200, 1500 }
 local mob_damage = { 60, 90, 120, 200 }
-local mob_ranks = { 0, 4, 3, 0 }
+local mob_ranks = { "V1", "Alpha", "Beta", "V1" }
 
 ---@return Liberation.Enemies.ShadeMan
 function ShadeMan:new(instance, position, direction, rank)

@@ -31,7 +31,9 @@ end
 ---@param player Liberation.Player
 local function initiate_encounter(instance, player)
   local data = {
-    terrain = player:resolve_terrain()
+    terrain = player:resolve_terrain(),
+    start_invincible = player.invincible,
+    spectators = {}
   }
 
   local encounter_path = instance.default_encounter

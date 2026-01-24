@@ -6,3 +6,4 @@ name = "BigBrute"
 [dependencies]
 encounters = ["BattleNetwork5.Virus.BigBrute"]
 characters = ["BattleNetwork5.Character.BigBrute"]
+libraries = ["dev.konstinople.library.liberation"]
