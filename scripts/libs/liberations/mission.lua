@@ -565,7 +565,7 @@ function MissionInstance:new(area_id)
       -- spawning bosses
       if object.custom_properties.Boss then
         local name = object.custom_properties.Boss
-        local direction = object.custom_properties.Direction
+        local direction = object.custom_properties.Direction:upper()
         local rank = object.custom_properties.Rank
         local enemy = Enemy.from(mission, object, direction, name, rank)
         enemy.is_boss = true
@@ -577,7 +577,7 @@ function MissionInstance:new(area_id)
       -- spawning enemies
       if object.custom_properties.Spawns then
         local name = object.custom_properties.Spawns
-        local direction = object.custom_properties.Direction
+        local direction = object.custom_properties.Direction:upper()
         local rank = object.custom_properties.Rank
         local position = {
           x = object.x,

@@ -187,7 +187,7 @@
   </object>
   <object id="250" type="Dark Hole" gid="3" x="576" y="544" width="50" height="30">
    <properties>
-    <property name="Direction" value="Down Right"/>
+    <property name="Direction" value="Down Left"/>
     <property name="Spawns" value="BigBrute"/>
    </properties>
   </object>
