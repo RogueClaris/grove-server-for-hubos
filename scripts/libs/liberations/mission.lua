@@ -446,7 +446,7 @@ end
 ---@class Liberation.PanelObject: Net.Object
 ---@field collision_id number?
 ---@field enemy Liberation.Enemy
----@field loot Liberation._Loot?
+---@field loot Liberation.Loot?
 
 -- public
 ---@class Liberation.MissionInstance

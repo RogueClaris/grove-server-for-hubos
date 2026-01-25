@@ -13,13 +13,13 @@ local function resolve_selection_direction(player_pos, panel_object)
 end
 
 -- public
----@class Liberation._PlayerSelection
+---@class Liberation.PlayerSelection
 ---@field private player_id Net.ActorId
 ---@field private instance Liberation.MissionInstance
 ---@field private selection Liberation._Selection
 local PlayerSelection = {}
 
----@return Liberation._PlayerSelection
+---@return Liberation.PlayerSelection
 function PlayerSelection:new(instance, player_id)
   local player_selection = {
     player_id = player_id,

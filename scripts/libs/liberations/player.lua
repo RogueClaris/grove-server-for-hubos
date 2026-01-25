@@ -17,7 +17,7 @@ local Emotes = require("scripts/libs/emotes")
 ---@field order_points_sprite_id Net.SpriteId?
 ---@field invincible boolean
 ---@field completed_turn boolean
----@field selection Liberation._PlayerSelection
+---@field selection Liberation.PlayerSelection
 ---@field ability Liberation.Ability?
 ---@field input_locked boolean
 ---@field disconnected boolean

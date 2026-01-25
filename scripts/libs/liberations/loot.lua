@@ -2,14 +2,14 @@ local Enemy = require("scripts/libs/liberations/enemy")
 local ITEM_ASSET_PATH = "/server/assets/liberations/bots/item.png"
 local ITEM_ANIMATION_PATH = "/server/assets/liberations/bots/item.animation"
 
----@class Liberation._Loot
+---@class Liberation.Loot
 ---@field animation string
 ---@field breakable boolean
 ---@field activate fun(instance: Liberation.MissionInstance, player: Liberation.Player, panel: Liberation.PanelObject): Net.Promise
 
 local Loot = {}
 
----@type Liberation._Loot
+---@type Liberation.Loot
 Loot.HEART = {
   animation = "HEART",
   breakable = true,
@@ -21,7 +21,7 @@ Loot.HEART = {
   end
 }
 
----@type Liberation._Loot
+---@type Liberation.Loot
 Loot.CHIP = {
   animation = "CHIP",
   breakable = true,
@@ -32,7 +32,7 @@ Loot.CHIP = {
   end
 }
 
----@type Liberation._Loot
+---@type Liberation.Loot
 Loot.MONEY = {
   animation = "MONEY",
   breakable = true,
@@ -51,7 +51,7 @@ Loot.MONEY = {
   end
 }
 
----@type Liberation._Loot
+---@type Liberation.Loot
 Loot.BUGFRAG = {
   animation = "BUGFRAG",
   breakable = true,
@@ -62,7 +62,7 @@ Loot.BUGFRAG = {
   end
 }
 
----@type Liberation._Loot
+---@type Liberation.Loot
 Loot.ORDER_POINT = {
   animation = "ORDER_POINT",
   breakable = false,
@@ -83,7 +83,7 @@ Loot.ORDER_POINT = {
   end
 }
 
----@type Liberation._Loot
+---@type Liberation.Loot
 Loot.INVINCIBILITY = {
   animation = "INVINCIBILITY",
   breakable = false,
@@ -98,7 +98,7 @@ Loot.INVINCIBILITY = {
   end
 }
 
----@type Liberation._Loot
+---@type Liberation.Loot
 Loot.MAJOR_HIT = {
   animation = "MAJOR_HIT",
   breakable = false,
@@ -149,7 +149,7 @@ local function find_gate_points(instance, key_id)
   return points
 end
 
----@type Liberation._Loot
+---@type Liberation.Loot
 Loot.KEY = {
   animation = "KEY",
   breakable = false,
@@ -232,7 +232,7 @@ Loot.BONUS_POOL = {
   Loot.MONEY,
 }
 
----@type Liberation._Loot[]
+---@type Liberation.Loot[]
 Loot.FULL_POOL = {
   Loot.HEART,
   Loot.CHIP,
@@ -278,7 +278,7 @@ end
 
 -- returns a promise that resolves when the animation finishes
 -- resolved value is a function that cleans up the bot
----@param item Liberation._Loot
+---@param item Liberation.Loot
 ---@param area_id string
 ---@param x number
 ---@param y number
