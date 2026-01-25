@@ -5,6 +5,7 @@ local Parties = require("scripts/libs/parties")
 
 local LiberationDoors = {}
 
+local respawn_table = {}
 local waiting_area_map = {}
 local gate_to_area_map = {}
 
@@ -205,21 +206,23 @@ function LiberationDoors.init(scripts)
   end)
 end
 
-local respawn_table = {}
-
-local areas = Net.list_areas()
-for i, area_id in next, areas do
+for _, area_id in ipairs(Net.list_areas()) do
   local objects = Net.list_objects(area_id)
-  local custom_parameters = Net.get_area_custom_properties(area_id)
-  if custom_parameters["Respawn Area"] then
-    respawn_table[area_id] = custom_parameters["Respawn Area"]
-    if custom_parameters["Waiting Area"] then
-      waiting_area_map[custom_parameters["Waiting Area"]] = area_id
+
+  local respawn_area = Net.get_area_custom_property(area_id, "Respawn Area")
+  local waiting_area = Net.get_area_custom_property(area_id, "Waiting Area")
+
+  if respawn_area then
+    respawn_table[area_id] = respawn_area
+
+    if waiting_area then
+      waiting_area_map[waiting_area] = area_id
     else
-      waiting_area_map[custom_parameters["Respawn Area"]] = area_id
+      waiting_area_map[respawn_area] = area_id
     end
   end
-  for index, value in ipairs(objects) do
+
+  for _, value in ipairs(objects) do
     local object = Net.get_object_by_id(area_id, value)
     if object.custom_properties["Liberation Map File Name"] then
       gate_to_area_map[value] = { area_id, object.custom_properties["Liberation Map File Name"] }
