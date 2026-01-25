@@ -2,19 +2,26 @@ local TOTAL_EXPLOSIONS = 3
 local EXPLOSION_DURATION = .6
 local EXPLOSION_AXIS_RANGE = .5
 
-local function update_tracked_position(exploding_effect)
-  local actor_id = exploding_effect.tracked_actor_id
+---@param self Liberation.ExplodingEffect
+local function update_tracked_position(self)
+  local actor_id = self.tracked_actor_id
 
   if Net.is_bot(actor_id) then
-    exploding_effect.area_id = Net.get_bot_area(actor_id)
-    exploding_effect.position = Net.get_bot_position(actor_id)
+    self.area_id = Net.get_bot_area(actor_id)
+    self.position = Net.get_bot_position(actor_id)
   elseif Net.is_player(actor_id) then
-    exploding_effect.area_id = Net.get_player_area(actor_id)
-    exploding_effect.position = Net.get_player_position(actor_id)
+    self.area_id = Net.get_player_area(actor_id)
+    self.position = Net.get_player_position(actor_id)
   end
 end
 
+---@param self Liberation.ExplodingEffect
 local function explode(self, explosion_bot_id)
+  if not Net.is_bot(explosion_bot_id) then
+    -- bot deleted from deleted instance
+    return
+  end
+
   update_tracked_position(self)
 
   local offset_x = (math.random() * 2 - 1) * EXPLOSION_AXIS_RANGE
@@ -49,7 +56,8 @@ local function explode(self, explosion_bot_id)
       end)
 end
 
-local function spawn(self, area_id, position)
+---@param self Liberation.ExplodingEffect
+local function spawn(self)
   for i = 1, TOTAL_EXPLOSIONS, 1 do
     local explosion_bot_id = Net.create_bot({
       texture_path = "/server/assets/liberations/bots/explosion.png",
@@ -72,6 +80,10 @@ local function spawn(self, area_id, position)
   end
 end
 
+---@class Liberation.ExplodingEffect
+---@field tracked_actor_id Net.ActorId
+---@field position? Net.Position
+---@field area_id? string
 local ExplodingEffect = {}
 
 function ExplodingEffect:new(actor_id)
