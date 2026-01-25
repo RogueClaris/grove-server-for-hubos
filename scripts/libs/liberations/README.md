@@ -6,7 +6,7 @@ The server side library comes in two pieces, assets and scripts.
 
 Assets are found in `assets/liberations`, it must always have this path as the Lua library references files in this location.
 
-You can find the Lua library in `scripts/libs/liberations`, it must always be at this path.
+You can find the Lua library in `scripts/libs/liberations`, it must always be at this path. This library also depends on `scripts/libs/direction.lua` and `scripts/libs/emotes.lua`
 
 As for client side dependencies, the following list of IDs should be added to the `mod_downloader_entry.lua` file to keep dependencies up to date.
 
