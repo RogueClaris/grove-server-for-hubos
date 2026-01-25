@@ -85,19 +85,10 @@
    </properties>
    <point/>
   </object>
-  <object id="67" name="Point of Interest" type="Point of Interest" x="592" y="560">
-   <point/>
-  </object>
-  <object id="68" name="Point of Interest" type="Point of Interest" x="400" y="656">
-   <point/>
-  </object>
   <object id="70" name="Point of Interest" type="Point of Interest" x="304" y="336">
    <properties>
     <property name="Gate ID" type="int" value="1"/>
    </properties>
-   <point/>
-  </object>
-  <object id="71" name="Point of Interest" type="Point of Interest" x="400" y="176">
    <point/>
   </object>
   <object id="72" type="Bonus Panel" gid="5" x="256" y="224" width="50" height="30">
@@ -320,9 +311,6 @@
 </data>
  </layer>
  <objectgroup id="28" name="Copy of Copy of Copy of Object Layer 2" offsetx="0" offsety="-64">
-  <object id="69" name="Point of Interest" type="Point of Interest" x="80" y="432">
-   <point/>
-  </object>
   <object id="30" type="Dark Panel" gid="1" x="32" y="416" width="50" height="30"/>
   <object id="31" type="Item Panel" gid="2" x="32" y="384" width="50" height="30">
    <properties>
