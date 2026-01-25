@@ -95,7 +95,7 @@ function DataStorage.store(key, value)
 
   local next_write = function()
     _pending_write[key] = Async.create_scope(function()
-      Async.write_file(DataStorage.get_path(key), json.encode(value))
+      Async.await(Async.write_file(DataStorage.get_path(key), json.encode(value)))
       _pending_write[key] = nil
       return nil
     end)
