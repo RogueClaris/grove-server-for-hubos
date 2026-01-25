@@ -286,7 +286,7 @@ local function take_enemy_turn(self)
 
   self.updating = true
 
-  return Async.create_scope(function()
+  Async.create_scope(function()
     local hold_time = .15
     local slide_time = .5
     local down_count = 0
@@ -317,12 +317,6 @@ local function take_enemy_turn(self)
             success = false
           })
         end)
-      end
-
-      self.updating = false
-
-      if self.needs_disposal then
-        self:destroy()
       end
 
       return
@@ -439,12 +433,14 @@ local function take_enemy_turn(self)
     end
 
     self.phase = self.phase + 1
-    self.updating = false
-
-    if self.needs_disposal then
-      self:destroy()
-    end
   end)
+      .and_then(function()
+        self.updating = false
+
+        if self.needs_disposal then
+          self:destroy()
+        end
+      end)
 end
 
 ---@class Liberation.PanelObject: Net.Object
