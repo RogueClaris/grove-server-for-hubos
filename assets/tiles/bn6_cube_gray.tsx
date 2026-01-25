@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.8" tiledversion="1.8.4" name="bn6_cube_gray" tilewidth="48" tileheight="52" tilecount="14" columns="7" objectalignment="bottom">
+<tileset version="1.8" tiledversion="1.8.2" name="bn6_cube_gray" tilewidth="48" tileheight="52" tilecount="14" columns="7" objectalignment="bottom">
  <tileoffset x="0" y="12"/>
- <grid orientation="orthogonal" width="64" height="32"/>
+ <grid orientation="isometric" width="64" height="32"/>
  <image source="bn6_cube_gray.png" width="336" height="104"/>
  <tile id="0">
-  <objectgroup draworder="index" id="5">
-   <object id="5" x="24" y="13">
-    <polygon points="0,0 33,23.5 0,47 -33,23.5"/>
-   </object>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="8" width="32" height="32"/>
   </objectgroup>
   <animation>
    <frame tileid="0" duration="200"/>
@@ -18,9 +16,7 @@
  </tile>
  <tile id="7">
   <objectgroup draworder="index" id="2">
-   <object id="2" x="24" y="13">
-    <polygon points="0,0 33,23.5 0,47 -33,23.5"/>
-   </object>
+   <object id="3" x="0" y="8" width="32" height="32"/>
   </objectgroup>
   <animation>
    <frame tileid="7" duration="200"/>

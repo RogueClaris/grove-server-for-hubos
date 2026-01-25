@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.8" tiledversion="1.8.4" name="Fireman Flame" tilewidth="32" tileheight="64" tilecount="28" columns="7">
+<tileset version="1.10" tiledversion="1.11.2" name="Fireman Flame" tilewidth="32" tileheight="64" tilecount="28" columns="7">
  <tileoffset x="0" y="32"/>
+ <grid orientation="isometric" width="64" height="32"/>
  <image source="Fireman Flame.png" width="224" height="256"/>
  <tile id="0">
   <objectgroup draworder="index" id="2">
-   <object id="6" x="16" y="32">
-    <polygon points="0,0 35.5,20.25 0,40.5 -35.5,20.25"/>
-   </object>
+   <object id="7" x="0" y="16" width="32" height="32"/>
   </objectgroup>
   <animation>
    <frame tileid="0" duration="33"/>
@@ -19,9 +18,7 @@
  </tile>
  <tile id="7">
   <objectgroup draworder="index" id="2">
-   <object id="6" x="16" y="32">
-    <polygon points="0,0 35.5,20.25 0,40.5 -35.5,20.25"/>
-   </object>
+   <object id="7" x="0" y="16" width="32" height="32"/>
   </objectgroup>
   <animation>
    <frame tileid="7" duration="33"/>
@@ -35,9 +32,7 @@
  </tile>
  <tile id="14" type="Checkpoint">
   <objectgroup draworder="index" id="2">
-   <object id="2" x="16" y="32">
-    <polygon points="0,0 35.5,20.25 0,40.5 -35.5,20.25"/>
-   </object>
+   <object id="3" x="0" y="16" width="32" height="32"/>
   </objectgroup>
   <animation>
    <frame tileid="14" duration="33"/>
@@ -50,9 +45,7 @@
  </tile>
  <tile id="21" type="Checkpoint">
   <objectgroup draworder="index" id="2">
-   <object id="4" x="16" y="32">
-    <polygon points="0,0 35.5,20.25 0,40.5 -35.5,20.25"/>
-   </object>
+   <object id="5" x="0" y="16" width="32" height="32"/>
   </objectgroup>
   <animation>
    <frame tileid="21" duration="33"/>

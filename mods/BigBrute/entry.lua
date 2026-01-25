@@ -1,7 +1,17 @@
-function encounter_init(mob)
-    --can setup backgrounds, music, and field here
-    local test_spawner = mob:create_spawner("BattleNetwork5.Character.BigBrute", Rank.V1)
-    test_spawner:spawn_at(5, 2)
-    --test_spawner:spawn_at(6, 2)
-    --test_spawner:spawn_at(4, 2)
+local LiberationLib = require("dev.konstinople.library.liberation")
+
+---@param encounter Encounter
+function encounter_init(encounter, data)
+    LiberationLib.init(encounter, data)
+
+    encounter:set_spectate_on_delete(true)
+
+    local rank = Rank[data.rank] -- utilizing rank from the server
+    encounter:create_spawner("BattleNetwork5.Character.BigBrute", rank)
+        :spawn_at(5, 2)
+        :mutate(function(entity)
+            -- Restores health from data,
+            -- and sends the final health back to the server when battle ends
+            LiberationLib.sync_enemy_health(entity, encounter, data)
+        end)
 end

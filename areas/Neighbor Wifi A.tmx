@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.6" orientation="isometric" renderorder="right-down" width="30" height="30" tilewidth="64" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="12">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="30" tilewidth="64" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="18">
  <properties>
   <property name="Background" value="custom"/>
   <property name="Background Animation" value="/server/assets/backgrounds/maylbn5/bg.animation"/>
@@ -59,24 +59,24 @@
   <object id="2" name="Neighbor Mom Navi" type="Script Node: Spawn Bot" x="464" y="496">
    <properties>
     <property name="Asset" value="female-navi-exe6_pink"/>
-    <property name="Dialogue Type" value="first"/>
     <property name="Direction" value="Down Right"/>
-    <property name="Next 1" type="object" value="3"/>
-    <property name="Text 1" value="My NetOp always says that raising a kid is hard, but one phrase sees her through:"/>
+    <property name="On Interact" type="object" value="13"/>
    </properties>
    <point/>
   </object>
-  <object id="3" name="Live, Laugh, Love..." type="Script Node: Message" x="448" y="640">
+  <object id="3" name="Live, Laugh, Love..." type="Script Node: Message" x="368" y="464">
    <properties>
-    <property name="Dialogue Type" value="first"/>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/female-navi-exe6_pink.png"/>
     <property name="Next 1" type="object" value="4"/>
     <property name="Text 1" value="Live, Laugh, Love!"/>
    </properties>
    <point/>
   </object>
-  <object id="4" name="*sigh* Live. Laugh. Love." type="Script Node: Message" x="384" y="576">
+  <object id="4" name="*sigh* Live. Laugh. Love." type="Script Node: Message" x="368" y="432">
    <properties>
-    <property name="Dialogue Type" value="first"/>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/female-navi-exe6_pink.png"/>
     <property name="Text 1" value="It holds great power."/>
    </properties>
    <point/>
@@ -84,40 +84,42 @@
   <object id="5" name="Carl.EXE" type="Script Node: Spawn Bot" x="560" y="400">
    <properties>
     <property name="Asset" value="bots/normal-navi-bn4_brown"/>
-    <property name="Dialogue Type" value="first"/>
     <property name="Direction" value="Down Left"/>
-    <property name="Next 1" type="object" value="6"/>
-    <property name="Text 1" value="Hi, my name's Carl.EXE."/>
+    <property name="On Interact" type="object" value="14"/>
    </properties>
    <point/>
   </object>
-  <object id="6" name="Carl EXEplanation" type="Script Node: Message" x="560" y="336">
+  <object id="6" name="Carl EXEplanation" type="Script Node: Message" x="528" y="304">
    <properties>
-    <property name="Dialogue Type" value="first"/>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/normal-navi-bn4_brown.png"/>
     <property name="Next 1" type="object" value="7"/>
     <property name="Text 1" value="My NetOp wanted a navi with the same name."/>
    </properties>
    <point/>
   </object>
-  <object id="7" name="Carl EXEplanation 2" type="Script Node: Message" x="552" y="296">
+  <object id="7" name="Carl EXEplanation 2" type="Script Node: Message" x="560" y="304">
    <properties>
-    <property name="Dialogue Type" value="first"/>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/normal-navi-bn4_brown.png"/>
     <property name="Next 1" type="object" value="8"/>
     <property name="Text 1" value="But he didn't want a fancy navi."/>
    </properties>
    <point/>
   </object>
-  <object id="8" name="Carl EXEplanation 3" type="Script Node: Message" x="496" y="240">
+  <object id="8" name="Carl EXEplanation 3" type="Script Node: Message" x="592" y="304">
    <properties>
-    <property name="Dialogue Type" value="first"/>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/normal-navi-bn4_brown.png"/>
     <property name="Next 1" type="object" value="9"/>
     <property name="Text 1" value="So he edited my name string. And now I can't say my real name."/>
    </properties>
    <point/>
   </object>
-  <object id="9" name="Carl EXEplanation 4" type="Script Node: Message" x="464" y="240">
+  <object id="9" name="Carl EXEplanation 4" type="Script Node: Message" x="624" y="304">
    <properties>
-    <property name="Dialogue Type" value="first"/>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/normal-navi-bn4_brown.png"/>
     <property name="Text 1" value="Why am I still here? Just to suffer?"/>
    </properties>
    <point/>
@@ -134,6 +136,38 @@
     <property name="Area" value="ACDC 2"/>
     <property name="Target" type="int" value="89"/>
     <property name="Warp" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="12" name="My NetOp always says" type="Script Node: Message" x="368" y="496">
+   <properties>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/female-navi-exe6_pink.png"/>
+    <property name="Next 1" type="object" value="3"/>
+    <property name="Text 1" value="My NetOp always says that raising a kid is hard, but one phrase sees her through:"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="13" name="Face Player" type="Script Node: Face" x="368" y="528">
+   <properties>
+    <property name="Next" type="object" value="12"/>
+    <property name="Target" value="Player"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="14" name="Face Player" type="Script Node: Face" x="464" y="304">
+   <properties>
+    <property name="Next" type="object" value="17"/>
+    <property name="Target" value="Player"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="17" name="CarlEXE Hi" type="Script Node: Message" x="496" y="304">
+   <properties>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/normal-navi-bn4_brown.png"/>
+    <property name="Next 1" type="object" value="6"/>
+    <property name="Text 1" value="Hi, my name's Carl.EXE."/>
    </properties>
    <point/>
   </object>

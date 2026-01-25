@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.6" orientation="isometric" renderorder="right-down" width="12" height="14" tilewidth="64" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="28">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="12" height="14" tilewidth="64" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="30">
  <properties>
   <property name="Background" value="custom"/>
   <property name="Background Animation" value="/server/assets/backgrounds/Guts.animation"/>
@@ -45,33 +45,27 @@
   <object id="3" name="Gutsman" type="Script Node: Spawn Bot" x="112" y="208">
    <properties>
     <property name="Asset" value="bots/gutsman"/>
-    <property name="Dialogue Type" value="question"/>
     <property name="Direction" value="Down Right"/>
-    <property name="Next 1" type="object" value="5"/>
-    <property name="Next 2" type="object" value="4"/>
-    <property name="Text 1">Hey, guts! It's been a while, guts!
-Let's fight, please, guts!</property>
+    <property name="On Interact" type="object" value="28"/>
    </properties>
    <point/>
   </object>
-  <object id="4" name="Said No" type="Script Node: Message" x="32" y="224">
+  <object id="4" name="Said No" type="Script Node: Message" x="0" y="192">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Text 1">Aww, c'mon!
 
 I'm so bored, guts!</property>
    </properties>
    <point/>
   </object>
-  <object id="5" name="Said Yes" type="Script Node: Message" x="32" y="192">
+  <object id="5" name="Said Yes" type="Script Node: Message" x="16" y="160">
    <properties>
-    <property name="Dialogue Type" value="first"/>
     <property name="Next 1" type="object" value="8"/>
     <property name="Text 1" value="Guts! That's the spirit, guts! Let's rumble!"/>
    </properties>
    <point/>
   </object>
-  <object id="8" name="V4 Fight Check" type="Script Node: Has Item" x="64" y="128">
+  <object id="8" name="V4 Fight Check" type="Script Node: Has Item" x="16" y="128">
    <properties>
     <property name="Amount" type="int" value="3"/>
     <property name="Item" value="GutsProof"/>
@@ -80,13 +74,13 @@ I'm so bored, guts!</property>
    </properties>
    <point/>
   </object>
-  <object id="15" name="Trigger V4 Fight" type="Script Node: Encounter" x="32" y="128">
+  <object id="15" name="Trigger V4 Fight" type="Script Node: Encounter" x="-16" y="128">
    <properties>
     <property name="Encounter" value="/server/mods/custom_encounter"/>
    </properties>
    <point/>
   </object>
-  <object id="17" name="V3 Fight Check" type="Script Node: Has Item" x="64" y="96">
+  <object id="17" name="V3 Fight Check" type="Script Node: Has Item" x="16" y="96">
    <properties>
     <property name="Amount" type="int" value="2"/>
     <property name="Item" value="GutsProof"/>
@@ -95,14 +89,12 @@ I'm so bored, guts!</property>
    </properties>
    <point/>
   </object>
-  <object id="18" name="Trigger V3 Fight" type="Script Node: Message" x="32" y="96">
+  <object id="18" name="Trigger V3 Fight" type="Script Node: Gutsman V3 Battle" x="-16" y="96">
    <properties>
-    <property name="Dialogue Type" value="none"/>
-    <property name="Event Name" value="Gutsman V3 Battle"/>
    </properties>
    <point/>
   </object>
-  <object id="19" name="V2 Fight Check" type="Script Node: Has Item" x="64" y="64">
+  <object id="19" name="V2 Fight Check" type="Script Node: Has Item" x="16" y="64">
    <properties>
     <property name="Amount" type="int" value="1"/>
     <property name="Item" value="GutsProof"/>
@@ -111,18 +103,10 @@ I'm so bored, guts!</property>
    </properties>
    <point/>
   </object>
-  <object id="20" name="Trigger V2 Fight" type="Script Node: Message" x="32" y="64">
-   <properties>
-    <property name="Dialogue Type" value="none"/>
-    <property name="Event Name" value="Gutsman V2 Battle"/>
-   </properties>
+  <object id="20" name="Trigger V2 Fight" type="Script Node: Gutsman V2 Battle" x="-16" y="64">
    <point/>
   </object>
-  <object id="21" name="Trigger V1 Fight" type="Script Node: Message" x="32" y="32">
-   <properties>
-    <property name="Dialogue Type" value="none"/>
-    <property name="Event Name" value="Gutsman Battle"/>
-   </properties>
+  <object id="21" name="Trigger V1 Fight" type="Script Node: Gutsman Battle" x="-16" y="32">
    <point/>
   </object>
   <object id="24" x="176" y="144">
@@ -152,6 +136,24 @@ I'm so bored, guts!</property>
     <property name="Area" value="ACDC Square"/>
     <property name="Target" type="int" value="119"/>
     <property name="Warp" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="28" name="Face Player" type="Script Node: Face" x="16" y="224">
+   <properties>
+    <property name="Next" type="object" value="29"/>
+    <property name="Target" value="Player"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="29" name="Fight Question" type="Script Node: Question" x="16" y="192">
+   <properties>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/gutsman.png"/>
+    <property name="Next 1" type="object" value="5"/>
+    <property name="Next 2" type="object" value="4"/>
+    <property name="Text 1">Hey, guts! It's been a while, guts!
+Let's fight, please, guts!</property>
    </properties>
    <point/>
   </object>

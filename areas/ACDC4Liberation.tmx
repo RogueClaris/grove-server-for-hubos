@@ -1,62 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.6" orientation="isometric" renderorder="right-down" width="30" height="25" tilewidth="64" tileheight="32" infinite="0" nextlayerid="29" nextobjectid="252">
+<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="25" tilewidth="64" tileheight="32" infinite="0" nextlayerid="29" nextobjectid="256">
  <properties>
   <property name="Background" value="custom"/>
-  <property name="Background Animation" value="/server/assets/NebuLibsAssets/backgrounds/ACDC/ACDC.animation"/>
-  <property name="Background Texture" value="/server/assets/NebuLibsAssets/backgrounds/ACDC/ACDC Unliberated.png"/>
+  <property name="Background Animation" value="/server/assets/backgrounds/ACDC/ACDC.animation"/>
+  <property name="Background Texture" value="/server/assets/backgrounds/ACDC/ACDC Unliberated.png"/>
   <property name="Background Vel X" type="float" value="0.4"/>
   <property name="Background Vel Y" type="float" value="0.125"/>
   <property name="Forced Base HP" type="int" value="100"/>
   <property name="Honor HPMem" type="bool" value="true"/>
-  <property name="Liberation Encounters" value="/server/mods/ACDC4Liberation"/>
-  <property name="Liberation Tileset" value="/server/assets/tiles/panels.tsx"/>
+  <property name="Liberation Encounter" value="/server/mods/ACDC4Liberation"/>
   <property name="Name" value="Nebula 1"/>
   <property name="Respawn Area" value="ACDC 3"/>
   <property name="Song" value="/server/assets/songs/15 Liberate Mission.mid"/>
-  <property name="Target Phase Count" type="int" value="13"/>
+  <property name="Target Phase" type="int" value="13"/>
   <property name="Target Player Count" type="int" value="2"/>
   <property name="Waiting Area" value="ACDC 3"/>
  </properties>
- <tileset firstgid="1" source="../assets/tiles/panels.tsx"/>
+ <tileset firstgid="1" source="../assets/liberations/tiles/panels.tsx"/>
  <tileset firstgid="71" source="../assets/tiles/walkable space.tsx"/>
- <tileset firstgid="77" source="../assets/tiles/selected tile.tsx"/>
- <tileset firstgid="83" source="../assets/tiles/Beach Tiles.tsx"/>
- <tileset firstgid="133" source="../assets/tiles/Beach_Next_Area.tsx"/>
- <tileset firstgid="165" source="../assets/tiles/ACDC_Net_Tileset.tsx"/>
- <tileset firstgid="168" source="../assets/tiles/Custom_Central_Tiles.tsx"/>
- <tileset firstgid="176" source="../assets/tiles/central_arrows.tsx"/>
- <tileset firstgid="180" source="../assets/tiles/Den_Exits.tsx"/>
- <tileset firstgid="198" source="../assets/tiles/DarkLiberationTileset.tsx"/>
- <tileset firstgid="243" source="../assets/tiles/DarkLiberationRamp.tsx"/>
- <tileset firstgid="247" source="../assets/tiles/LiberationArrow.tsx"/>
- <tileset firstgid="249" source="../assets/tiles/DarkLiberationArrow.tsx"/>
- <tileset firstgid="251" source="../assets/tiles/attack indicator.tsx"/>
- <tileset firstgid="252" source="../assets/tiles/Liberation Collision.tsx"/>
- <tileset firstgid="253" source="../assets/tiles/CompressionRoadsYoka.tsx"/>
+ <tileset firstgid="77" source="../assets/tiles/Beach Tiles.tsx"/>
+ <tileset firstgid="127" source="../assets/tiles/Beach_Next_Area.tsx"/>
+ <tileset firstgid="159" source="../assets/tiles/ACDC_Net_Tileset.tsx"/>
+ <tileset firstgid="162" source="../assets/tiles/Custom_Central_Tiles.tsx"/>
+ <tileset firstgid="170" source="../assets/tiles/central_arrows.tsx"/>
+ <tileset firstgid="174" source="../assets/tiles/Den_Exits.tsx"/>
+ <tileset firstgid="192" source="../assets/tiles/DarkLiberationTileset.tsx"/>
+ <tileset firstgid="237" source="../assets/tiles/DarkLiberationRamp.tsx"/>
+ <tileset firstgid="241" source="../assets/tiles/LiberationArrow.tsx"/>
+ <tileset firstgid="243" source="../assets/tiles/DarkLiberationArrow.tsx"/>
+ <tileset firstgid="245" source="../assets/tiles/CompressionRoadsYoka.tsx"/>
+ <tileset firstgid="289" source="../assets/liberations/tiles/collision.tsx"/>
  <layer id="1" name="Tile Layer 1" width="30" height="25">
   <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,202,207,207,207,200,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,206,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,198,207,207,207,207,207,199,207,207,199,207,207,207,205,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,206,0,0,0,0,0,218,0,0,206,0,0,0,206,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,206,0,0,0,0,226,230,231,0,206,0,0,0,206,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,206,0,0,0,0,225,230,230,0,206,0,0,0,206,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,206,0,0,0,0,225,230,230,0,208,207,207,207,205,0,0,0,0,0,0,0,0,0,0,
-0,0,0,2147483897,207,207,210,0,226,231,231,230,230,230,0,0,0,0,0,206,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,225,230,230,230,230,230,0,198,207,207,207,210,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,225,230,230,230,230,230,0,206,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,225,230,230,0,0,0,0,206,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,225,230,230,0,0,0,0,218,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,213,0,0,0,0,215,219,220,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,244,207,205,0,0,0,0,214,219,219,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,218,0,0,0,0,214,219,219,0,0,0,0,0,0,0,0,198,212,0,0,0,
-0,0,0,0,0,0,0,0,0,225,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,218,0,0,0,0,
-0,0,0,0,0,0,0,0,0,225,0,0,0,0,0,0,0,226,231,231,231,0,0,0,215,219,220,0,0,0,
-0,0,0,0,0,0,0,0,0,213,0,0,0,0,0,0,0,225,230,230,230,2147483861,207,2147483866,219,219,219,2147483861,207,2147483898,
-0,0,0,0,0,0,0,0,0,206,0,0,0,0,0,0,0,225,230,230,230,0,0,0,214,219,219,0,0,0,
-0,0,0,0,0,0,0,0,0,206,0,226,231,231,0,0,0,0,213,0,0,0,0,0,0,213,0,0,0,0,
-0,0,0,0,0,0,0,0,0,208,2147483866,230,230,230,2147483861,2147483866,231,2147483861,210,0,0,0,0,0,202,210,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,225,230,230,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,196,201,201,201,194,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,200,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,192,201,201,201,201,201,193,201,201,193,201,201,201,199,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,200,0,0,0,0,0,212,0,0,200,0,0,0,200,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,200,0,0,0,0,220,224,225,0,200,0,0,0,200,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,200,0,0,0,0,219,224,224,0,200,0,0,0,200,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,200,0,0,0,0,219,224,224,0,202,201,201,201,199,0,0,0,0,0,0,0,0,0,0,
+0,0,0,2147483891,201,201,204,0,220,225,225,224,224,224,0,0,0,0,0,200,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,219,224,224,224,224,224,0,192,201,201,201,204,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,219,224,224,224,224,224,0,200,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,219,224,224,0,0,0,0,200,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,219,224,224,0,0,0,0,212,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,207,0,0,0,0,209,213,214,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,238,201,199,0,0,0,0,208,213,213,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,212,0,0,0,0,208,213,213,0,0,0,0,0,0,0,0,192,206,0,0,0,
+0,0,0,0,0,0,0,0,0,219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,212,0,0,0,0,
+0,0,0,0,0,0,0,0,0,219,0,0,0,0,0,0,0,220,225,225,225,0,0,0,209,213,214,0,0,0,
+0,0,0,0,0,0,0,0,0,207,0,0,0,0,0,0,0,219,224,224,224,2147483855,201,2147483860,213,213,213,2147483855,201,2147483892,
+0,0,0,0,0,0,0,0,0,200,0,0,0,0,0,0,0,219,224,224,224,0,0,0,208,213,213,0,0,0,
+0,0,0,0,0,0,0,0,0,200,0,220,225,225,0,0,0,0,207,0,0,0,0,0,0,207,0,0,0,0,
+0,0,0,0,0,0,0,0,0,202,2147483860,224,224,224,2147483855,2147483860,225,2147483855,204,0,0,0,0,0,196,204,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,219,224,224,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -71,6 +68,7 @@
   <object id="43" type="Dark Hole" gid="3" x="288" y="256" width="50" height="30">
    <properties>
     <property name="Direction" value="Down Left"/>
+    <property name="Encounter" value="/server/mods/BigBrute"/>
     <property name="Spawns" value="BigBrute"/>
    </properties>
   </object>
@@ -81,34 +79,15 @@
     <property name="Direction" value="Down Left"/>
    </properties>
   </object>
-  <object id="57" name="Spawn" type="Spawn Point" x="784" y="560">
+  <object id="57" name="Spawn Point" x="784" y="560">
    <properties>
-    <property name="Next Spawn" type="int" value="110"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="67" name="Point of Interest" type="Point of Interest" x="592" y="560">
-   <properties>
-    <property name="isBoss" type="bool" value="false"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="68" name="Point of Interest" type="Point of Interest" x="400" y="656">
-   <properties>
-    <property name="isBoss" type="bool" value="false"/>
+    <property name="Next Spawn" type="object" value="110"/>
    </properties>
    <point/>
   </object>
   <object id="70" name="Point of Interest" type="Point of Interest" x="304" y="336">
    <properties>
     <property name="Gate ID" type="int" value="1"/>
-    <property name="isBoss" type="bool" value="false"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="71" name="Point of Interest" type="Point of Interest" x="400" y="176">
-   <properties>
-    <property name="isBoss" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
@@ -118,15 +97,15 @@
    </properties>
   </object>
   <object id="81" type="Indestructible Panel" gid="4" x="384" y="128" width="50" height="30"/>
-  <object id="110" name="Spawn 2" type="Spawn Point" x="816" y="592">
+  <object id="110" x="816" y="592">
    <properties>
-    <property name="Next Spawn" type="int" value="111"/>
+    <property name="Next Spawn" type="object" value="111"/>
    </properties>
    <point/>
   </object>
-  <object id="111" name="Spawn 3" type="Spawn Point" x="816" y="528">
+  <object id="111" x="816" y="528">
    <properties>
-    <property name="Next Spawn" type="int" value="57"/>
+    <property name="Next Spawn" type="object" value="57"/>
    </properties>
    <point/>
   </object>
@@ -172,6 +151,7 @@
   <object id="148" type="Dark Hole" gid="3" x="384" y="640" width="50" height="30">
    <properties>
     <property name="Direction" value="Down Right"/>
+    <property name="Encounter" value="/server/mods/BigBrute"/>
     <property name="Spawns" value="BigBrute"/>
    </properties>
   </object>
@@ -183,25 +163,25 @@
    </properties>
   </object>
   <object id="206" type="Dark Panel" gid="1" x="544" y="544" width="50" height="30"/>
-  <object id="227" type="Panel Gate" gid="6" x="288" y="320" width="50" height="30">
+  <object id="227" type="Gate Panel" gid="6" x="288" y="320" width="50" height="30">
    <properties>
     <property name="Gate Key" type="int" value="1"/>
    </properties>
   </object>
-  <object id="229" type="Panel Gate" gid="6" x="320" y="320" width="50" height="30">
+  <object id="229" type="Gate Panel" gid="6" x="320" y="320" width="50" height="30">
    <properties>
     <property name="Gate Key" type="int" value="1"/>
    </properties>
   </object>
-  <object id="230" type="Panel Gate" gid="6" x="256" y="320" width="50" height="30">
+  <object id="230" type="Gate Panel" gid="6" x="256" y="320" width="50" height="30">
    <properties>
     <property name="Gate Key" type="int" value="1"/>
    </properties>
   </object>
-  <object id="248" type="Panel Gate" gid="252" x="384" y="96" width="50" height="30"/>
   <object id="250" type="Dark Hole" gid="3" x="576" y="544" width="50" height="30">
    <properties>
-    <property name="Direction" value="Down Right"/>
+    <property name="Direction" value="Down Left"/>
+    <property name="Encounter" value="/server/mods/BigBrute"/>
     <property name="Spawns" value="BigBrute"/>
    </properties>
   </object>
@@ -226,7 +206,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,244,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,238,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -256,7 +236,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,244,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,238,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -286,7 +266,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,244,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,238,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -315,9 +295,9 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-226,231,231,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-225,230,231,2147483861,246,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-225,230,230,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+220,225,225,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+219,224,225,2147483855,240,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+219,224,224,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -331,12 +311,6 @@
 </data>
  </layer>
  <objectgroup id="28" name="Copy of Copy of Copy of Object Layer 2" offsetx="0" offsety="-64">
-  <object id="69" name="Point of Interest" type="Point of Interest" x="80" y="432">
-   <properties>
-    <property name="isBoss" type="bool" value="false"/>
-   </properties>
-   <point/>
-  </object>
   <object id="30" type="Dark Panel" gid="1" x="32" y="416" width="50" height="30"/>
   <object id="31" type="Item Panel" gid="2" x="32" y="384" width="50" height="30">
    <properties>

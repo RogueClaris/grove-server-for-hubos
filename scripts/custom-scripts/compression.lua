@@ -23,6 +23,10 @@ Net:on("player_move", function(event)
   end
 end)
 
+Net:on("player_area_transfer", function(event)
+  compression_script.decompress(event.player_id)
+end)
+
 function compression_script.is_colliding(collider, x, y, z)
   return collider.z == z and
       x > collider.x and x < collider.x + collider.width and
@@ -72,7 +76,12 @@ Net:on("player_disconnect", function(event)
   compression_script.compressed_players[player_id] = nil
 end)
 
-for _, area_id in ipairs(Net.list_areas()) do
+function compression_script.load_area(area_id)
+  if compression_script.colliders[area_id] then
+    -- already loaded
+    return
+  end
+
   compression_script.colliders[area_id] = {}
 
   for _, object_id in ipairs(Net.list_objects(area_id)) do
@@ -82,6 +91,10 @@ for _, area_id in ipairs(Net.list_areas()) do
       table.insert(compression_script.colliders[area_id], object)
     end
   end
+end
+
+function compression_script.unload_area(area_id)
+  compression_script.colliders[area_id] = nil
 end
 
 return compression_script
