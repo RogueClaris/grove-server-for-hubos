@@ -32,9 +32,9 @@
 ---@alias HiddenThingMap table<string, table<any, HiddenThingData>>
 
 ---@class HiddenThingMaps
----@field OBJECTS HiddenThingMap
----@field ACTORS HiddenThingMap
----@field PLAYERS HiddenThingMap
+---@field OBJECT HiddenThingMap
+---@field ACTOR HiddenThingMap
+---@field PLAYER HiddenThingMap
 
 local PlayerData = {}
 
@@ -53,12 +53,59 @@ local function create_player_data()
     items = {},
     money = 0,
     event_data = {},
-    hidden_things = { OBJECTS = {}, ACTORS = {}, PLAYERS = {} },
+    hidden_things = { OBJECT = {}, ACTOR = {}, PLAYER = {} },
     login_location = nil,
     whitelist_path = nil,
     io_whitelist_path = nil,
     joins = 0
   }
+end
+
+--- inspired by lodash's _.set()
+---
+--- `set(object, key1, key2, ..., value)`
+---
+--- similar to `object[key1][key2][key3] = value`, but without indexing errors
+local function set(t, ...)
+  local o = t
+
+  local total_varargs = select("#", ...)
+
+  for i = 1, total_varargs - 2 do
+    local key = select(i, ...)
+    local next_o = o[key]
+
+    if not next_o then
+      next_o = {}
+      o[key] = next_o
+    end
+
+    o = next_o
+  end
+
+  o[select(total_varargs - 1, ...)] = select(total_varargs, ...)
+end
+
+--- inspired by lodash's _.get()
+---
+--- `get(object, key1, key2, ...)`
+---
+--- similar to `object[key1][key2][key3]`, but without indexing errors
+local function get(t, ...)
+  local o = t
+
+  local total_varargs = select("#", ...)
+
+  for i = 1, total_varargs do
+    if not o then
+      return nil
+    end
+
+    local key = select(i, ...)
+    o = o[key]
+  end
+
+  return o
 end
 
 ---@param player_id Net.ActorId
@@ -168,25 +215,32 @@ PlayerData.update_player_money = function(player_id, money)
 end
 
 PlayerData.is_target_hidden = function(player_id, area_id, target_id, target_type)
+  -- convert to string for the json lib
+  target_id = tostring(target_id)
+
   local data = PlayerData.get_player_data(player_id)
   local target_list
   if target_type == "ACTOR" then
-    target_list = data.hidden_things.ACTORS
+    target_list = data.hidden_things.ACTOR
   elseif target_type == "OBJECT" then
-    target_list = data.hidden_things.OBJECTS
+    target_list = data.hidden_things.OBJECT
   else
     print("[PlayerData] Value of argument 'target_type' was invalid in function 'is_target_hidden'.")
     return nil
   end
 
   local result = false
-  local target = target_list[area_id][target_id]
+  local target = get(target_list, area_id, target_id)
   if target ~= nil and target.hidden == true then result = true end
 
   return result
 end
 
 PlayerData.reveal_target_to_player = function(player_id, area_id, target_id, target_type, revert_permanence)
+  -- convert to string for the json lib
+  local raw_target_id = target_id
+  target_id = tostring(target_id)
+
   -- Not hidden, don't need to reveal through this function
   if PlayerData.is_target_hidden(player_id, area_id, target_id, target_type) == false then return end
 
@@ -196,20 +250,19 @@ PlayerData.reveal_target_to_player = function(player_id, area_id, target_id, tar
   end
 
   local data = PlayerData.get_player_data(player_id)
+  local target
 
   if target_type == "ACTOR" then
-    target = data.hidden_things.ACTORS[area_id][target_id]
+    target = data.hidden_things.ACTOR[area_id][target_id]
 
-    Net.include_actor_for_player(player_id, target_id)
+    Net.include_actor_for_player(player_id, raw_target_id)
   elseif target_type == "OBJECT" then
     local object = Net.get_object_by_id(area_id, target_id)
 
-    target = data.hidden_things.OBJECTS[area_id][target_id]
+    target = data.hidden_things.OBJECT[area_id][target_id]
 
     Net.include_object_for_player(player_id, object.id)
   end
-
-  local target;
 
   target.hidden = false
 
@@ -226,6 +279,10 @@ PlayerData.hide_target_from_player = function(player_id, area_id, target_id, tar
   --   return
   -- end
 
+  -- convert to string for the json lib
+  local raw_target_id = target_id
+  target_id = tostring(target_id)
+
   if target_type ~= "ACTOR" and target_type ~= "OBJECT" then
     print("[PlayerData] Value of argument 'target_type' was invalid in function 'hide_target_from_player'.")
     return
@@ -240,7 +297,7 @@ PlayerData.hide_target_from_player = function(player_id, area_id, target_id, tar
     hidden = true,
     permanent = hide_permanently,
     hide_type = target_type,
-    id = target_id
+    id = raw_target_id
   }
 
   if target_type == "OBJECT" then
@@ -257,10 +314,10 @@ PlayerData.hide_target_from_player = function(player_id, area_id, target_id, tar
 
     Net.exclude_object_for_player(player_id, object.id)
   elseif target_type == "ACTOR" then
-    Net.exclude_actor_for_player(player_id, target_id)
+    Net.exclude_actor_for_player(player_id, raw_target_id)
   end
 
-  data.hidden_things[target_type][area_id][target_id] = hide_data
+  set(data.hidden_things, target_type, area_id, target_id, hide_data)
 
   PlayerData.save_player_data(player_id)
 end
@@ -324,21 +381,9 @@ Net:on("player_connect", function(event)
           Net.give_player_item(event.player_id, item_id, count)
         end
 
-        local function setup_areas(target_list)
-          local area_list = Net.list_areas()
-          for _, area in ipairs(area_list) do
-            target_list[area] = {}
-          end
-          return target_list
-        end
-
         if loaded_data.joins == 1 then
           Net.set_player_base_health(event.player_id, 100)
           Net.set_player_health(event.player_id, 100)
-
-          data.hidden_things.ACTORS = setup_areas(data.hidden_things.ACTORS)
-          data.hidden_things.OBJECTS = setup_areas(data.hidden_things.OBJECTS)
-          -- data.hidden_things.PLAYERS = setup_areas(data.hidden_things.PLAYERS)
 
           data.cards = {}
           data.augments = {}
@@ -397,17 +442,28 @@ Net:on("player_disconnect", function(event)
   DataStorage.unload(Net.get_player_secret(player_id))
 end)
 
-Net:on("player_area_transfer", function(event)
+
+local function restore_area_state(event)
   local player_id = event.player_id
   local data = PlayerData.get_player_data(player_id)
-
   local area = Net.get_player_area(player_id)
-  local target_list = data.hidden_things.ACTORS
-  for _, target in ipairs(target_list) do
+
+  local target_list = data.hidden_things.ACTOR[area] or {}
+  for _, target in pairs(target_list) do
     if target.hidden == true then
 
     end
   end
-end)
+
+  local target_list = data.hidden_things.OBJECT[area] or {}
+  for _, target in pairs(target_list) do
+    if target.hidden == true then
+      Net.exclude_object_for_player(player_id, target.id)
+    end
+  end
+end
+
+Net:on("player_area_transfer", restore_area_state)
+Net:on("player_join", restore_area_state)
 
 return PlayerData
