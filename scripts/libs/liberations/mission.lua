@@ -470,7 +470,7 @@ end
 ---@field gate_panels Liberation.PanelObject[]
 ---@field panel_gid_map table<string, number[]>
 ---@field collision_template Net.ObjectOptions
----@field events Net.EventEmitter "money" { player_id, money }
+---@field events Net.EventEmitter "money" { player_id, money }, "player_kicked" { player_id, success }
 ---@field package spawn_positions Net.Object[]
 ---@field package net_listeners [string, fun()][]
 ---@field package updating boolean
