@@ -1,0 +1,8 @@
+imagePath="bg_lower_compressed.png"
+
+animation state="BG"
+frame duration="0.005" x="0" y="0" w="240" h="160" originx="0" originy="0" flipx="0" flipy="0"
+frame duration="0.08" x="240" y="0" w="240" h="160" originx="0" originy="0" flipx="0" flipy="0"
+frame duration="0.08" x="0" y="160" w="240" h="160" originx="0" originy="0" flipx="0" flipy="0"
+frame duration="0.08" x="240" y="160" w="240" h="160" originx="0" originy="0" flipx="0" flipy="0"
+frame duration="0.08" x="0" y="320" w="240" h="160" originx="0" originy="0" flipx="0" flipy="0"

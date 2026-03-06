@@ -381,37 +381,37 @@ Net:on("player_connect", function(event)
           Net.give_player_item(event.player_id, item_id, count)
         end
 
-        if loaded_data.joins == 1 then
-          Net.set_player_base_health(event.player_id, 100)
-          Net.set_player_health(event.player_id, 100)
-
-          data.cards = {}
-          data.augments = {}
-
-          Net.give_player_block(event.player_id, "BattleNetwork6.Program13.UnderShirt", "white", 1)
-
-          Net.give_player_card(event.player_id, "BattleNetwork6.CannonBase", "*", -1)
-
-          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.001", "A", 2) -- Cannon A,     40 dmg each
-          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.001", "B", 2) -- Cannon B,     40 dmg each
-          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.002", "L", 1) -- HiCannon L,   100 dmg
-          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.004", "*", 2) -- AirShot *,    20 damage each
-          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.005", "S", 2) -- Vulcan1 S,    10~30 damage each
-          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.009", "L", 4) -- Spreader L,   30 AoE damage each
-          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.018", "L", 2) -- YoYo L,       50 damage per hit, max 150 per chip
-          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.058", "B", 4) -- MiniBomb B,   40 dmg each
-          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.070", "S", 2) -- Sword S,      80 damage each
-          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.071", "S", 1) -- WideSword S,  80 damage
-          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.072", "S", 1) -- LongSword S,  80 damage
-          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.138", "*", 2) -- RockCube *,   200 damage each, if pushed
-          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.156", "*", 2) -- Recov10 *,    +10 HP each
-          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.157", "*", 1) -- Recov30 *,    +30 HP
-          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.164", "*", 2) -- PanlGrab *,   10 damage, if blocked
-        end
-
         if type(loaded_data.money) == "number" then
           Net.set_player_money(event.player_id, loaded_data.money)
         end
+
+        if loaded_data.joins > 1 then return end
+
+        Net.set_player_base_health(event.player_id, 100)
+        Net.set_player_health(event.player_id, 100)
+
+        data.cards = {}
+        data.augments = {}
+
+        Net.give_player_block(event.player_id, "BattleNetwork6.Program13.UnderShirt", "white", 1)
+
+        Net.give_player_card(event.player_id, "BattleNetwork6.CannonBase", "*", -1)
+
+        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.001", "A", 2) -- Cannon A,     40 dmg each
+        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.001", "B", 2) -- Cannon B,     40 dmg each
+        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.002", "L", 1) -- HiCannon L,   100 dmg
+        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.004", "*", 2) -- AirShot *,    20 damage each
+        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.005", "S", 2) -- Vulcan1 S,    10~30 damage each
+        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.009", "L", 4) -- Spreader L,   30 AoE damage each
+        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.018", "L", 2) -- YoYo L,       50 damage per hit, max 150 per chip
+        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.058", "B", 4) -- MiniBomb B,   40 dmg each
+        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.070", "S", 2) -- Sword S,      80 damage each
+        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.071", "S", 1) -- WideSword S,  80 damage
+        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.072", "S", 1) -- LongSword S,  80 damage
+        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.138", "*", 2) -- RockCube *,   200 damage each, if pushed
+        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.156", "*", 2) -- Recov10 *,    +10 HP each
+        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.157", "*", 1) -- Recov30 *,    +30 HP
+        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.164", "*", 2) -- PanlGrab *,   10 damage, if blocked
       end)
 end)
 
@@ -451,11 +451,11 @@ local function restore_area_state(event)
   local target_list = data.hidden_things.ACTOR[area] or {}
   for _, target in pairs(target_list) do
     if target.hidden == true then
-
+      Net.exclude_actor_for_player(player_id, target.id)
     end
   end
 
-  local target_list = data.hidden_things.OBJECT[area] or {}
+  target_list = data.hidden_things.OBJECT[area] or {}
   for _, target in pairs(target_list) do
     if target.hidden == true then
       Net.exclude_object_for_player(player_id, target.id)

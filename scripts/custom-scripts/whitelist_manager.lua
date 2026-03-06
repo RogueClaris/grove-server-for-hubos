@@ -127,15 +127,15 @@ plugin.append_to_whitelist_for_player = function(player_id, additional_content)
     return false
 end
 
-Net:on("player_connect", function(event)
-    return Async.create_scope(function()
-        local player_id = event.player_id
+-- Net:on("player_connect", function(event)
+--     return Async.create_scope(function()
+--         local player_id = event.player_id
 
-        local player_memory = player_data.get_player_data(player_id)
+--         local player_memory = player_data.get_player_data(player_id)
 
-        Net.set_player_restrictions(player_id, player_memory.whitelist_path)
-    end)
-end)
+--         Net.set_player_restrictions(player_id, player_memory.whitelist_path)
+--     end)
+-- end)
 
 Net:on("player_request", function(event)
     local player_id = event.player_id

@@ -44,16 +44,16 @@ Net:on("actor_interaction", function(event)
     handle_help_text(button, player_id)
 end)
 
-Net:on("player_area_transfer", function(event)
-    local player_id = event.player_id
-    local area_id = Net.get_player_area(player_id)
-    local name = Net.get_area_name(area_id)
+-- Net:on("player_area_transfer", function(event)
+--     local player_id = event.player_id
+--     local area_id = Net.get_player_area(player_id)
+--     local name = Net.get_area_name(area_id)
 
-    local player_memory = player_data.get_player_data(player_id)
-    if name == "ACDC 1" and player_memory.event_data["ACDC1"] then
-        player_memory.event_data["ACDC1"] = "SEEN"
-        player_memory.event_data["LookACDC1"] = true
-    end
-end)
+--     local player_memory = player_data.get_player_data(player_id)
+--     if name == "ACDC 1" and player_memory.event_data["ACDC1"] then
+--         player_memory.event_data["ACDC1"] = "SEEN"
+--         player_memory.event_data["LookACDC1"] = true
+--     end
+-- end)
 
 return plugin

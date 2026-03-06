@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="isometric" renderorder="right-down" width="30" height="32" tilewidth="64" tileheight="32" infinite="0" nextlayerid="20" nextobjectid="166">
+<map version="1.8" tiledversion="1.8.6" orientation="isometric" renderorder="right-down" width="30" height="32" tilewidth="64" tileheight="32" infinite="0" nextlayerid="20" nextobjectid="206">
  <properties>
   <property name="Background" value="custom"/>
   <property name="Background Animation" value="/server/assets/backgrounds/ACDC/ACDC.animation"/>
@@ -308,7 +308,7 @@
    <properties>
     <property name="Asset" value="bots/normal-navi-bn4_brown"/>
     <property name="Direction" value="Down Left"/>
-    <property name="On Interact" type="object" value="120"/>
+    <property name="On Interact" type="object" value="166"/>
     <property name="On Load" type="bool" value="true"/>
     <property name="Solid" type="bool" value="true"/>
    </properties>
@@ -367,7 +367,7 @@
     <property name="On Warp" type="object" value="95"/>
    </properties>
   </object>
-  <object id="51" name="Tea Prep" type="Script Node: Spawn Bot" x="213" y="515">
+  <object id="51" name="Tea Prep" type="Script Node: Spawn Bot" x="198.5" y="513.5">
    <properties>
     <property name="Asset" value="bots/female-navi-exe4_orange"/>
     <property name="Direction" value="Down Left"/>
@@ -424,9 +424,11 @@
   </object>
   <object id="57" name="Checkpoint Prog" type="Script Node: Spawn Bot" x="304" y="504">
    <properties>
-    <property name="Asset" value="prog-gold"/>
+    <property name="Asset" value="bots/prog-gold"/>
     <property name="Direction" value="Down Right"/>
     <property name="On Interact" type="object" value="160"/>
+    <property name="On Load" type="bool" value="true"/>
+    <property name="Solid" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
@@ -563,9 +565,9 @@
     <property name="Item 1" type="object" value="39"/>
     <property name="Item 2" type="object" value="102"/>
     <property name="Item 3" type="object" value="103"/>
-    <property name="Leave Text" value="THANKS FOR VISITING!"/>
+    <property name="Leave Text" value="Thanks for visiting!"/>
     <property name="Mug Animation" value="mugs/shared_mug.animation"/>
-    <property name="Mug Texture" value="mugs/prog.png"/>
+    <property name="Mug Texture" value="mugs/normal-navi-bn4_brown.png"/>
     <property name="Next" type="object" value="0"/>
     <property name="Purchase Question" value="READY TO PURCHASE?"/>
     <property name="Text" value="SEE ANYTHING YOU LIKE?"/>
@@ -588,7 +590,7 @@
     <property name="On Interact" type="object" value="56"/>
    </properties>
   </object>
-  <object id="155" gid="454" x="217.5" y="566.5" width="33" height="54"/>
+  <object id="155" gid="454" x="239.273" y="620.727" width="33" height="54"/>
   <object id="156" name="Face Player" type="Script Node: Face" x="256" y="288">
    <properties>
     <property name="Next" type="object" value="93"/>
@@ -629,7 +631,7 @@
    </properties>
    <point/>
   </object>
-  <object id="164" name="Back Off" type="Script Node: Message" x="80" y="464">
+  <object id="164" name="Back Off" type="Script Node: Message" x="64" y="512">
    <properties>
     <property name="Mug Animation" value="mugs/shared_mug.animation"/>
     <property name="Mug Texture" value="mugs/female-navi-exe5_purple.png"/>
@@ -637,11 +639,188 @@
    </properties>
    <point/>
   </object>
-  <object id="165" name="Back Off" type="Script Node: Message" x="208" y="464">
+  <object id="165" name="Back Off" type="Script Node: Message" x="224" y="512">
    <properties>
     <property name="Mug Animation" value="mugs/shared_mug.animation"/>
     <property name="Mug Texture" value="mugs/female-navi-exe4_orange.png"/>
     <property name="Text 1" value="Gosh, you need to stay back! You could get hurt back here, you know?"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="166" name="Back Off" type="Script Node: Message" x="145.5" y="464.5">
+   <properties>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/normal-navi-bn4_brown.png"/>
+    <property name="Text 1" value="Woah there, fella, you can't shop from this side!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="167" gid="353" x="74" y="534" width="35" height="45">
+   <properties>
+    <property name="Solid" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="176" gid="355" x="206" y="527" width="35" height="45">
+   <properties>
+    <property name="Solid" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="178" gid="353" x="176" y="532" width="35" height="45">
+   <properties>
+    <property name="Solid" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="179" gid="355" x="103.5" y="528.5" width="35" height="45">
+   <properties>
+    <property name="Solid" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="182" gid="353" x="126.5" y="533" width="35" height="45">
+   <properties>
+    <property name="Solid" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="183" gid="355" x="156" y="527.5" width="35" height="45">
+   <properties>
+    <property name="Solid" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="184" name="@TheRealHeel on X, the Everything App" type="Script Node: Spawn Bot" x="416.047" y="502.016">
+   <properties>
+    <property name="Asset" value="bots/heel-navi-exe4_purple"/>
+    <property name="Direction" value="Down Left"/>
+    <property name="On Interact" type="object" value="187"/>
+    <property name="On Load" type="bool" value="true"/>
+    <property name="Solid" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="185" name="Face Player" type="Script Node: Face" x="448.5" y="528.5">
+   <properties>
+    <property name="Next" type="object" value="201"/>
+    <property name="Target" value="Player"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="187" name="What do you want? 1" type="Script Node: Message" x="447" y="503">
+   <properties>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/heel-navi-bn3.png"/>
+    <property name="Next 1" type="object" value="185"/>
+    <property name="Text 1" value="Huh?"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="188" name="Grokspel Follower Choice" type="Script Node: Question" x="448" y="576">
+   <properties>
+    <property name="Mug" value="Player"/>
+    <property name="Next 1" type="object" value="190"/>
+    <property name="Next 2" type="object" value="189"/>
+    <property name="Text 1" value="Tell him the news?"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="189" name="Yeah, tell him" type="Script Node: Message" x="416" y="576">
+   <properties>
+    <property name="Mug" value="Player"/>
+    <property name="Next 1" type="object" value="195"/>
+    <property name="Text 1" value="So, uh. Did you hear the latest about Shaun these days?"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="190" name="Nah, not worth it." type="Script Node: Message" x="480" y="576">
+   <properties>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/heel-navi-exe4_purple.png"/>
+    <property name="Next 1" type="object" value="193"/>
+    <property name="Text 1" value="Tch. Quit wasting my time, then!"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="193" name="Mockin' Normies" type="Script Node: Message" x="480" y="608">
+   <properties>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/heel-navi-bn3.png"/>
+    <property name="Text 1" value="I've got normies to mock, and I know just the image prompt..."/>
+   </properties>
+   <point/>
+  </object>
+  <object id="195" name="Doesn't Recognize Name" type="Script Node: Message" x="416" y="608">
+   <properties>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/heel-navi-exe4_purple.png"/>
+    <property name="Next 1" type="object" value="196"/>
+    <property name="Text 1" value="Shaun... Shaun... Doesn't ring a bell."/>
+   </properties>
+   <point/>
+  </object>
+  <object id="196" name="You know, Lord Gospel?" type="Script Node: Message" x="448" y="608">
+   <properties>
+    <property name="Mug" value="Player"/>
+    <property name="Next 1" type="object" value="199"/>
+    <property name="Text 1" value="You know, Lord Gospel? He got outed as some kid with no friends."/>
+   </properties>
+   <point/>
+  </object>
+  <object id="199" name="Rings a Bell, but... 1" type="Script Node: Message" x="448" y="640">
+   <properties>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/heel-navi-exe4_purple.png"/>
+    <property name="Next 1" type="object" value="202"/>
+    <property name="Text 1" value="Oh yeah, that runt..."/>
+   </properties>
+   <point/>
+  </object>
+  <object id="200" name="Sound: No" type="Script Node: Play Sound" x="448" y="704">
+   <properties>
+    <property name="Next 1" type="object" value="203"/>
+    <property name="Sound" value="sfx/no.ogg"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="201" name="What do you want? 2" type="Script Node: Message" x="449.375" y="556.125">
+   <properties>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/heel-navi-exe4_purple.png"/>
+    <property name="Next 1" type="object" value="188"/>
+    <property name="Text 1" value="What do YOU want, normie?"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="202" name="Rings a Bell, but... 2" type="Script Node: Message" x="448" y="672">
+   <properties>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/heel-navi-bn3.png"/>
+    <property name="Next 1" type="object" value="200"/>
+    <property name="Text 1" value="Hey @Grokspel is this real?"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="203" name="Grokspel Text 1" type="Script Node: Message" x="448" y="736">
+   <properties>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/grokspelbot_mug.png"/>
+    <property name="Next 1" type="object" value="204"/>
+    <property name="Text 1" value="No."/>
+   </properties>
+   <point/>
+  </object>
+  <object id="204" name="Rings a Bell, but... 2" type="Script Node: Message" x="448" y="768">
+   <properties>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/heel-navi-bn3.png"/>
+    <property name="Next 1" type="object" value="205"/>
+    <property name="Text 1" value="Didn't think so. Thanks, @Grokspel"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="205" name="Grokspel Text 2" type="Script Node: Message" x="448" y="800">
+   <properties>
+    <property name="Mug Animation" value="mugs/shared_mug.animation"/>
+    <property name="Mug Texture" value="mugs/grokspelbot_mug.png"/>
+    <property name="Text 1">Of course, @TheRealHeel.
+
+One buggit user says: delete yourself.</property>
    </properties>
    <point/>
   </object>

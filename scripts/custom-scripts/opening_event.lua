@@ -4,6 +4,8 @@ local ezshortcuts = require('scripts/custom-scripts/ezshortcuts')
 
 local eventing_players = {}
 
+-- local ScriptNodes = require("scripts/libs/script_nodes")
+
 Net:on("player_connect", function(event)
     local player_id = event.player_id
     local data = player_data.get_player_data(player_id)
@@ -15,6 +17,23 @@ Net:on("player_connect", function(event)
     local textbox_options = {
         mug = Net.get_player_mugshot(player_id)
     }
+
+    -- local instancer = ScriptNodes:instancer()
+    -- local instance_id = instancer:create_instance()
+    -- local area_id = instancer:clone_area_to_instance(instance_id, "default") --[[@as string]]
+
+    -- Net.transfer_player(player_id, area_id, false)
+
+    -- local sprite = Net.create_sprite({
+    --     player_id = player_id,
+    --     parent_id = "hud",
+    --     texture_path = "/server/assets/tiles/mmbn title gaiden.png",
+    --     animation_path = "/server/assets/tiles/order_points.animation",
+    --     animation = "default",
+    --     layer = -10,
+    -- })
+
+    -- Net.fade_player_camera(event.player_id, { r = 0, g = 0, b = 0, a = 0 }, 1)
 
     Net.hide_hud(player_id)
     Net.lock_player_input(player_id)
@@ -35,21 +54,21 @@ Net:on("player_connect", function(event)
     end)
 end)
 
-Net:on("player_area_transfer", function(event)
-    if not eventing_players[event.player_id] then
-        return
-    end
+-- Net:on("player_area_transfer", function(event)
+--     if not eventing_players[event.player_id] then
+--         return
+--     end
 
-    eventing_players[event.player_id] = false
+--     eventing_players[event.player_id] = false
 
-    local x, y, z = Net.get_player_position_multi(event.player_id)
-    player_data.set_event_flag(event.player_id, "LOOK_AROUND", true)
+--     local x, y, z = Net.get_player_position_multi(event.player_id)
+--     player_data.set_event_flag(event.player_id, "LOOK_AROUND", true)
 
-    ezshortcuts.create_checkpoint(event.player_id, x, y, z, false)
+--     ezshortcuts.create_checkpoint(event.player_id, x, y, z, false)
 
-    Net.fade_player_camera(event.player_id, { r = 0, g = 0, b = 0, a = 0 }, 1)
-    Net.unlock_player_input(event.player_id)
-end)
+--     Net.fade_player_camera(event.player_id, { r = 0, g = 0, b = 0, a = 0 }, 1)
+--     Net.unlock_player_input(event.player_id)
+-- end)
 
 Net:on("player_disconnect", function(event)
     eventing_players[event.player_id] = false

@@ -1,0 +1,7 @@
+imagePath="C:/Users/seven/OneDrive/Desktop/bg_upper.png"
+
+animation state="BG"
+frame duration="0.1" x="7" y="5" w="240" h="160" originx="0" originy="0" flipx="0" flipy="0"
+frame duration="0.1" x="264" y="6" w="240" h="160" originx="0" originy="0" flipx="0" flipy="0"
+frame duration="0.1" x="7" y="175" w="240" h="160" originx="0" originy="0" flipx="0" flipy="0"
+frame duration="0.1" x="265" y="175" w="240" h="160" originx="0" originy="0" flipx="0" flipy="0"
