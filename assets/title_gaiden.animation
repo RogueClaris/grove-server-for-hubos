@@ -1,4 +1,5 @@
-imagePath="C:/Users/seven/OneDrive/Desktop/hubos_server/assets/title_gaiden.png"
+imagePath="C:\Users\seven\OneDrive\Desktop\hubos_server\assets\title_gaiden.png"
 
 animation state="DEFAULT"
-frame duration="0.005" x="0" y="0" w="240" h="160" originx="112" originy="98" flipx="0" flipy="0"
+frame duration="0.005" x="0" y="0" w="240" h="160" originx="0" originy="25" flipx="0" flipy="0"
+point label="PRESS_START" x="120" y="140"

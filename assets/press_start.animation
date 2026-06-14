@@ -1,0 +1,4 @@
+imagePath="C:\Users\seven\OneDrive\Desktop\hubos_server\assets\press_start.png"
+
+animation state="DEFAULT"
+frame duration="1" x="0" y="0" w="87" h="11" originx="42" originy="0" flipx="0" flipy="0"

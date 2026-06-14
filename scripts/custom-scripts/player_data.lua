@@ -16,6 +16,8 @@
 ---@field whitelist_path string?
 ---@field io_whitelist_path string?
 ---@field joins number
+---@field cards table<string, string, number>
+---@field augments table<string, string, number>
 
 ---@class PlayerHealthData
 ---@field navi_current number
@@ -57,7 +59,9 @@ local function create_player_data()
     login_location = nil,
     whitelist_path = nil,
     io_whitelist_path = nil,
-    joins = 0
+    joins = 0,
+    cards = {},
+    augments = {}
   }
 end
 
@@ -377,6 +381,54 @@ Net:on("player_connect", function(event)
   -- load async on join to avoid freezing on first read
   DataStorage.load(Net.get_player_secret(event.player_id), create_player_data)
       .and_then(function(loaded_data)
+        if loaded_data.joins <= 1 then
+          Net.set_player_base_health(event.player_id, 100)
+          Net.set_player_health(event.player_id, 100)
+
+          data.cards = {
+            { id = "BattleNetwork6.CannonBase",           code = "*", amount = -1 },
+            { id = "BattleNetwork6.Class01.Standard.001", code = "A", amount = 2 },
+            { id = "BattleNetwork6.Class01.Standard.001", code = "B", amount = 2 },
+            { id = "BattleNetwork6.Class01.Standard.002", code = "L", amount = 1 },
+            { id = "BattleNetwork6.Class01.Standard.004", code = "*", amount = 2 },
+            { id = "BattleNetwork6.Class01.Standard.005", code = "S", amount = 2 },
+            { id = "BattleNetwork6.Class01.Standard.009", code = "L", amount = 4 },
+            { id = "BattleNetwork6.Class01.Standard.018", code = "L", amount = 2 },
+            { id = "BattleNetwork6.Class01.Standard.058", code = "B", amount = 4 },
+            { id = "BattleNetwork6.Class01.Standard.070", code = "S", amount = 2 },
+            { id = "BattleNetwork6.Class01.Standard.071", code = "S", amount = 1 },
+            { id = "BattleNetwork6.Class01.Standard.072", code = "S", amount = 1 },
+            { id = "BattleNetwork6.Class01.Standard.138", code = "*", amount = 2 },
+            { id = "BattleNetwork6.Class01.Standard.156", code = "*", amount = 2 },
+            { id = "BattleNetwork6.Class01.Standard.157", code = "*", amount = 1 },
+            { id = "BattleNetwork6.Class01.Standard.164", code = "*", amount = 2 }
+          }
+
+          data.augments = {
+            { id = "BattleNetwork6.Program13.UnderShirt", color = "white", amount = 1 }
+          }
+
+          Net.give_player_block(event.player_id, "BattleNetwork6.Program13.UnderShirt", "white", 1)
+
+          Net.give_player_card(event.player_id, "BattleNetwork6.CannonBase", "*", -1)
+
+          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.001", "A", 2) -- Cannon A,     40 dmg each
+          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.001", "B", 2) -- Cannon B,     40 dmg each
+          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.002", "L", 1) -- HiCannon L,   100 dmg
+          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.004", "*", 2) -- AirShot *,    20 damage each
+          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.005", "S", 2) -- Vulcan1 S,    10~30 damage each
+          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.009", "L", 4) -- Spreader L,   30 AoE damage each
+          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.018", "L", 2) -- YoYo L,       50 damage per hit, max 150 per chip
+          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.058", "B", 4) -- MiniBomb B,   40 dmg each
+          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.070", "S", 2) -- Sword S,      80 damage each
+          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.071", "S", 1) -- WideSword S,  80 damage
+          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.072", "S", 1) -- LongSword S,  80 damage
+          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.138", "*", 2) -- RockCube *,   200 damage each, if pushed
+          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.156", "*", 2) -- Recov10 *,    +10 HP each
+          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.157", "*", 1) -- Recov30 *,    +30 HP
+          Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.164", "*", 2) -- PanlGrab *,   10 damage, if blocked
+        end
+
         for item_id, count in pairs(loaded_data.items) do
           Net.give_player_item(event.player_id, item_id, count)
         end
@@ -385,33 +437,12 @@ Net:on("player_connect", function(event)
           Net.set_player_money(event.player_id, loaded_data.money)
         end
 
-        if loaded_data.joins > 1 then return end
-
-        Net.set_player_base_health(event.player_id, 100)
-        Net.set_player_health(event.player_id, 100)
-
-        data.cards = {}
-        data.augments = {}
-
-        Net.give_player_block(event.player_id, "BattleNetwork6.Program13.UnderShirt", "white", 1)
-
-        Net.give_player_card(event.player_id, "BattleNetwork6.CannonBase", "*", -1)
-
-        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.001", "A", 2) -- Cannon A,     40 dmg each
-        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.001", "B", 2) -- Cannon B,     40 dmg each
-        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.002", "L", 1) -- HiCannon L,   100 dmg
-        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.004", "*", 2) -- AirShot *,    20 damage each
-        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.005", "S", 2) -- Vulcan1 S,    10~30 damage each
-        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.009", "L", 4) -- Spreader L,   30 AoE damage each
-        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.018", "L", 2) -- YoYo L,       50 damage per hit, max 150 per chip
-        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.058", "B", 4) -- MiniBomb B,   40 dmg each
-        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.070", "S", 2) -- Sword S,      80 damage each
-        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.071", "S", 1) -- WideSword S,  80 damage
-        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.072", "S", 1) -- LongSword S,  80 damage
-        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.138", "*", 2) -- RockCube *,   200 damage each, if pushed
-        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.156", "*", 2) -- Recov10 *,    +10 HP each
-        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.157", "*", 1) -- Recov30 *,    +30 HP
-        Net.give_player_card(event.player_id, "BattleNetwork6.Class01.Standard.164", "*", 2) -- PanlGrab *,   10 damage, if blocked
+        for index, value in ipairs(data.cards) do
+          Net.give_player_card(event.player_id, value.id, value.code, value.amount)
+        end
+        for index, value in ipairs(data.augments) do
+          Net.give_player_block(event.player_id, value.id, value.color, value.amount)
+        end
       end)
 end)
 
